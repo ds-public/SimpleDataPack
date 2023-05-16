@@ -1,0 +1,1650 @@
+using System ;
+using System.IO ;
+using System.Text ;
+
+using UnityEngine ;
+
+public partial class SimpleDataPack
+{
+	//--------------------------------------------------------------------------------------------
+	// ※work 領域はマルチスレッド対応のためコンバート処理ごとに生成したものを渡して使用する
+
+	// 反転
+	public class ByteConverter_Reverse : IByteConverter
+	{
+		// マルチスレッド対応のためワークエリアはスレッドごとに独立させる
+		private readonly byte[] m_Work = new byte[ 256 ] ;
+
+		// ダミー
+		public void SetEndian( bool isLittleEndian ){}
+
+		//-------------------------------------------------------------------------------------------
+/*
+		public void PutEnum( System.Object value, TypeCode typeCode, MemoryStream ms )
+		{
+			switch( typeCode )
+			{
+				case TypeCode.Byte		: ms.WriteByte( ( System.Byte )value )						; break ;
+				case TypeCode.SByte		: ms.WriteByte( ( System.Byte )( ( System.SByte )value ) )	; break ;
+				case TypeCode.Int16		: PutInt16( ( System.Int16 )value, ms )						; break ;
+				case TypeCode.UInt16	: PutUInt16( ( System.UInt16 )value, ms )					; break ;
+				case TypeCode.Int32		: PutInt32( ( System.Int32 )value, ms )						; break ;
+				case TypeCode.UInt32	: PutUInt32( ( System.UInt32 )value, ms )					; break ;
+				case TypeCode.Int64		: PutInt64( ( System.Int64 )value, ms )						; break ;
+				case TypeCode.UInt64	: PutUInt64( ( System.UInt64 )value, ms )					; break ;
+			}
+		}
+		public void PutEnumN( System.Object value, TypeCode typeCode, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				ms.WriteByte( 1 ) ;
+				switch( typeCode )
+				{
+					case TypeCode.Byte		: ms.WriteByte( ( System.Byte )value )						; break ;
+					case TypeCode.SByte		: ms.WriteByte( ( System.Byte )( ( System.SByte )value ) )	; break ;
+					case TypeCode.Int16		: PutInt16( ( System.Int16 )value, ms )						; break ;
+					case TypeCode.UInt16	: PutUInt16( ( System.UInt16 )value, ms )					; break ;
+					case TypeCode.Int32		: PutInt32( ( System.Int32 )value, ms )						; break ;
+					case TypeCode.UInt32	: PutUInt32( ( System.UInt32 )value, ms )					; break ;
+					case TypeCode.Int64		: PutInt64( ( System.Int64 )value, ms )						; break ;
+					case TypeCode.UInt64	: PutUInt64( ( System.UInt64 )value, ms )					; break ;
+				}
+			}
+		}
+		public void PutEnumX( System.Object value, TypeCode typeCode, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				switch( typeCode )
+				{
+					case TypeCode.Byte		: ms.WriteByte( ( System.Byte )value )						; break ;
+					case TypeCode.SByte		: ms.WriteByte( ( System.Byte )( ( System.SByte )value ) )	; break ;
+					case TypeCode.Int16		: PutInt16( ( System.Int16 )value, ms )						; break ;
+					case TypeCode.UInt16	: PutUInt16( ( System.UInt16 )value, ms )					; break ;
+					case TypeCode.Int32		: PutInt32( ( System.Int32 )value, ms )						; break ;
+					case TypeCode.UInt32	: PutUInt32( ( System.UInt32 )value, ms )					; break ;
+					case TypeCode.Int64		: PutInt64( ( System.Int64 )value, ms )						; break ;
+					case TypeCode.UInt64	: PutUInt64( ( System.UInt64 )value, ms )					; break ;
+				}
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					ms.WriteByte( 1 ) ;
+					switch( typeCode )
+					{
+						case TypeCode.Byte		: ms.WriteByte( ( System.Byte )value )						; break ;
+						case TypeCode.SByte		: ms.WriteByte( ( System.Byte )( ( System.SByte )value ) )	; break ;
+						case TypeCode.Int16		: PutInt16( ( System.Int16 )value, ms )						; break ;
+						case TypeCode.UInt16	: PutUInt16( ( System.UInt16 )value, ms )					; break ;
+						case TypeCode.Int32		: PutInt32( ( System.Int32 )value, ms )						; break ;
+						case TypeCode.UInt32	: PutUInt32( ( System.UInt32 )value, ms )					; break ;
+						case TypeCode.Int64		: PutInt64( ( System.Int64 )value, ms )						; break ;
+						case TypeCode.UInt64	: PutUInt64( ( System.UInt64 )value, ms )					; break ;
+					}
+				}
+			}
+		}
+*/
+		//---------------
+
+		public void PutBoolean( System.Boolean value, MemoryStream ms )
+		{
+			ms.WriteByte( value == false ? ( byte )0 : ( byte )1 ) ;
+		}
+		public void PutBooleanN( System.Boolean? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				ms.WriteByte( ( System.Boolean )value == false ? ( byte )2 : ( byte )3 ) ;
+			}
+		}
+		public void PutBooleanX( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				ms.WriteByte( ( System.Boolean )value == false ? ( byte )0 : ( byte )1 ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					ms.WriteByte( ( System.Boolean )value == false ? ( byte )2 : ( byte )3 ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutByte( System.Byte value, MemoryStream ms )
+		{
+			ms.WriteByte( value ) ;
+		}
+		public void PutByteN( System.Byte? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				ms.WriteByte( 1 ) ;
+				ms.WriteByte( ( System.Byte )value ) ;
+			}
+		}
+		public void PutByteX( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				ms.WriteByte( ( System.Byte )value ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					ms.WriteByte( 1 ) ;
+					ms.WriteByte( ( System.Byte )value ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutSByte( System.SByte value, MemoryStream ms )
+		{
+			ms.WriteByte( ( System.Byte )value ) ;
+		}
+		public void PutSByteN( System.SByte? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				ms.WriteByte( 1 ) ;
+				ms.WriteByte( ( System.Byte )( ( System.SByte )value ) ) ;
+			}
+		}
+		public void PutSByteX( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				ms.WriteByte( ( System.Byte )( ( System.SByte )value ) ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					ms.WriteByte( 1 ) ;
+					ms.WriteByte( ( System.Byte )( ( System.SByte )value ) ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutChar( System.Char value, MemoryStream ms )
+		{
+			m_Work[ 1 ] = ( System.Byte )( value      ) ;
+			m_Work[ 0 ] = ( System.Byte )( value >> 8 ) ;
+			ms.Write( m_Work, 0, 2 ) ;
+		}
+		public void PutCharN( System.Char? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				var v = ( System.Char )value ;
+				m_Work[ 0 ] = 1 ;
+				m_Work[ 2 ] = ( System.Byte )( v      ) ;
+				m_Work[ 1 ] = ( System.Byte )( v >> 8 ) ;
+				ms.Write( m_Work, 0, 3 ) ;
+			}
+		}
+		public void PutCharX( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( System.Char )value ;
+				m_Work[ 1 ] = ( System.Byte )( v      ) ;
+				m_Work[ 0 ] = ( System.Byte )( v >> 8 ) ;
+				ms.Write( m_Work, 0, 2 ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					var v = ( System.Char )value ;
+					m_Work[ 0 ] = 1 ;
+					m_Work[ 2 ] = ( System.Byte )( v      ) ;
+					m_Work[ 1 ] = ( System.Byte )( v >> 8 ) ;
+					ms.Write( m_Work, 0, 3 ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutInt16( System.Int16 value, MemoryStream ms )
+		{
+			m_Work[ 1 ] = ( System.Byte )( value      ) ;
+			m_Work[ 0 ] = ( System.Byte )( value >> 8 ) ;
+			ms.Write( m_Work, 0, 2 ) ;
+		}
+		public void PutInt16N( System.Int16? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				var v = ( System.Int16 )value ;
+				m_Work[ 0 ] = 1 ;
+				m_Work[ 2 ] = ( System.Byte )( v      ) ;
+				m_Work[ 1 ] = ( System.Byte )( v >> 8 ) ;
+				ms.Write( m_Work, 0, 3 ) ;
+			}
+		}
+		public void PutInt16X( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( System.Int16 )value ;
+				m_Work[ 1 ] = ( System.Byte )( v      ) ;
+				m_Work[ 0 ] = ( System.Byte )( v >> 8 ) ;
+				ms.Write( m_Work, 0, 2 ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					var v = ( System.Int16 )value ;
+					m_Work[ 0 ] = 1 ;
+					m_Work[ 2 ] = ( System.Byte )( v      ) ;
+					m_Work[ 1 ] = ( System.Byte )( v >> 8 ) ;
+					ms.Write( m_Work, 0, 3 ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutUInt16( System.UInt16 value, MemoryStream ms )
+		{
+			m_Work[ 1 ] = ( System.Byte )( value      ) ;
+			m_Work[ 0 ] = ( System.Byte )( value >> 8 ) ;
+			ms.Write( m_Work, 0, 2 ) ;
+		}
+		public void PutUInt16N( System.UInt16? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				var v = ( System.UInt16 )value ;
+				m_Work[ 0 ] = 1 ;
+				m_Work[ 2 ] = ( System.Byte )( v      ) ;
+				m_Work[ 1 ] = ( System.Byte )( v >> 8 ) ;
+				ms.Write( m_Work, 0, 3 ) ;
+			}
+		}
+		public void PutUInt16X( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( System.UInt16 )value ;
+				m_Work[ 1 ] = ( System.Byte )( v      ) ;
+				m_Work[ 0 ] = ( System.Byte )( v >> 8 ) ;
+				ms.Write( m_Work, 0, 2 ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					var v = ( System.UInt16 )value ;
+					m_Work[ 0 ] = 1 ;
+					m_Work[ 2 ] = ( System.Byte )( v      ) ;
+					m_Work[ 1 ] = ( System.Byte )( v >> 8 ) ;
+					ms.Write( m_Work, 0, 3 ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutInt32( System.Int32 value, MemoryStream ms )
+		{
+			m_Work[ 3 ] = ( System.Byte )( value       ) ;
+			m_Work[ 2 ] = ( System.Byte )( value >>  8 ) ;
+			m_Work[ 1 ] = ( System.Byte )( value >> 16 ) ;
+			m_Work[ 0 ] = ( System.Byte )( value >> 24 ) ;
+			ms.Write( m_Work, 0, 4 ) ;
+		}
+		public void PutInt32N( System.Int32? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				var v = ( System.Int32 )value ;
+				m_Work[ 0 ] = 1 ;
+				m_Work[ 4 ] = ( System.Byte )( v       ) ;
+				m_Work[ 3 ] = ( System.Byte )( v >>  8 ) ;
+				m_Work[ 2 ] = ( System.Byte )( v >> 16 ) ;
+				m_Work[ 1 ] = ( System.Byte )( v >> 24 ) ;
+				ms.Write( m_Work, 0, 5 ) ;
+			}
+		}
+		public void PutInt32X( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( System.Int32 )value ;
+				m_Work[ 3 ] = ( System.Byte )( v       ) ;
+				m_Work[ 2 ] = ( System.Byte )( v >>  8 ) ;
+				m_Work[ 1 ] = ( System.Byte )( v >> 16 ) ;
+				m_Work[ 0 ] = ( System.Byte )( v >> 24 ) ;
+				ms.Write( m_Work, 0, 4 ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					var v = ( System.Int32 )value ;
+					m_Work[ 0 ] = 1 ;
+					m_Work[ 4 ] = ( System.Byte )( v       ) ;
+					m_Work[ 3 ] = ( System.Byte )( v >>  8 ) ;
+					m_Work[ 2 ] = ( System.Byte )( v >> 16 ) ;
+					m_Work[ 1 ] = ( System.Byte )( v >> 24 ) ;
+					ms.Write( m_Work, 0, 5 ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutUInt32( System.UInt32 value, MemoryStream ms )
+		{
+			m_Work[ 3 ] = ( System.Byte )  value         ;
+			m_Work[ 2 ] = ( System.Byte )( value >>  8 ) ;
+			m_Work[ 1 ] = ( System.Byte )( value >> 16 ) ;
+			m_Work[ 0 ] = ( System.Byte )( value >> 24 ) ;
+
+			ms.Write( m_Work, 0, 4 ) ;
+		}
+		public void PutUInt32N( System.UInt32? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				var v = ( System.UInt32 )value ;
+				m_Work[ 0 ] = 1 ;
+				m_Work[ 4 ] = ( System.Byte )( v       ) ;
+				m_Work[ 3 ] = ( System.Byte )( v >>  8 ) ;
+				m_Work[ 2 ] = ( System.Byte )( v >> 16 ) ;
+				m_Work[ 1 ] = ( System.Byte )( v >> 24 ) ;
+				ms.Write( m_Work, 0, 5 ) ;
+			}
+		}
+		public void PutUInt32X( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( System.UInt32 )value ;
+				m_Work[ 3 ] = ( System.Byte )( v       ) ;
+				m_Work[ 2 ] = ( System.Byte )( v >>  8 ) ;
+				m_Work[ 1 ] = ( System.Byte )( v >> 16 ) ;
+				m_Work[ 0 ] = ( System.Byte )( v >> 24 ) ;
+				ms.Write( m_Work, 0, 4 ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					var v = ( System.UInt32 )value ;
+					m_Work[ 0 ] = 1 ;
+					m_Work[ 4 ] = ( System.Byte )( v       ) ;
+					m_Work[ 3 ] = ( System.Byte )( v >>  8 ) ;
+					m_Work[ 2 ] = ( System.Byte )( v >> 16 ) ;
+					m_Work[ 1 ] = ( System.Byte )( v >> 24 ) ;
+					ms.Write( m_Work, 0, 5 ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutInt64( System.Int64 value, MemoryStream ms )
+		{
+			m_Work[ 7 ] = ( System.Byte )( value       ) ;
+			m_Work[ 6 ] = ( System.Byte )( value >>  8 ) ;
+			m_Work[ 5 ] = ( System.Byte )( value >> 16 ) ;
+			m_Work[ 4 ] = ( System.Byte )( value >> 24 ) ;
+			m_Work[ 3 ] = ( System.Byte )( value >> 32 ) ;
+			m_Work[ 2 ] = ( System.Byte )( value >> 40 ) ;
+			m_Work[ 1 ] = ( System.Byte )( value >> 48 ) ;
+			m_Work[ 0 ] = ( System.Byte )( value >> 56 ) ;
+			ms.Write( m_Work, 0, 8 ) ;
+		}
+		public void PutInt64N( System.Int64? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				var v = ( System.Int64 )value ;
+				m_Work[ 0 ] = 1 ;
+				m_Work[ 8 ] = ( System.Byte )( v       ) ;
+				m_Work[ 7 ] = ( System.Byte )( v >>  8 ) ;
+				m_Work[ 6 ] = ( System.Byte )( v >> 16 ) ;
+				m_Work[ 5 ] = ( System.Byte )( v >> 24 ) ;
+				m_Work[ 4 ] = ( System.Byte )( v >> 32 ) ;
+				m_Work[ 3 ] = ( System.Byte )( v >> 40 ) ;
+				m_Work[ 2 ] = ( System.Byte )( v >> 48 ) ;
+				m_Work[ 1 ] = ( System.Byte )( v >> 56 ) ;
+				ms.Write( m_Work, 0, 9 ) ;
+			}
+		}
+		public void PutInt64X( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( System.Int64 )value ;
+				m_Work[ 7 ] = ( System.Byte )( v       ) ;
+				m_Work[ 6 ] = ( System.Byte )( v >>  8 ) ;
+				m_Work[ 5 ] = ( System.Byte )( v >> 16 ) ;
+				m_Work[ 4 ] = ( System.Byte )( v >> 24 ) ;
+				m_Work[ 3 ] = ( System.Byte )( v >> 32 ) ;
+				m_Work[ 2 ] = ( System.Byte )( v >> 40 ) ;
+				m_Work[ 1 ] = ( System.Byte )( v >> 48 ) ;
+				m_Work[ 0 ] = ( System.Byte )( v >> 56 ) ;
+				ms.Write( m_Work, 0, 8 ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					var v = ( System.Int64 )value ;
+					m_Work[ 0 ] = 1 ;
+					m_Work[ 8 ] = ( System.Byte )( v ) ;
+					m_Work[ 7 ] = ( System.Byte )( v >>  8 ) ;
+					m_Work[ 6 ] = ( System.Byte )( v >> 16 ) ;
+					m_Work[ 5 ] = ( System.Byte )( v >> 24 ) ;
+					m_Work[ 4 ] = ( System.Byte )( v >> 32 ) ;
+					m_Work[ 3 ] = ( System.Byte )( v >> 40 ) ;
+					m_Work[ 2 ] = ( System.Byte )( v >> 48 ) ;
+					m_Work[ 1 ] = ( System.Byte )( v >> 56 ) ;
+					ms.Write( m_Work, 0, 9 ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutUInt64( System.UInt64 value, MemoryStream ms )
+		{
+			m_Work[ 7 ] = ( System.Byte )( value       ) ;
+			m_Work[ 6 ] = ( System.Byte )( value >>  8 ) ;
+			m_Work[ 5 ] = ( System.Byte )( value >> 16 ) ;
+			m_Work[ 4 ] = ( System.Byte )( value >> 24 ) ;
+			m_Work[ 3 ] = ( System.Byte )( value >> 32 ) ;
+			m_Work[ 2 ] = ( System.Byte )( value >> 40 ) ;
+			m_Work[ 1 ] = ( System.Byte )( value >> 48 ) ;
+			m_Work[ 0 ] = ( System.Byte )( value >> 56 ) ;
+			ms.Write( m_Work, 0, 8 ) ;
+		}
+		public void PutUInt64N( System.UInt64? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				var v = ( System.UInt64 )value ;
+				m_Work[ 0 ] = 1 ;
+				m_Work[ 8 ] = ( System.Byte )( v      ) ;
+				m_Work[ 7 ] = ( System.Byte )( v >>  8 ) ;
+				m_Work[ 6 ] = ( System.Byte )( v >> 16 ) ;
+				m_Work[ 5 ] = ( System.Byte )( v >> 24 ) ;
+				m_Work[ 4 ] = ( System.Byte )( v >> 32 ) ;
+				m_Work[ 3 ] = ( System.Byte )( v >> 40 ) ;
+				m_Work[ 2 ] = ( System.Byte )( v >> 48 ) ;
+				m_Work[ 1 ] = ( System.Byte )( v >> 56 ) ;
+				ms.Write( m_Work, 0, 9 ) ;
+			}
+		}
+		public void PutUInt64X( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( System.UInt64 )value ;
+				m_Work[ 7 ] = ( System.Byte )( v       ) ;
+				m_Work[ 6 ] = ( System.Byte )( v >>  8 ) ;
+				m_Work[ 5 ] = ( System.Byte )( v >> 16 ) ;
+				m_Work[ 4 ] = ( System.Byte )( v >> 24 ) ;
+				m_Work[ 3 ] = ( System.Byte )( v >> 32 ) ;
+				m_Work[ 2 ] = ( System.Byte )( v >> 40 ) ;
+				m_Work[ 1 ] = ( System.Byte )( v >> 48 ) ;
+				m_Work[ 0 ] = ( System.Byte )( v >> 56 ) ;
+				ms.Write( m_Work, 0, 8 ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					var v = ( System.UInt64 )value ;
+					m_Work[ 0 ] = 1 ;
+					m_Work[ 8 ] = ( System.Byte )( v       ) ;
+					m_Work[ 7 ] = ( System.Byte )( v >>  8 ) ;
+					m_Work[ 6 ] = ( System.Byte )( v >> 16 ) ;
+					m_Work[ 5 ] = ( System.Byte )( v >> 24 ) ;
+					m_Work[ 4 ] = ( System.Byte )( v >> 32 ) ;
+					m_Work[ 3 ] = ( System.Byte )( v >> 40 ) ;
+					m_Work[ 2 ] = ( System.Byte )( v >> 48 ) ;
+					m_Work[ 1 ] = ( System.Byte )( v >> 56 ) ;
+					ms.Write( m_Work, 0, 9 ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutSingle( System.Single value, MemoryStream ms )
+		{
+			byte[] b = BitConverter.GetBytes( value ) ;
+			m_Work[ 0 ] = b[ 3 ] ; m_Work[ 1 ] = b[ 2 ] ; m_Work[ 2 ] = b[ 1 ] ; m_Work[ 3 ] = b[ 0 ] ; 
+			ms.Write( m_Work, 0, 4 ) ;
+		}
+		public void PutSingleN( System.Single? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				ms.WriteByte( 1 ) ;
+				byte[] b = BitConverter.GetBytes( value.Value ) ;
+				m_Work[ 0 ] = b[ 3 ] ; m_Work[ 1 ] = b[ 2 ] ; m_Work[ 2 ] = b[ 1 ] ; m_Work[ 3 ] = b[ 0 ] ; 
+				ms.Write( m_Work, 0, 4 ) ;
+			}
+		}
+		public void PutSingleX( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				byte[] b = BitConverter.GetBytes( ( System.Single )value ) ;
+				m_Work[ 0 ] = b[ 3 ] ; m_Work[ 1 ] = b[ 2 ] ; m_Work[ 2 ] = b[ 1 ] ; m_Work[ 3 ] = b[ 0 ] ; 
+				ms.Write( m_Work, 0, 4 ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					ms.WriteByte( 1 ) ;
+					byte[] b = BitConverter.GetBytes( ( System.Single )value ) ;
+					m_Work[ 0 ] = b[ 3 ] ; m_Work[ 1 ] = b[ 2 ] ; m_Work[ 2 ] = b[ 1 ] ; m_Work[ 3 ] = b[ 0 ] ; 
+					ms.Write( m_Work, 0, 4 ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutDouble( System.Double value, MemoryStream ms )
+		{
+			byte[] b = BitConverter.GetBytes( value ) ;
+			m_Work[ 0 ] = b[ 7 ] ; m_Work[ 1 ] = b[ 6 ] ; m_Work[ 2 ] = b[ 5 ] ; m_Work[ 3 ] = b[ 4 ] ; m_Work[ 4 ] = b[ 3 ] ; m_Work[ 5 ] = b[ 2 ] ; m_Work[ 6 ] = b[ 1 ] ; m_Work[ 7 ] = b[ 0 ] ;
+			ms.Write( m_Work, 0, 8 ) ;
+		}
+		public void PutDoubleN( System.Double? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				ms.WriteByte( 1 ) ;
+				byte[] b = BitConverter.GetBytes( value.Value ) ;
+				m_Work[ 0 ] = b[ 7 ] ; m_Work[ 1 ] = b[ 6 ] ; m_Work[ 2 ] = b[ 5 ] ; m_Work[ 3 ] = b[ 4 ] ; m_Work[ 4 ] = b[ 3 ] ; m_Work[ 5 ] = b[ 2 ] ; m_Work[ 6 ] = b[ 1 ] ; m_Work[ 7 ] = b[ 0 ] ;
+				ms.Write( m_Work, 0, 8 ) ;
+			}
+		}
+		public void PutDoubleX( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				byte[] b = BitConverter.GetBytes( ( System.Double )value ) ;
+				m_Work[ 0 ] = b[ 7 ] ; m_Work[ 1 ] = b[ 6 ] ; m_Work[ 2 ] = b[ 5 ] ; m_Work[ 3 ] = b[ 4 ] ; m_Work[ 4 ] = b[ 3 ] ; m_Work[ 5 ] = b[ 2 ] ; m_Work[ 6 ] = b[ 1 ] ; m_Work[ 7 ] = b[ 0 ] ;
+				ms.Write( m_Work, 0, 8 ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					ms.WriteByte( 1 ) ;
+					byte[] b = BitConverter.GetBytes( ( System.Double )value ) ;
+					m_Work[ 0 ] = b[ 7 ] ; m_Work[ 1 ] = b[ 6 ] ; m_Work[ 2 ] = b[ 5 ] ; m_Work[ 3 ] = b[ 4 ] ; m_Work[ 4 ] = b[ 3 ] ; m_Work[ 5 ] = b[ 2 ] ; m_Work[ 6 ] = b[ 1 ] ; m_Work[ 7 ] = b[ 0 ] ;
+					ms.Write( m_Work, 0, 8 ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutDecimal( System.Decimal value, MemoryStream ms )
+		{
+			byte[] b = Encoding.UTF8.GetBytes( value.ToString() ) ;
+			ms.WriteByte( ( System.Byte )b.Length ) ;
+			ms.Write( b, 0, b.Length ) ;
+		}
+		public void PutDecimalN( System.Decimal? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				byte[] b = Encoding.UTF8.GetBytes( value.Value.ToString() ) ;
+				ms.WriteByte( ( System.Byte )b.Length ) ;
+				ms.Write( b, 0, b.Length ) ;
+			}
+		}
+		public void PutDecimalX( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				byte[] b = Encoding.UTF8.GetBytes( ( ( System.Decimal )value ).ToString() ) ;
+				ms.WriteByte( ( System.Byte )b.Length ) ;
+				ms.Write( b, 0, b.Length ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					byte[] b = Encoding.UTF8.GetBytes( ( ( System.Decimal )value ).ToString() ) ;
+					ms.WriteByte( ( System.Byte )b.Length ) ;
+					ms.Write( b, 0, b.Length ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutString( System.String value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				if( value.Length == 0 )
+				{
+					// Null ではなく空文字
+					ms.WriteByte( 1 ) ;
+				}
+				else
+				{
+					byte[] b = Encoding.UTF8.GetBytes( value ) ;
+					PutVUInt33( ( System.UInt32? )b.Length, ms ) ;
+					ms.Write( b, 0, b.Length ) ;
+				}
+			}
+		}
+
+		//---------------
+
+		public void PutDateTime( System.DateTime value, MemoryStream ms )
+		{
+			PutInt64( ( System.Int64 )value.Ticks, ms ) ;
+		}
+		public void PutDateTimeN( System.DateTime? value, MemoryStream ms )
+		{
+			if( value == null )
+			{
+				ms.WriteByte( 0 ) ;
+			}
+			else
+			{
+				ms.WriteByte( 1 ) ;
+				PutInt64( ( System.Int64 )( value.Value.Ticks ), ms ) ;
+			}
+		}
+		public void PutDateTimeX( System.Object value, bool isNullable, MemoryStream ms )
+		{
+			if( isNullable == false )
+			{
+				PutInt64( ( System.Int64 )( ( ( System.DateTime )value ).Ticks ), ms ) ;
+			}
+			else
+			{
+				if( value == null )
+				{
+					ms.WriteByte( 0 ) ;
+				}
+				else
+				{
+					ms.WriteByte( 1 ) ;
+					PutInt64( ( System.Int64 )( ( ( System.DateTime )value ).Ticks ), ms ) ;
+				}
+			}
+		}
+
+		//-----------------------------------------------------------
+
+		public void PutVUInt32( System.UInt32 value, MemoryStream ms )	// Max 5 byte ( 32 bit )
+		{
+			if( value <  128 )
+			{
+				ms.WriteByte( ( byte )value ) ;
+			}
+			else
+			{
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +0(7)
+				value >>= 7 ;
+
+				if( value <  128 )
+				{
+					ms.WriteByte( ( byte )value ) ;
+				}
+				else
+				{
+					ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +1(7)
+					value >>= 7 ;
+
+					if( value <  128 )
+					{
+						ms.WriteByte( ( byte )value ) ;
+					}
+					else
+					{
+						ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +2(7)
+						value >>= 7 ;
+
+						if( value <  128 )
+						{
+							ms.WriteByte( ( byte )value ) ;
+						}
+						else
+						{
+							ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +3(7)
+							value >>= 7 ;
+
+							ms.WriteByte( ( byte )value ) ;				// +4(4)
+						}
+					}
+				}
+			}
+		}
+
+		public void PutVUInt33( System.UInt32? value32, MemoryStream ms )	// Max 5 byte ( 33(32+1) bit )
+		{
+			if( value32 == null )
+			{
+				// null
+				ms.WriteByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// 最下位ビットに１を加える
+			System.UInt64 value = ( ( System.UInt64 )value32 << 1 ) | 1 ;
+
+			if( value <  128 )
+			{
+				ms.WriteByte( ( byte )value ) ;
+			}
+			else
+			{
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +0(7)
+				value >>= 7 ;
+
+				if( value <  128 )
+				{
+					ms.WriteByte( ( byte )value ) ;
+				}
+				else
+				{
+					ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +1(7)
+					value >>= 7 ;
+
+					if( value <  128 )
+					{
+						ms.WriteByte( ( byte )value ) ;
+					}
+					else
+					{
+						ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +2(7)
+						value >>= 7 ;
+
+						if( value <  128 )
+						{
+							ms.WriteByte( ( byte )value ) ;
+						}
+						else
+						{
+							ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +3(7)
+							value >>= 7 ;
+
+							ms.WriteByte( ( byte )value ) ;				// +4(5(4+1))
+						}
+					}
+				}
+			}
+		}
+
+		//-------------------------------------------------------------------------------------------
+/*
+		public System.Object GetEnum( Type type, TypeCode typeCode, ByteStream ms )
+		{
+			switch( typeCode )
+			{
+				case TypeCode.Byte		: var v0 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, v0 ) ; 
+				case TypeCode.SByte		: var v1 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, ( System.SByte )v1 ) ;
+				case TypeCode.Int16		: return Enum.ToObject( type, GetInt16( ms ) ) ;
+				case TypeCode.UInt16	: return Enum.ToObject( type, GetUInt16( ms ) ) ;
+				case TypeCode.Int32		: return Enum.ToObject( type, GetInt32( ms ) ) ;
+				case TypeCode.UInt32	: return Enum.ToObject( type, GetUInt32( ms ) ) ;
+				case TypeCode.Int64		: return Enum.ToObject( type, GetInt64( ms ) ) ;
+				case TypeCode.UInt64	: return Enum.ToObject( type, GetUInt64( ms ) ) ;
+				default					: break ;
+			}
+			throw new Exception( message:"Invalid data." ) ;
+		}
+		public System.Object GetEnumN( Type type, TypeCode typeCode, ByteStream ms )
+		{
+			var n = ms.Data[ ms.Step ] ; ms.Step ++ ; 
+			if( n == 0 )
+			{
+				return null ;
+			}
+			switch( typeCode )
+			{
+				case TypeCode.Byte		: var v0 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, v0 ) ; 
+				case TypeCode.SByte		: var v1 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, ( System.SByte )v1 ) ;
+				case TypeCode.Int16		: return Enum.ToObject( type, GetInt16( ms ) ) ;
+				case TypeCode.UInt16	: return Enum.ToObject( type, GetUInt16( ms ) ) ;
+				case TypeCode.Int32		: return Enum.ToObject( type, GetInt32( ms ) ) ;
+				case TypeCode.UInt32	: return Enum.ToObject( type, GetUInt32( ms ) ) ;
+				case TypeCode.Int64		: return Enum.ToObject( type, GetInt64( ms ) ) ;
+				case TypeCode.UInt64	: return Enum.ToObject( type, GetUInt64( ms ) ) ;
+				default : break ;
+			}
+			throw new Exception( message:"Invalid data." ) ;
+		}
+		public System.Object GetEnumX( Type type, TypeCode typeCode, bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				switch( typeCode )
+				{
+					case TypeCode.Byte		: var v0 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, v0 ) ; 
+					case TypeCode.SByte		: var v1 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, ( System.SByte )v1 ) ;
+					case TypeCode.Int16		: return Enum.ToObject( type, GetInt16( ms ) ) ;
+					case TypeCode.UInt16	: return Enum.ToObject( type, GetUInt16( ms ) ) ;
+					case TypeCode.Int32		: return Enum.ToObject( type, GetInt32( ms ) ) ;
+					case TypeCode.UInt32	: return Enum.ToObject( type, GetUInt32( ms ) ) ;
+					case TypeCode.Int64		: return Enum.ToObject( type, GetInt64( ms ) ) ;
+					case TypeCode.UInt64	: return Enum.ToObject( type, GetUInt64( ms ) ) ;
+					default : break ;
+				}
+				throw new Exception( message:"Invalid data." ) ;
+			}
+			else
+			{
+				var n = ms.Data[ ms.Step ] ; ms.Step ++ ; 
+				if( n == 0 )
+				{
+					return null ;
+				}
+				switch( typeCode )
+				{
+					case TypeCode.Byte		: var v0 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, v0 ) ; 
+					case TypeCode.SByte		: var v1 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, ( System.SByte )v1 ) ;
+					case TypeCode.Int16		: return Enum.ToObject( type, GetInt16( ms ) ) ;
+					case TypeCode.UInt16	: return Enum.ToObject( type, GetUInt16( ms ) ) ;
+					case TypeCode.Int32		: return Enum.ToObject( type, GetInt32( ms ) ) ;
+					case TypeCode.UInt32	: return Enum.ToObject( type, GetUInt32( ms ) ) ;
+					case TypeCode.Int64		: return Enum.ToObject( type, GetInt64( ms ) ) ;
+					case TypeCode.UInt64	: return Enum.ToObject( type, GetUInt64( ms ) ) ;
+					default : break ;
+				}
+				throw new Exception( message:"Invalid data." ) ;
+			}
+		}
+*/
+		//---------------
+
+		public System.Boolean GetBoolean( ByteStream ms )
+		{
+			var v = ms.Data[ ms.Step ] ; ms.Step ++ ; 
+			return ( v != 0 ) ;
+		}
+		public System.Boolean? GetBooleanN( ByteStream ms )
+		{
+			var v = ms.Data[ ms.Step ] ; ms.Step ++ ; 
+			switch( v )
+			{
+				case 0 : return null ;
+				case 2 : return false ;
+				case 3 : return true ;
+				default : break ;
+			}
+			throw new Exception( message:"Unknown code"  ) ;
+		}
+		public System.Object GetBooleanX( bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ms.Data[ ms.Step ] ; ms.Step ++ ; 
+				return ( v != 0 ) ;
+			}
+			else
+			{
+				var v = ms.Data[ ms.Step ] ; ms.Step ++ ; 
+				switch( v )
+				{
+					case 0 : return null ;
+					case 2 : return false ;
+					case 3 : return true ;
+					default : break ;
+				}
+				throw new Exception( message:"Unknown code"  ) ;
+			}
+		}
+
+		//---------------
+
+		public System.Byte GetByte( ByteStream ms )
+		{
+			var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			return v ;
+		}
+		public System.Byte? GetByteN( ByteStream ms )
+		{
+			var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( n == 0 )
+			{
+				return null ;
+			}
+			var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			return v ;
+		}
+		public System.Object GetByteX( bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				return v ;
+			}
+			else
+			{
+				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				if( n == 0 )
+				{
+					return null ;
+				}
+				var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				return v ;
+			}
+		}
+
+		//---------------
+
+		public System.SByte GetSByte( ByteStream ms )
+		{
+			var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			return ( System.SByte )v ;
+		}
+		public System.SByte? GetSByteN( ByteStream ms )
+		{
+			var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( n == 0 )
+			{
+				return null ;
+			}
+			var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			return ( System.SByte )v ;
+		}
+		public System.Object GetSByteX( bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				return ( System.SByte )v ;
+			}
+			else
+			{
+				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				if( n == 0 )
+				{
+					return null ;
+				}
+				var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				return ( System.SByte )v ;
+			}
+		}
+
+		//---------------
+
+		public System.Char GetChar( ByteStream ms )
+		{
+			var v = ( System.Char )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
+			return v ;
+		}
+		public System.Char? GetCharN( ByteStream ms )
+		{
+			var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( n == 0 )
+			{
+				return null ;
+			}
+			var v = ( System.Char )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
+			return v ;
+		}
+		public System.Object GetCharX( bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( System.Char )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
+				return v ;
+			}
+			else
+			{
+				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				if( n == 0 )
+				{
+					return null ;
+				}
+				var v = ( System.Char )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
+				return v ;
+			}
+		}
+
+		//---------------
+
+		public System.Int16 GetInt16( ByteStream ms )
+		{
+			var v = ( System.Int16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
+			return v ;
+		}
+		public System.Int16? GetInt16N( ByteStream ms )
+		{
+			var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( n == 0 )
+			{
+				return null ;
+			}
+			var v = ( System.Int16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
+			return v ;
+		}
+		public System.Object GetInt16X( bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( System.Int16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
+				return v ;
+			}
+			else
+			{
+				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				if( n == 0 )
+				{
+					return null ;
+				}
+				var v = ( System.Int16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
+				return v ;
+			}
+		}
+
+		//---------------
+
+		public System.UInt16 GetUInt16( ByteStream ms )
+		{
+			var v = ( System.UInt16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
+			return v ;
+		}
+		public System.UInt16? GetUInt16N( ByteStream ms )
+		{
+			var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( n == 0 )
+			{
+				return null ;
+			}
+			var v = ( System.UInt16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
+			return v ;
+		}
+		public System.Object GetUInt16X( bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( System.UInt16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
+				return v ;
+			}
+			else
+			{
+				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				if( n == 0 )
+				{
+					return null ;
+				}
+				var v = ( System.UInt16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
+				return v ;
+			}
+		}
+
+		//---------------
+
+		public System.Int32 GetInt32( ByteStream ms )
+		{
+			var v = ( System.Int32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
+			return v ;
+		}
+		public System.Int32? GetInt32N( ByteStream ms )
+		{
+			var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( n == 0 )
+			{
+				return null ;
+			}
+			var v = ( System.Int32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
+			return v ;
+		}
+		public System.Object GetInt32X( bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( System.Int32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
+				return v ;
+			}
+			else
+			{
+				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				if( n == 0 )
+				{
+					return null ;
+				}
+				var v = ( System.Int32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
+				return v ;
+			}
+		}
+
+		//---------------
+
+		public System.UInt32 GetUInt32( ByteStream ms )
+		{
+			var v = ( System.UInt32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
+			return v ;
+		}
+		public System.UInt32? GetUInt32N( ByteStream ms )
+		{
+			var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( n == 0 )
+			{
+				return null ;
+			}
+			var v = ( System.UInt32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
+			return v ;
+		}
+		public System.Object GetUInt32X( bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( System.UInt32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
+				return v ;
+			}
+			else
+			{
+				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				if( n == 0 )
+				{
+					return null ;
+				}
+				var v = ( System.UInt32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
+				return v ;
+			}
+		}
+
+		//---------------
+
+		// ※ 64 bit 値の場合は Byte → UInt64 キャストしてからのシフト演算が必要
+
+		public System.Int64 GetInt64( ByteStream ms )
+		{
+			var v = ( System.Int64 )( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
+			return v ;
+		}
+		public System.Int64? GetInt64N( ByteStream ms )
+		{
+			var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( n == 0 )
+			{
+				return null ;
+			}
+			var v = ( System.Int64 )( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
+			return v ;
+		}
+		public System.Object GetInt64X( bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( System.Int64 )( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
+				return v ;
+			}
+			else
+			{
+				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				if( n == 0 )
+				{
+					return null ;
+				}
+				var v = ( System.Int64 )( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
+				return v ;
+			}
+		}
+
+		//---------------
+
+		public System.UInt64 GetUInt64( ByteStream ms )
+		{
+			var v = ( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
+			return v ;
+		}
+		public System.UInt64? GetUInt64N( ByteStream ms )
+		{
+			var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( n == 0 )
+			{
+				return null ;
+			}
+			var v = ( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
+			return v ;
+		}
+		public System.Object GetUInt64X( bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				var v = ( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
+				return v ;
+			}
+			else
+			{
+				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				if( n == 0 )
+				{
+					return null ;
+				}
+				var v = ( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
+				return v ;
+			}
+		}
+
+		//---------------
+
+		public System.Single GetSingle( ByteStream ms )
+		{
+			m_Work[ 0 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 3 ] = ms.Data[ ms.Step ] ; ms.Step += 4 ;
+			return BitConverter.ToSingle( m_Work, 0 ) ;
+		}
+		public System.Single? GetSingleN( ByteStream ms )
+		{
+			var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( n == 0 )
+			{
+				return null ;
+			}
+			m_Work[ 0 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 3 ] = ms.Data[ ms.Step ] ; ms.Step += 4 ;
+			return BitConverter.ToSingle( m_Work, 0 ) ;
+		}
+		public System.Object GetSingleX( bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				m_Work[ 0 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 3 ] = ms.Data[ ms.Step ] ; ms.Step += 4 ;
+				return BitConverter.ToSingle( m_Work, 0 ) ;
+			}
+			else
+			{
+				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				if( n == 0 )
+				{
+					return null ;
+				}
+				m_Work[ 0 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 3 ] = ms.Data[ ms.Step ] ; ms.Step += 4 ;
+				return BitConverter.ToSingle( m_Work, 0 ) ;
+			}
+		}
+
+		//---------------
+
+		public System.Double GetDouble( ByteStream ms )
+		{
+			m_Work[ 0 ] = ms.Data[ ms.Step + 7 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 6 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 5 ] ; m_Work[ 3 ] = ms.Data[ ms.Step + 4 ] ; m_Work[ 4 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 5 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 6 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 7 ] = ms.Data[ ms.Step ] ; ms.Step += 8 ;
+			return BitConverter.ToDouble( m_Work, 0 ) ;
+		}
+		public System.Double? GetDoubleN( ByteStream ms )
+		{
+			var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( n == 0 )
+			{
+				return null ;
+			}
+			m_Work[ 0 ] = ms.Data[ ms.Step + 7 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 6 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 5 ] ; m_Work[ 3 ] = ms.Data[ ms.Step + 4 ] ; m_Work[ 4 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 5 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 6 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 7 ] = ms.Data[ ms.Step ] ; ms.Step += 8 ;
+			return BitConverter.ToDouble( m_Work, 0 ) ;
+		}
+		public System.Object GetDoubleX( bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				m_Work[ 0 ] = ms.Data[ ms.Step + 7 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 6 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 5 ] ; m_Work[ 3 ] = ms.Data[ ms.Step + 4 ] ; m_Work[ 4 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 5 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 6 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 7 ] = ms.Data[ ms.Step ] ; ms.Step += 8 ;
+				return BitConverter.ToDouble( m_Work, 0 ) ;
+			}
+			else
+			{
+				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				if( n == 0 )
+				{
+					return null ;
+				}
+				m_Work[ 0 ] = ms.Data[ ms.Step + 7 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 6 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 5 ] ; m_Work[ 3 ] = ms.Data[ ms.Step + 4 ] ; m_Work[ 4 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 5 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 6 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 7 ] = ms.Data[ ms.Step ] ; ms.Step += 8 ;
+				return BitConverter.ToDouble( m_Work, 0 ) ;
+			}
+		}
+
+		//---------------
+
+		public System.Decimal GetDecimal( ByteStream ms )
+		{
+			System.Int32 length = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			var s = Encoding.UTF8.GetString( ms.Data, ms.Step, length ) ; ms.Step += length ;
+			return System.Decimal.Parse( s ) ;
+		}
+		public System.Decimal? GetDecimalN( ByteStream ms )
+		{
+			System.Int32 length = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( length == 0 )
+			{
+				return null ;
+			}
+			var s = Encoding.UTF8.GetString( ms.Data, ms.Step, length ) ; ms.Step += length ;
+			return System.Decimal.Parse( s ) ;
+		}
+		public System.Object GetDecimalX( bool isNullable, ByteStream ms )
+		{
+			System.Int32 length = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( length == 0 )
+			{
+				if( isNullable == true )
+				{
+					return null ;
+				}
+				else
+				{
+					throw new Exception( message:"Invalid data." ) ;
+				}
+			}
+			var s = Encoding.UTF8.GetString( ms.Data, ms.Step, length ) ; ms.Step += length ;
+			return System.Decimal.Parse( s ) ;
+		}
+
+		//---------------
+
+		public System.String GetString( ByteStream ms )
+		{
+			// 文字数
+			System.UInt32? value = GetVUInt33( ms ) ;
+			if( value == null )
+			{
+				// null
+				return null ;
+			}
+
+			System.Int32 length = ( System.Int32 )value ;
+			if( length == 0 )
+			{
+				// 空文字
+				return string.Empty ;
+			}
+
+			var s = Encoding.UTF8.GetString( ms.Data, ms.Step, length ) ; ms.Step += length ;
+			return s ;
+		}
+
+		//---------------
+
+		public System.DateTime GetDateTime( ByteStream ms )
+		{
+			return new DateTime( ticks:GetInt64( ms ) ) ;
+		}
+		public System.DateTime? GetDateTimeN( ByteStream ms )
+		{
+			var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( n == 0 )
+			{
+				return null ;
+			}
+			return new DateTime( ticks:GetInt64( ms ) ) ;
+		}
+		public System.Object GetDateTimeX( bool isNullable, ByteStream ms )
+		{
+			if( isNullable == false )
+			{
+				return new DateTime( ticks:GetInt64( ms ) ) ;
+			}
+			else
+			{
+				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
+				if( n == 0 )
+				{
+					return null ;
+				}
+				return new DateTime( ticks:GetInt64( ms ) ) ;
+			}
+		}
+
+		//-----------------------------------------------------------
+
+		/// <summary>
+		/// 可変長３２ビット値を取得する
+		/// </summary>
+		/// <param name="ms"></param>
+		/// <returns></returns>
+		public System.UInt32 GetVUInt32( ByteStream ms )				// Max 5 byte ( 32 bit )
+		{
+			byte b0 = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( b0 <  128 )
+			{
+				return b0 ;												//  7 bit
+			}
+			b0 &= 0x7F ;
+
+			byte b1 = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( b1 <  128 )
+			{
+				return ( System.UInt32 )(								// 14 bit
+					( b1 <<  7 ) |										// +1(7)
+					  b0												// +0(7)
+				) ;
+			}
+			b1 &= 0x7F ;
+
+			byte b2 = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( b2 <  128 )
+			{
+				return ( System.UInt32 )(								// 21 bit
+					( b2 << 14 ) |										// +2(7)
+					( b1 <<  7 ) |										// +1(7)
+					  b0												// +0(7)
+				) ;
+			}
+			b2 &= 0x7F ;
+
+			byte b3 = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( b3 <  128 )
+			{
+				return ( System.UInt32 )(								// 28 bit
+					( b3 << 21 ) |										// +3(7)
+					( b2 << 14 ) |										// +2(7)
+					( b1 <<  7 ) |										// +1(7)
+					  b0												// +0(7)
+				) ;
+			}
+			b3 &= 0x7F ;
+
+			byte b4 = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			return ( System.UInt32 )(									// 32 bit
+				( b4 << 28 ) |											// +4(4)
+				( b3 << 21 ) |											// +3(7)
+				( b2 << 14 ) |											// +2(7)
+				( b1 <<  7 ) |											// +1(7)
+				  b0													// +0(7)
+			) ;
+		}
+
+		/// <summary>
+		/// Nullable ビット付きの可変長３３ビット値を取得する
+		/// </summary>
+		/// <param name="ms"></param>
+		/// <returns></returns>
+		public System.UInt32? GetVUInt33( ByteStream ms )				// Max 5 byte ( 32(33-1) bit )
+		{
+			byte b0 = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( b0 == 0 )
+			{
+				return null ;
+			}
+			if( b0 <  128 )
+			{
+				return ( System.UInt32 )( b0 >> 1 ) ;					//  6(7-1) bit
+			}
+			b0 &= 0x7F ;
+
+			byte b1 = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( b1 <  128 )
+			{
+				return ( System.UInt32 )(								// 13(14-1) bit
+					( b1 <<  6 ) |										// +1(7)
+					( b0 >>  1 )										// +0(6(7-1))
+				) ;														// 最下位ビットを削る
+			}
+			b1 &= 0x7F ;
+
+			byte b2 = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( b2 <  128 )
+			{
+				return ( System.UInt32 )(								// 20(21-1) bit
+					( b2 << 13 ) |										// +2(7)
+					( b1 <<  6 ) |										// +1(7)
+					( b0 >>  1 )										// +0(6(7-1))
+				) ;														// 最下位ビットを削る
+			}
+			b2 &= 0x7F ;
+
+			byte b3 = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			if( b3 <  128 )
+			{
+				return ( System.UInt32 )(								// 27(28-1) bit
+					( b3 << 20 ) |										// +3(7)
+					( b2 << 13 ) |										// +2(7)
+					( b1 <<  6 ) |										// +1(7)
+					( b0 >>  1 )										// +0(6(7-1))
+				) ;														// 最下位ビットを削る
+			}
+			b3 &= 0x7F ;
+
+			byte b4 = ms.Data[ ms.Step ] ; ms.Step ++ ;
+			return ( System.UInt32 )(									// 32(33-1) bit
+				( b4 << 27 ) |											// +5(5)
+				( b3 << 20 ) |											// +3(7)
+				( b2 << 13 ) |											// +2(7)
+				( b1 <<  6 ) |											// +1(7)
+				( b0 >>  1 )											// +0(6(7-1))
+			) ;															// 最下位ビットを削る
+		}
+	}
+}
