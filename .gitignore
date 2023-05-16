@@ -49,6 +49,8 @@ Thumbs.db
 /DBS
 /AssetBundle
 /*.apk
+/*.aab
 /Build/Android/build.log
 /Xcode
 /Recordings
+/*_BurstDebugInformation_DoNotShip
