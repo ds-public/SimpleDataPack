@@ -333,76 +333,11 @@ namespace DSW
 		[Header( "各種情報の暗号化を行う(実機は常に有効)" )]
 		public bool	SecurityEnabled = true ;
 
-		//-------------------------------------------------------------------------------------------
-		// CriWare 関連
-
-//		[Header("CriWare - 最大のファイルバインド可能数")]
-//		public int		CriWare_MaxMaxNumberOfBinders	= 24 ;
-
-//		[Header("CriWare - サウンド(Atom)の復号化キー")]
-//		public string	CriWare_EncryptKey				= "607582128852343681" ;
-
-//		[Header("CriWare - サウンド(Atom) の復号化有効")]
-//		public bool		CriWare_AtomDecryptEnabled		= true ;
-
-//		[Header("CriWare - ムービー(Mana)の復号化ファイルパス")]
-//		public string	CriWare_AuthFilePath			= "Internal|Sounds_ADX2/dbs_movie" ;
-
-//		[Header("CriWare - ムービー(Mana) の復号化有効")]
-//		public bool		CriWare_ManaDecryptEnabled		= true ;
-
-
 		//-----------------------------------
 		// 以下はその内削除
 
 		[Header("ブート画面で設定ＵＩを表示するかどうか")]
 		public bool UseBootSettings = true ;	// バッチビルド時に書き換える
-
-		//-------------------------------------------------------------------------------------------
-		// 以下はそのうち削除
-
-		[Header( "IL2CPPビルドを有効にするかどうか(iOSはIL2CPP固定)" )]
-		public bool UseIL2CPP = true ;
-
-#if UNITY_EDITOR
-		/// <summary>
-		/// 設定に変化があったら呼び出される
-		/// </summary>
-		internal void OnValidate()
-		{
-			//----------------------------------------------------------
-			// IL2CPP
-
-			if( UseIL2CPP == true )
-			{
-				// 有効
-
-				// Windows64 OSX
-				PlayerSettings.SetScriptingBackend( BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP ) ;
-
-				// Android
-				PlayerSettings.SetScriptingBackend( BuildTargetGroup.Android, ScriptingImplementation.IL2CPP ) ;
-				PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64 ;
-
-				// iOS
-				PlayerSettings.SetScriptingBackend( BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP ) ;
-			}
-			else
-			{
-				// 無効
-
-				// Windows64 OSX
-				PlayerSettings.SetScriptingBackend( BuildTargetGroup.Standalone, ScriptingImplementation.Mono2x ) ;
-
-				// Android
-				PlayerSettings.SetScriptingBackend( BuildTargetGroup.Android, ScriptingImplementation.Mono2x ) ;
-				PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARMv7 ;
-
-				// iOS
-				PlayerSettings.SetScriptingBackend( BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP ) ;
-			}
-		}
-#endif
 	}
 }
 
