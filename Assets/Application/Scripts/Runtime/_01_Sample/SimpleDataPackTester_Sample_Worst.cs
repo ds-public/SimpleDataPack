@@ -41,7 +41,7 @@ namespace DSW.MyData
 		}
 
 
-/*
+
 		[SimpleDataPackMember(0)][Key(0)]
 		public byte A_Param ;
 
@@ -50,7 +50,8 @@ namespace DSW.MyData
 
 		[SimpleDataPackMember(2)][Key(2)]
 		public string C_Param ;
-*/
+
+/*
 		[SimpleDataPackMember(0)][Key(0)]
 		public byte A_Param{ get ; private set ; }
 
@@ -59,7 +60,7 @@ namespace DSW.MyData
 
 		[SimpleDataPackMember(2)][Key(2)]
 		public string C_Param{ get ; private set ; }
-
+*/
 		//-----------------------------------
 
 		public void Modify_1()
@@ -140,7 +141,7 @@ namespace DSW.MyData
 		[SimpleDataPackMember(5)][Key(5)][SerializeField]
 //		public int P5 = 65535 ; 
 		public int P5{ get ; private set ; } = 65535 ; 
-
+/*
 		[SimpleDataPackMember(6)][Key(6)][SerializeField]
 //		public int P6 = -1000000000 ; 
 		public int P6{ get ; private set ; } = -1000000000 ; 
@@ -187,7 +188,7 @@ namespace DSW.MyData
 //		public Status_W P16 = Status_W.Strength ;
 		public Status_W P16{ get ; private set ; } = Status_W.Strength ;
 
-
+*/
 		//-----------------------------------------------------------
 /*
 		[SimpleDataPackMember(17)][Key(17)][SerializeField]

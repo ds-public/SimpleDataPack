@@ -107,8 +107,8 @@ public partial class SimpleDataPack
 				System.Object GetValue( System.Object entity ) ;
 				void SetValue( System.Object entity, System.Object value ) ;
 			}
-/*
-#if NET_STANDARD_2_1 && !ENABLE_IL2CPP
+
+#if NET_STANDARD_2_1 && ENABLE_MONO
 			/// <summary>
 			/// フィールドのアクセサ
 			/// </summary>
@@ -176,7 +176,7 @@ public partial class SimpleDataPack
 				}
 			}
 #endif
-*/
+
 			/// <summary>
 			/// プロパティのアクセサ
 			/// </summary>
@@ -250,17 +250,16 @@ public partial class SimpleDataPack
 					else
 					{
 						// 速い版(class)
-/*
-#if NET_STANDARD_2_1 && !ENABLE_IL2CPP
+
+#if NET_STANDARD_2_1 && ENABLE_MONO
 						var fieldAccessor = ( IAccessor )Activator.CreateInstance( typeof( FieldAccessor<,> ).MakeGenericType( entityType, Type ), Field ) ;
 						GetValue = fieldAccessor.GetValue ;
 						SetValue = fieldAccessor.SetValue ;
 #else
-*/
 						// 未対応なので遅い版
 						GetValue = Field.GetValue ;
 						SetValue = Field.SetValue ;
-/*#endif*/
+#endif
 					}
 				}
 				else
@@ -276,9 +275,15 @@ public partial class SimpleDataPack
 					else
 					{
 						// 速い版
+#if NET_STANDARD_2_1 && ENABLE_MONO
 						var propertyAccessor = ( IAccessor )Activator.CreateInstance( typeof( PropertyAccessor<,> ).MakeGenericType( entityType, Type ), Property ) ;
 						GetValue = propertyAccessor.GetValue ;
 						SetValue = propertyAccessor.SetValue ;
+#else
+						// 未対応なので遅い版
+						GetValue = Property.GetValue ;
+						SetValue = Property.SetValue ;
+#endif
 					}
 				}
 

@@ -30,11 +30,14 @@ namespace DSW.Screens
 		{
 			//----------------------------------------------------------
 
+#if NET_STANDARD_2_1 && ENABLE_MONO
+			LOG( "MONOが有効です" ) ;
+#endif
 			//--------------------------------------------------------------------------
 			// SimpleDataPack のテスト
 
-//			await sdpt.RunDebug<List<MyData.MySample_W>>() ;
-//			await sdpt.RunDebug<MyData.MySample_W[]>() ;
+//			await RunDebug<List<MyData.MySample_W>>() ;
+//			await RunDebug<MyData.MySample_W[]>() ;
 			await RunDebug<MyData.MyStruct_W[]>() ;
 
 			await Yield() ;
@@ -66,7 +69,7 @@ namespace DSW.Screens
 
 		//--------------------------------------------------------------------------------------------
 
-		public async UniTask RunDebug<T>() where T : class //,new()
+		public async UniTask RunDebug<T>()// where T : class,new()
 		{
 			LOG( "<color=#7F7FFF>==================== SimpleDataPack 検証 ====================</color>" ) ;
 
@@ -113,7 +116,7 @@ namespace DSW.Screens
 	//			SimpleDataPack.IsBigEndian = true ;
 
 			// 高速展開用アダプターの使用を制限する
-			SimpleDataPack.ExternalAdapterDisabled = true ;
+//			SimpleDataPack.ExternalAdapterDisabled = true ;
 
 			SimpleDataPack.PriorityTypes priorityType = SimpleDataPack.PriorityTypes.Speed ;
 
@@ -126,20 +129,21 @@ namespace DSW.Screens
 
 			int si, sl = 1000 ;
 
-	//			var o1 = new T() ;
-	//			var o1 = new List<MyData.MySample_W>() ;
-	//			var o1 = new MyData.MySample_W[ sl ]  ;
+//			var o1 = new T() ;
+//			var o1 = new List<MyData.MySample_W>() ;
+//			var o1 = new MyData.MySample_W[ sl ]  ;
 			var o1 = new MyData.MyStruct_W[ sl ]  ;
 
-	//			for( si  = 0 ; si <  sl ; si ++ )
-	//			{
-	//				o1.Add( new MyData.MySample_W() ) ;
-	//				o1[ si ] = new MyData.MySample_W() ;
-	//			}
+			for( si  = 0 ; si <  sl ; si ++ )
+			{
+//				o1.Add( new MyData.MySample_W() ) ;
+//				o1[ si ] = new MyData.MySample_W() ;
+//				o1[ si ] = new MyData.MyStruct_W() ;
+			}
 
-	//			o1[ sl - 1 ].P5 = 12345 ;
-			o1[ sl - 1 ].Modify_1() ;
-	//			Debug.Log( "-----設定変えました？ : " + o1[ sl - 1 ].P5 ) ;
+//			o1[ sl - 1 ].P5 = 12345 ;
+//			o1[ sl - 1 ].Modify_1() ;
+//			Debug.Log( "-----設定変えました？ : " + o1[ sl - 1 ].P5 ) ;
 
 			//----------------------------------------------------------
 	/*
@@ -270,6 +274,8 @@ namespace DSW.Screens
 
 	//			Debug.Log( "P10:" + o1.P10 ) ;
 
+			LOG( "シリアライズを実行する" ) ;
+
 			t1 = Time.realtimeSinceStartup ;
 			byte[] data1 = SimpleDataPack.Serialize( o1, priorityType:priorityType ) ;
 			LOG( "<color=#00FF00>[SimpleDataPack]シリアライズ時間(１回目) = " + ( Time.realtimeSinceStartup - t1 ) + "</color>" ) ;
@@ -350,7 +356,7 @@ namespace DSW.Screens
 	#endif
 			//------------------------------------------------------------------------------------------
 			// Json 関係
-
+/*
 			float tje = Time.realtimeSinceStartup ;
 
 			byte[] json = SimpleDataPack.Serialize( o1, true, true, SimpleDataPack.PriorityTypes.Speed ) ;
@@ -362,7 +368,7 @@ namespace DSW.Screens
 			}
 
 			await Yield() ;
-
+*/
 			//-----------------------------------------------------------
 			// 元に戻すテスト
 	#if false
@@ -440,8 +446,8 @@ namespace DSW.Screens
 	//				Debug.Log( $"<color=#FFFF00>本当に展開できたのか確認する [ {sl-1} ].P5 = " + a[ sl - 1 ].P5 + "</color>" ) ;				
 	//				Debug.Log( $"<color=#FFFF00>本当に展開できたのか確認する [ {sl-1} ].P114 = " + a[ sl - 1 ].P114[ 1 ][ 1, 2 ] + "</color>" ) ;				
 
-				var b = sd1 as MyData.MyStruct_W[] ;
-				Debug.Log( $"<color=#FFFF00>本当に展開できたのか確認する [ {sl-1} ].A_param = " + b[ sl - 1 ].A_Param + " B_param = " + b[ sl - 1 ].B_Param + " C_Param = " + b[ sl - 1 ].C_Param  + "</color>" ) ;				
+//				var b = sd1 as MyData.MyStruct_W[] ;
+//				Debug.Log( $"<color=#FFFF00>本当に展開できたのか確認する [ {sl-1} ].A_param = " + b[ sl - 1 ].A_Param + " B_param = " + b[ sl - 1 ].B_Param + " C_Param = " + b[ sl - 1 ].C_Param  + "</color>" ) ;				
 
 
 	//				Debug.Log( "sd1.P0 : " + w.P0 ) ;
@@ -520,7 +526,7 @@ namespace DSW.Screens
 			}
 	*/
 			await Yield() ;
-	#if false
+#if false
 
 
 
@@ -565,9 +571,9 @@ namespace DSW.Screens
 			await Yield() ;
 
 
-	#endif
-			//------------------------------------------------------------------------------------------
-
+#endif
+//------------------------------------------------------------------------------------------
+#if false
 			float tjd = Time.realtimeSinceStartup ;
 
 			var dj = SimpleDataPack.Deserialize<T>( json, true ) ;
@@ -642,6 +648,7 @@ namespace DSW.Screens
 			{
 				Debug.Log( "<color=#FF7F00>Json のデシリアライズに失敗しました</color>" ) ;
 			}
+#endif
 		}
 	}
 

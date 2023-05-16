@@ -305,16 +305,6 @@ namespace DSW.MyData
 			writer.PutChar( P3 ) ;
 			writer.PutInt16( P4 ) ;
 			writer.PutInt32( P5 ) ;
-			writer.PutInt32( P6 ) ;
-			writer.PutUInt32( P7 ) ;
-			writer.PutInt64( P8 ) ;
-			writer.PutUInt64( P9 ) ;
-			writer.PutSingle( P10 ) ;
-			writer.PutDouble( P11 ) ;
-			writer.PutDecimal( P12 ) ;
-			writer.PutString( P13 ) ;
-			writer.PutDateTime( P14 ) ;
-			writer.PutByte( ( Byte )P16 ) ;
 		}
 		public void Deserialize__SimpleDataPack( SimpleDataPack.ByteStream reader )
 		{
@@ -324,16 +314,6 @@ namespace DSW.MyData
 			P3 = reader.GetChar() ;
 			P4 = reader.GetInt16() ;
 			P5 = reader.GetInt32() ;
-			P6 = reader.GetInt32() ;
-			P7 = reader.GetUInt32() ;
-			P8 = reader.GetInt64() ;
-			P9 = reader.GetUInt64() ;
-			P10 = reader.GetSingle() ;
-			P11 = reader.GetDouble() ;
-			P12 = reader.GetDecimal() ;
-			P13 = reader.GetString() ;
-			P14 = reader.GetDateTime() ;
-			P16 = ( DSW.MyData.Status_W )Enum.ToObject( typeof( DSW.MyData.Status_W ), reader.GetByte() ) ; 
 		}
 	}
 
