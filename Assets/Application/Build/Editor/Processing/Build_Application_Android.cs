@@ -348,11 +348,11 @@ public partial class Build_Application
 			return false ;
 		}
 
-		if( File.Exists( m_MessagePack_Resolver_Path ) == false )
-		{
-			EditorUtility.DisplayDialog( "注意", "MessagePack の IL2CPP 用コードが生成されてません", "閉じる" ) ;
-			return false ;
-		}
+//		if( File.Exists( m_MessagePack_Resolver_Path ) == false )
+//		{
+//			EditorUtility.DisplayDialog( "注意", "MessagePack の IL2CPP 用コードが生成されてません", "閉じる" ) ;
+//			return false ;
+//		}
 
 		//-----------------------------------
 
@@ -420,11 +420,11 @@ public partial class Build_Application
 			return false ;
 		}
 
-		if( File.Exists( m_MessagePack_Resolver_Path ) == false )
-		{
-			EditorUtility.DisplayDialog( "注意", "MessagePack の IL2CPP 用コードが生成されてません", "閉じる" ) ;
-			return false ;
-		}
+//		if( File.Exists( m_MessagePack_Resolver_Path ) == false )
+//		{
+//			EditorUtility.DisplayDialog( "注意", "MessagePack の IL2CPP 用コードが生成されてません", "閉じる" ) ;
+//			return false ;
+//		}
 
 		//-----------------------------------
 
@@ -512,11 +512,11 @@ public partial class Build_Application
 			return false ;
 		}
 
-		if( File.Exists( m_MessagePack_Resolver_Path ) == false )
-		{
-			EditorUtility.DisplayDialog( "注意", "MessagePack の IL2CPP 用コードが生成されてません", "閉じる" ) ;
-			return false ;
-		}
+//		if( File.Exists( m_MessagePack_Resolver_Path ) == false )
+//		{
+//			EditorUtility.DisplayDialog( "注意", "MessagePack の IL2CPP 用コードが生成されてません", "閉じる" ) ;
+//			return false ;
+//		}
 
 		//-----------------------------------
 
@@ -595,11 +595,11 @@ public partial class Build_Application
 			return false ;
 		}
 
-		if( File.Exists( m_MessagePack_Resolver_Path ) == false )
-		{
-			EditorUtility.DisplayDialog( "注意", "MessagePack の IL2CPP 用コードが生成されてません", "閉じる" ) ;
-			return false ;
-		}
+//		if( File.Exists( m_MessagePack_Resolver_Path ) == false )
+//		{
+//			EditorUtility.DisplayDialog( "注意", "MessagePack の IL2CPP 用コードが生成されてません", "閉じる" ) ;
+//			return false ;
+//		}
 
 		//-----------------------------------
 
