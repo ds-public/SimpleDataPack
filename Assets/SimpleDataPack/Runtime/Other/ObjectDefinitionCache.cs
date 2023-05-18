@@ -20,7 +20,18 @@ public partial class SimpleDataPack
 	/// </summary>
 	public class ObjectDefinitionCache
 	{
-		private readonly Dictionary<Type,ObjectDefinition>	m_ObjectDefinitions = new Dictionary<Type, ObjectDefinition>() ;
+		// オブジェクト定義情報群(キャッシュ)
+		private readonly Dictionary<Type,ObjectDefinition>	m_ObjectDefinitions ;
+
+		/// <summary>
+		/// コンストラクタ
+		/// </summary>
+		public ObjectDefinitionCache()
+		{
+			m_ObjectDefinitions = new Dictionary<Type, ObjectDefinition>() ;
+		}
+
+		//-----------------------------------------------------------
 
 		/// <summary>
 		/// 指定したオブジェクトに該当するオブジェクト定義を取得する
@@ -245,7 +256,7 @@ public partial class SimpleDataPack
 			//----------------------------------------------------------
 
 			// 新しいオブジェクト定義を生成する
-			ObjectDefinition objectDefinition = new ObjectDefinition()
+			var objectDefinition = new ObjectDefinition()
 			{
 				ObjectType	= objectType,
 				KeyAsCode	= keyAsCode
@@ -254,40 +265,59 @@ public partial class SimpleDataPack
 			//----------------------------------------------------------
 
 			// 対象メンバー情報
-			List<ObjectDefinition.MemberDefinition> members = new List<ObjectDefinition.MemberDefinition>() ;
+			var members = new List<ObjectDefinition.MemberDefinition>() ;
 
 			MemberInfo[] memberInfos = objectType.GetMembers( m_BindingFlags ) ;
+
+			Type			type ;
+			System.UInt16	code ;
+
+			FieldInfo		field ;
+			PropertyInfo	property ;
+
+			SimpleDataPackMemberAttribute memberAttribute ;
+
+			bool isSerializeField ;
+			bool isNonSerialized ;
+
+			bool isRemainGetter ;
+			bool isPublicGetter ;
+			bool isRemainSetter ;
+
+			MethodInfo getter ;
+			MethodInfo setter ;
 
 			// メンバーごとに処理を行う
 			foreach( MemberInfo memberInfo in memberInfos )
 			{
-				Type			type		= null ;
-				System.UInt16	code		= 0 ;
+				type		= null ;
+				code		= 0 ;
 
-				FieldInfo		field		= null ;
-				PropertyInfo	property	= null ;
+				field		= null ;
+				property	= null ;
 
 				if( memberInfo.MemberType == MemberTypes.Field )
 				{
-					// フィールド
+					// このメンバーはフィールド
 
 					field = objectType.GetField( memberInfo.Name, m_BindingFlags ) ;
-					var memberAttribute = field.GetCustomAttribute<SimpleDataPackMemberAttribute>() ;
-
-					//------------
-#if UNITY
-					// Unity 環境の場合は SerializeField にも対応する
-					bool isSerializeField	= ( field.GetCustomAttribute<SerializeField>() != null ) ;
-#endif
-					//------------
-
-					bool isNonSerialized	= ( field.GetCustomAttribute<System.NonSerializedAttribute>() != null ) ;
+					memberAttribute = field.GetCustomAttribute<SimpleDataPackMemberAttribute>() ;
 
 					//------------
 
 					if( keyAsCode == false )
 					{
 						// メンバー並び順にコード値を使用しない
+#if UNITY
+						// Unity 環境の場合は SerializeField にも対応する
+						isSerializeField	= ( field.GetCustomAttribute<SerializeField>() != null ) ;
+#endif
+						//------------
+
+						isNonSerialized	= ( field.GetCustomAttribute<System.NonSerializedAttribute>() != null ) ;
+
+						//------------
+
 						if
 						(
 							(
@@ -318,41 +348,42 @@ public partial class SimpleDataPack
 				else
 				if( memberInfo.MemberType == MemberTypes.Property )
 				{
-					// プロパティ
+					// このメンバーはプロパティ
 
 					property = objectType.GetProperty( memberInfo.Name, m_BindingFlags ) ;
-					var memberAttribute = property.GetCustomAttribute<SimpleDataPackMemberAttribute>() ;
+					memberAttribute = property.GetCustomAttribute<SimpleDataPackMemberAttribute>() ;
 
 					// getter が public かどうか
 
-					bool isRemainGetter = false ;
-					bool isPublicGetter = false ;
-					bool isRemainSetter = false ;
+					isRemainGetter = false ;
+					isPublicGetter = false ;
+					isRemainSetter = false ;
 
 					// Getter の確認
-					var getter = property.GetMethod ;
+					getter = property.GetMethod ;
 					if( getter != null && property.CanRead == true )
 					{
 						isRemainGetter = true ;
 						isRemainGetter = getter.IsPublic ;
 					}
 
-					var setter = property.SetMethod ;
+					setter = property.SetMethod ;
 					if( setter != null && property.CanWrite == true )
 					{
 						isRemainSetter = true ;
 					}
 
 					//------------
-#if UNITY
-					// Unity 環境の場合は SerializeField にも対応する
-					bool isSerializeField	= ( property.GetCustomAttribute<SerializeField>() != null ) ;
-#endif
-					//------------
 
 					if( keyAsCode == false )
 					{
 						// メンバー並び順にコード値を使用しない
+
+#if UNITY
+						// Unity 環境の場合は SerializeField にも対応する
+						isSerializeField	= ( property.GetCustomAttribute<SerializeField>() != null ) ;
+#endif
+						//------------
 
 						// アトリビュートの記述が有るなら対象メンバーとするには Getter と Setter の存在が必要
 						// アトリビュートの指定が無いなら対象メンバーとするには Public の Getter と Setter の存在が必要
@@ -389,7 +420,7 @@ public partial class SimpleDataPack
 				{
 					// フィールドとプロパティだけで見たら対象となっている(まだ対象して確定した訳ではない)
 
-					ObjectDefinition.MemberDefinition member = new ObjectDefinition.MemberDefinition()
+					var member = new ObjectDefinition.MemberDefinition()
 					{
 						// 識別名
 						Name			= memberInfo.Name,
@@ -511,11 +542,6 @@ public partial class SimpleDataPack
 							}
 						}
 					}
-
-					//--------------------------------------------------------
-
-					// 最後にアクセサを生成する(ただしランタイム限定)
-//					member.MakeAccessor( objectType ) ;
 				}
 			}
 

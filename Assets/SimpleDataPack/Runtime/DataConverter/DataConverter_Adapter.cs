@@ -21,7 +21,6 @@ public partial class SimpleDataPack
 			if( ActiveAdapterCache.ContainsKey( objectType ) == true )
 			{
 				// ビルトインアダプターにヒットする
-//				Debug.Log( "Adapter-S にヒット : Type " + GetTypeName( objectType ) ) ;
 				return ActiveAdapterCache[ objectType ] ;
 			}
 

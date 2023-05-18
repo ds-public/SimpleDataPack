@@ -55,7 +55,7 @@ namespace DSW.Screens
 
 //			await RunDebug<List<MyData.MySample_W>>() ;
 //			await RunDebug<MyData.MySample_W[]>() ;
-			var o1 = await RunDebug<MyData.MyObject_W[]>( o0 ) ;
+			var o1 = await RunDebug( o0 ) ;
 
 			await Yield() ;
 		}
@@ -260,11 +260,6 @@ namespace DSW.Screens
 			// 以下、シリアライズ関係
 
 			float t1 ;
-
-
-	//			Debug.Log( "P10:" + o1.P10 ) ;
-
-			LOG( "シリアライズを実行する" ) ;
 
 			t1 = Time.realtimeSinceStartup ;
 			byte[] data1 = SimpleDataPack.Serialize( o1, priorityType:priorityType ) ;

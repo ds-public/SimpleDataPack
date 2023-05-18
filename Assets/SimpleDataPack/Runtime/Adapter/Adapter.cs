@@ -35,19 +35,16 @@ public partial class SimpleDataPack
 	// Internal
 
 	public static Dictionary<Type,IAdapter>	InternalAdapterCache { get ; private set ; }
-//	public static Dictionary<Type,System.Object>	InternalAdapterCache { get ; private set ; }
 
 	//----------------
 	// External
 
 	public static Dictionary<Type,IAdapter>	ExternalAdapterCache { get ; private set ; }
-//	public static Dictionary<Type,System.Object>	ExternalAdapterCache { get ; private set ; }
 
 	//------------------------------------
 	// Active
 
 	public static Dictionary<Type,IAdapter>	ActiveAdapterCache { get ; private set ; }
-//	public static Dictionary<Type,System.Object>	ActiveAdapterCache { get ; private set ; }
 
 	//--------------------------------------------------------------------------------------------
 
@@ -56,20 +53,8 @@ public partial class SimpleDataPack
 	/// </summary>
 	/// <param name="type"></param>
 	/// <param name="adapter"></param>
-	public static void AddToInternalAdapters( Type type, IAdapter adapter )
-//	public static void AddToInternalAdapters( Type type, System.Object adapter )
+	public static void AddToInternalAdapterCache( Type type, IAdapter adapter )
 	{
-		// 内部
-//		if( InternalDelegate_Serialize.ContainsKey( type ) == true )
-//		{
-//			Debug.Log( "既に登録済みのタイプ:" + type.Name ) ;
-//		}
-
-//		if( type == typeof( Byte[,]) )
-//		{
-//			Debug.Log( "Byte[,]を登録するよ:" + adapter ) ;
-//		}
-
 		InternalAdapterCache.Add( type, adapter ) ;
 	}
 
@@ -80,13 +65,10 @@ public partial class SimpleDataPack
 	/// </summary>
 	/// <param name="type"></param>
 	/// <param name="adapter"></param>
-	public static void AddToExternalAdapters( Type type, IAdapter adapter )
-//	public static void AddToExternalAdapters( Type type, System.Object adapter )
+	public static void AddToExternalAdapterCache( Type type, IAdapter adapter )
 	{
 		ExternalAdapterCache.Add( type, adapter ) ;
 	}
-
-
 
 //		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 
@@ -98,7 +80,7 @@ public partial class SimpleDataPack
 	/// </summary>
 	public interface IExternalAdapter
 	{
-		void AddToExternal() ;
+		void AddToExternalAdapterCache() ;
 	}
 
 	//--------------------------------------------------------------------------------------------
@@ -107,20 +89,8 @@ public partial class SimpleDataPack
 	public static void PutAnyObject( System.Object entity, Type objectType, ByteStream writer )
 		=> m_DataConverter.PutAnyObject( entity, objectType, writer ) ;
 
-//	public static void PutArray( System.Object entity, Type objectType, ByteStream writer )
-//		=> m_DataConverter.PutArray( entity, objectType, writer ) ;
-
-//	public static void PutList( System.Object entity, Type objectType, ByteStream writer )
-//		=> m_DataConverter.PutList( entity, objectType, writer ) ;
-
 	//----------------
 
 	public static System.Object GetAnyObject( Type objectType, ByteStream reader )
 		=> m_DataConverter.GetAnyObject( objectType, reader ) ;
-
-//	public static System.Object GetArray( Type objectType, ByteStream writer )
-//		=> m_DataConverter.GetArray( objectType, writer ) ;
-
-//	public static System.Object GetList( Type objectType, ByteStream writer )
-//		=> m_DataConverter.GetList( objectType, writer ) ;
 }

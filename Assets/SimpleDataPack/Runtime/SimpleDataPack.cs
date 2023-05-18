@@ -179,7 +179,7 @@ public partial class SimpleDataPack
 
 		// この前に SimpleDataPack のスタティックコンストラクタが実行されているはずである
 
-		m_ExternalAdapter.AddToExternal() ;
+		m_ExternalAdapter.AddToExternalAdapterCache() ;
 
 		//-----------------------------------
 
@@ -216,7 +216,7 @@ public partial class SimpleDataPack
 		//-----------------------------------
 
 		// バイトストリームを生成する
-		ByteStream writer = new ByteStream() ;
+		var writer = new ByteStream() ;
 		writer.Initialize( null, isBigEndian, priorityType ) ;
 
 		//-----------------------------------
@@ -258,8 +258,8 @@ public partial class SimpleDataPack
 	/// </summary>
 	/// <param name="target"></param>
 	/// <returns></returns>
-//	public static T Deserialize<T>( ReadOnlySpan<byte> data, bool fromJson = false )
-	public static T Deserialize<T>( byte[] data, bool fromJson = false )
+	public static T Deserialize<T>( ReadOnlySpan<byte> data, bool fromJson = false )
+//	public static T Deserialize<T>( byte[] data, bool fromJson = false )
 	{
 		if( fromJson == false )
 		{
@@ -309,7 +309,7 @@ public partial class SimpleDataPack
 		//-----------------------------------
 
 		// バイトストリームを生成する(ちょっと重い。0.3 ms 程かかっている)
-		ByteStream reader = new ByteStream() ;
+		var reader = new ByteStream() ;
 		reader.Initialize( data, isBigEndian, priorityType ) ;
 
 		//-----------------------------------
@@ -346,8 +346,7 @@ public partial class SimpleDataPack
 
 		if( ExternalAdapterEnabled == true )
 		{
-			m_ExternalAdapter.AddToExternal() ;	// 後で ↓ に変える
-//			m_ExternalAdapter.AddTo( ExternalAdapterCache ) ;
+			m_ExternalAdapter.AddToExternalAdapterCache() ;	// 後で ↓ に変える
 		}
 	}
 

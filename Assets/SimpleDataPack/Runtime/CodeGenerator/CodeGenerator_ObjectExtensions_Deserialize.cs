@@ -306,7 +306,7 @@ public partial class SimpleDataPack
 				{
 					// 要素がオブジェクト(class struct? struct ※メンバーが存在するもの)
 
-					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {elementOriginTypeName} ), reader ) ;\n" ;
+					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
 //					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetListGenericAdapterFromElementType( typeof( {elementOriginTypeName} ) ).Deserialize( reader ) ;\n" ;
 
 					// ※１次元であれば任意のオブジェクト型も高速処理が可能
@@ -319,7 +319,7 @@ public partial class SimpleDataPack
 					if( elementType.IsEnum == true )
 					{
 						// 列挙子(列挙子はアダプターにヒットしないため別処理を施す必要がある)
-						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {elementOriginTypeName} ), reader ) ;\n" ;
+						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
 //						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetListEnumAdapterFromEnumType( typeof( {elementOriginTypeName} ) ).Deserialize( reader ) ;\n" ;
 					}
 					else

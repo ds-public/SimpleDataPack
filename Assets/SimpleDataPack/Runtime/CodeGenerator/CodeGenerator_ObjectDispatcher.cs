@@ -89,7 +89,7 @@ public partial class SimpleDataPack
 		// アダプター登録メソッド生成
 		private void PutRegister( Type[] types, ref ExStringBuilder sb )
 		{
-			sb += "\t" + $"public void AddToExternal()\n" ;
+			sb += "\t" + $"public void AddToExternalAdapterCache()\n" ;
 			sb += "\t" + "{\n" ;
 
 			//----------------------------------------------------------
@@ -108,37 +108,37 @@ public partial class SimpleDataPack
 					// class
 
 					// スカラ
-					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapters( typeof( {type.FullName} ), new ObjectAdapter_{methodName}() ) ;\n" ;
+					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName} ), new ObjectAdapter_{methodName}() ) ;\n" ;
 
 					// アレイ
-					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapters( typeof( {type.FullName}[] ), new SimpleDataPack.Array1DGenericAdapter<{type.FullName}>() ) ;\n" ;
+					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName}[] ), new SimpleDataPack.Array1DGenericAdapter<{type.FullName}>() ) ;\n" ;
 
 					// リスト
-					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapters( typeof( List<{type.FullName}> ), new SimpleDataPack.ListGenericAdapter<{type.FullName}>() ) ;\n" ;
+					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( List<{type.FullName}> ), new SimpleDataPack.ListGenericAdapter<{type.FullName}>() ) ;\n" ;
 				}
 				else
 				{
 					// struct
 
 					// スカラ
-					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapters( typeof( {type.FullName} ), new ObjectAdapter_{methodName}() ) ;\n" ;
+					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName} ), new ObjectAdapter_{methodName}() ) ;\n" ;
 
 					// アレイ
-					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapters( typeof( {type.FullName}[] ), new SimpleDataPack.Array1DGenericAdapter<{type.FullName}>() ) ;\n" ;
+					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName}[] ), new SimpleDataPack.Array1DGenericAdapter<{type.FullName}>() ) ;\n" ;
 
 					// リスト
-					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapters( typeof( List<{type.FullName}> ), new SimpleDataPack.ListGenericAdapter<{type.FullName}>() ) ;\n" ;
+					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( List<{type.FullName}> ), new SimpleDataPack.ListGenericAdapter<{type.FullName}>() ) ;\n" ;
 
 					// struct?
 
 					// スカラ
-					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapters( typeof( {type.FullName}? ), new ObjectAdapter_{methodName}_Nullable() ) ;\n" ;
+					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName}? ), new ObjectAdapter_{methodName}_Nullable() ) ;\n" ;
 
 					// アレイ
-					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapters( typeof( {type.FullName}?[] ), new SimpleDataPack.Array1DGenericAdapter<{type.FullName}?>() ) ;\n" ;
+					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName}?[] ), new SimpleDataPack.Array1DGenericAdapter<{type.FullName}?>() ) ;\n" ;
 
 					// リスト
-					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapters( typeof( List<{type.FullName}?> ), new SimpleDataPack.ListGenericAdapter<{type.FullName}?>() ) ;\n" ;
+					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( List<{type.FullName}?> ), new SimpleDataPack.ListGenericAdapter<{type.FullName}?>() ) ;\n" ;
 				}
 			}
 

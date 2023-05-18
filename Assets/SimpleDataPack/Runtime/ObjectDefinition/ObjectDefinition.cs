@@ -108,7 +108,7 @@ public partial class SimpleDataPack
 				void SetValue( System.Object entity, System.Object value ) ;
 			}
 
-#if NET_STANDARD_2_1 && ENABLE_MONO
+#if ( NET_STANDARD_2_1 || NET_4_6 ) && ENABLE_MONO
 			/// <summary>
 			/// フィールドのアクセサ
 			/// </summary>
@@ -251,7 +251,7 @@ public partial class SimpleDataPack
 					{
 						// 速い版(class)
 
-#if NET_STANDARD_2_1 && ENABLE_MONO
+#if ( NET_STANDARD_2_1 || NET_4_6 ) && ENABLE_MONO
 						var fieldAccessor = ( IAccessor )Activator.CreateInstance( typeof( FieldAccessor<,> ).MakeGenericType( entityType, Type ), Field ) ;
 						GetValue = fieldAccessor.GetValue ;
 						SetValue = fieldAccessor.SetValue ;
@@ -275,7 +275,7 @@ public partial class SimpleDataPack
 					else
 					{
 						// 速い版
-#if NET_STANDARD_2_1 && ENABLE_MONO
+#if ( NET_STANDARD_2_1 || NET_4_6 ) && ENABLE_MONO
 						var propertyAccessor = ( IAccessor )Activator.CreateInstance( typeof( PropertyAccessor<,> ).MakeGenericType( entityType, Type ), Property ) ;
 						GetValue = propertyAccessor.GetValue ;
 						SetValue = propertyAccessor.SetValue ;
@@ -1153,30 +1153,30 @@ public partial class SimpleDataPack
 				// スカラ
 				var adapter = ( IAdapter )( new InternalObjectAdapter( this ) ) ;
 //				var adapter = ( IAdapter )Activator.CreateInstance( typeof( InternalObjectAdapter<> ).MakeGenericType( ObjectType ), this ) ;
-				AddToInternalAdapters( ObjectType, adapter ) ;
+				AddToInternalAdapterCache( ObjectType, adapter ) ;
 
 				// アレイ(１次元)
 				var arrayAdapter = ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( ObjectType ) ) ;
-				AddToInternalAdapters( ObjectType.MakeArrayType(), arrayAdapter ) ;
+				AddToInternalAdapterCache( ObjectType.MakeArrayType(), arrayAdapter ) ;
 
 				// リスト
 				var listAdapter = ( IAdapter )Activator.CreateInstance( typeof( ListGenericAdapter<> ).MakeGenericType( ObjectType ) ) ;
-				AddToInternalAdapters( typeof( List<> ).MakeGenericType( ObjectType ), listAdapter ) ;
+				AddToInternalAdapterCache( typeof( List<> ).MakeGenericType( ObjectType ), listAdapter ) ;
 			}
 			else
 			{
 				// struct
 				var adapter_NotNullable = ( IAdapter )( new InternalObjectAdapter_NotNullable( this ) ) ;
 //				var adapter_NotNullable = ( IAdapter )Activator.CreateInstance( typeof( InternalObjectAdapter_NotNullable<> ).MakeGenericType( ObjectType ), this ) ;
-				AddToInternalAdapters( ObjectType, adapter_NotNullable ) ;
+				AddToInternalAdapterCache( ObjectType, adapter_NotNullable ) ;
 
 				// アレイ(１次元)
 				var arrayAdapter_NotNullable = ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( ObjectType ) ) ;
-				AddToInternalAdapters( ObjectType.MakeArrayType(), arrayAdapter_NotNullable ) ;
+				AddToInternalAdapterCache( ObjectType.MakeArrayType(), arrayAdapter_NotNullable ) ;
 
 				// リスト
 				var listAdapter_NotNullable = ( IAdapter )Activator.CreateInstance( typeof( ListGenericAdapter<> ).MakeGenericType( ObjectType ) ) ;
-				AddToInternalAdapters( typeof( List<> ).MakeGenericType( ObjectType ), listAdapter_NotNullable ) ;
+				AddToInternalAdapterCache( typeof( List<> ).MakeGenericType( ObjectType ), listAdapter_NotNullable ) ;
 
 				//-------------
 				// struct?
@@ -1185,15 +1185,15 @@ public partial class SimpleDataPack
 
 				var adapter = ( IAdapter )( new InternalObjectAdapter( this ) ) ;
 //				var adapter = ( IAdapter )Activator.CreateInstance( typeof( InternalObjectAdapter<> ).MakeGenericType( nullableObjectType ), this ) ;
-				AddToInternalAdapters( nullableObjectType, adapter ) ;
+				AddToInternalAdapterCache( nullableObjectType, adapter ) ;
 
 				// アレイ(１次元)
 				var arrayAdapter = ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( nullableObjectType ) ) ;
-				AddToInternalAdapters( nullableObjectType.MakeArrayType(), arrayAdapter ) ;
+				AddToInternalAdapterCache( nullableObjectType.MakeArrayType(), arrayAdapter ) ;
 
 				// リスト
 				var listAdapter = ( IAdapter )Activator.CreateInstance( typeof( ListGenericAdapter<> ).MakeGenericType( nullableObjectType ) ) ;
-				AddToInternalAdapters( typeof( List<> ).MakeGenericType( nullableObjectType ), listAdapter ) ;
+				AddToInternalAdapterCache( typeof( List<> ).MakeGenericType( nullableObjectType ), listAdapter ) ;
 			}
 		}
 	}

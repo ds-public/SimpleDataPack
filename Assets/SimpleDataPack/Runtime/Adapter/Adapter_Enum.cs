@@ -23,6 +23,8 @@ public partial class SimpleDataPack
 				case TypeCode.Byte :
 					SetValue = ( System.Object value, ByteStream writer ) =>
 					{
+						Debug.Log( "ValueType : " + value.GetType().ToString() ) ;
+
 						writer.PutByte( ( System.Byte )value ) ;
 					} ;
 					GetValue = ( ByteStream reader ) =>
