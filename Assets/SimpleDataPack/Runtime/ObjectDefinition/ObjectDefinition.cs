@@ -12,6 +12,8 @@ using System.Reflection.Emit ;
 using UnityEngine ;
 #endif
 
+using uGUIHelper ;
+
 public partial class SimpleDataPack
 {
 	/// <summary>
@@ -292,6 +294,9 @@ public partial class SimpleDataPack
 				switch( ValueType )
 				{
 					case ValueTypes.Enum :
+						
+						DebugScreen.Out( "Enum です : " + Name + " TC = " + ObjectTypeCode + " IN = " + IsNullable ) ;
+
 						switch( ObjectTypeCode )
 						{
 							case TypeCode.Byte :
@@ -302,6 +307,8 @@ public partial class SimpleDataPack
 								}
 								else
 								{
+									DebugScreen.Out( "Enum? が設定された" ) ;
+
 									Serialize	= Serialize_Enum_ByteN ;
 									Deserialize	= Deserialize_Enum_ByteN ;
 								}
@@ -607,7 +614,9 @@ public partial class SimpleDataPack
 			// Enum - Byte?
 			private void Serialize_Enum_ByteN( System.Object entity, ByteStream writer )
 			{
-				writer.PutByteN( ( System.Byte? )GetValue( entity ) ) ;
+				// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+				var _ = GetValue( entity ) ;
+				if( _ == null ){ writer.PutByte( 0 ) ; }else{ writer.PutByteT( ( System.Byte )_ ) ; } ;
 			}
 
 			private void Deserialize_Enum_ByteN( System.Object entity, ByteStream reader )
@@ -630,7 +639,9 @@ public partial class SimpleDataPack
 			// Enum - SByte?
 			private void Serialize_Enum_SByteN( System.Object entity, ByteStream writer )
 			{
-				writer.PutSByteN( ( System.SByte? )GetValue( entity ) ) ;
+				// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+				var _ = GetValue( entity ) ;
+				if( _ == null ){ writer.PutSByte( 0 ) ; }else{ writer.PutSByteT( ( System.SByte )_ ) ; } ;
 			}
 
 			private void Deserialize_Enum_SByteN( System.Object entity, ByteStream reader )
@@ -653,7 +664,9 @@ public partial class SimpleDataPack
 			// Enum - Int16?
 			private void Serialize_Enum_Int16N( System.Object entity, ByteStream writer )
 			{
-				writer.PutInt16N( ( System.Int16? )GetValue( entity ) ) ;
+				// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+				var _ = GetValue( entity ) ;
+				if( _ == null ){ writer.PutByte( 0 ) ; }else{ writer.PutInt16T( ( System.Int16 )_ ) ; } ;
 			}
 
 			private void Deserialize_Enum_Int16N( System.Object entity, ByteStream reader )
@@ -676,7 +689,9 @@ public partial class SimpleDataPack
 			// Enum - UInt16?
 			private void Serialize_Enum_UInt16N( System.Object entity, ByteStream writer )
 			{
-				writer.PutUInt16N( ( System.UInt16? )GetValue( entity ) ) ;
+				// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+				var _ = GetValue( entity ) ;
+				if( _ == null ){ writer.PutByte( 0 ) ; }else{ writer.PutUInt16T( ( System.UInt16 )_ ) ; } ;
 			}
 
 			private void Deserialize_Enum_UInt16N( System.Object entity, ByteStream reader )
@@ -699,7 +714,9 @@ public partial class SimpleDataPack
 			// Enum - Int32?
 			private void Serialize_Enum_Int32N( System.Object entity, ByteStream writer )
 			{
-				writer.PutInt32N( ( System.Int32? )GetValue( entity ) ) ;
+				// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+				var _ = GetValue( entity ) ;
+				if( _ == null ){ writer.PutByte( 0 ) ; }else{ writer.PutInt32T( ( System.Int32 )_ ) ; } ;
 			}
 
 			private void Deserialize_Enum_Int32N( System.Object entity, ByteStream reader )
@@ -722,7 +739,9 @@ public partial class SimpleDataPack
 			// Enum - UInt32?
 			private void Serialize_Enum_UInt32N( System.Object entity, ByteStream writer )
 			{
-				writer.PutUInt32N( ( System.UInt32? )GetValue( entity ) ) ;
+				// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+				var _ = GetValue( entity ) ;
+				if( _ == null ){ writer.PutByte( 0 ) ; }else{ writer.PutUInt32T( ( System.UInt32 )_ ) ; } ;
 			}
 
 			private void Deserialize_Enum_UInt32N( System.Object entity, ByteStream reader )
@@ -745,7 +764,9 @@ public partial class SimpleDataPack
 			// Enum - Int64?
 			private void Serialize_Enum_Int64N( System.Object entity, ByteStream writer )
 			{
-				writer.PutInt64N( ( System.Int64? )GetValue( entity ) ) ;
+				// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+				var _ = GetValue( entity ) ;
+				if( _ == null ){ writer.PutByte( 0 ) ; }else{ writer.PutInt64T( ( System.Int64 )_ ) ; } ;
 			}
 
 			private void Deserialize_Enum_Int64N( System.Object entity, ByteStream reader )
@@ -768,7 +789,9 @@ public partial class SimpleDataPack
 			// Enum - UInt64?
 			private void Serialize_Enum_UInt64N( System.Object entity, ByteStream writer )
 			{
-				writer.PutUInt64N( ( System.UInt64? )GetValue( entity ) ) ;
+				// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+				var _ = GetValue( entity ) ;
+				if( _ == null ){ writer.PutByte( 0 ) ; }else{ writer.PutUInt64T( ( System.UInt64 )_ ) ; } ;
 			}
 
 			private void Deserialize_Enum_UInt64N( System.Object entity, ByteStream reader )

@@ -59,7 +59,20 @@ public partial class SimpleDataPack
 					//------------
 
 					case ValueTypes.Enum :
-						sb += "\t\t\t" + $"writer.Put{member.ObjectTypeCode}{N}( ( {member.ObjectTypeCode}{Q} ){member.Name} ) ;\n" ;
+						if( member.IsNullable == false )
+						{
+							sb += "\t\t\t" + $"writer.Put{member.ObjectTypeCode}( ( {member.ObjectTypeCode} ){member.Name} ) ;\n" ;
+						}
+						else
+						{
+							sb += "\t\t\t" ;
+							sb += $"if( {member.Name} == null )" ;
+							sb += "{ " ;
+							sb += $"writer.PutByte( 0 ) ; " ;
+							sb += "}else{ " ;
+							sb += $"writer.Put{member.ObjectTypeCode}T( ( {member.ObjectTypeCode} ){member.Name} ) ; " ;
+							sb += "}\n" ;
+						}
 					break ;
 					case ValueTypes.Boolean :
 					case ValueTypes.Byte :
@@ -240,7 +253,7 @@ public partial class SimpleDataPack
 				elementType = Nullable.GetUnderlyingType( elementType ) ;
 			}
 
-			string elementOriginTypeName = GetTypeName( elementOriginType ) ;
+//			string elementOriginTypeName = GetTypeName( elementOriginType ) ;
 
 			//----------------------------------------------------------
 

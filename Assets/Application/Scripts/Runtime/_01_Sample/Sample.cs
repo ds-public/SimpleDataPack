@@ -29,7 +29,7 @@ namespace DSW.Screens
 		internal async UniTask Start()
 		{
 			// 実機用の簡易デバッグログ表示を有効にする
-//			DebugScreen.Create( 0xFFFFFF, 36, 48, 1 ) ;
+			DebugScreen.Create( 0xFFFFFF, 36, 48, 1 ) ;
 
 			//----------------------------------------------------------
 
@@ -39,7 +39,7 @@ namespace DSW.Screens
 			//--------------------------------------------------------------------------
 			// SimpleDataPack のテスト
 
-			int si, sl = 1000 ;
+			int si, sl = 1 ;
 
 //			var o1 = new T() ;
 //			var o1 = new List<MyData.MySample_W>() ;

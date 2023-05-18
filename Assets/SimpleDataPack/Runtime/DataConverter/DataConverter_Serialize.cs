@@ -4,6 +4,8 @@ using System.Collections.Generic ;
 
 using UnityEngine ;
 
+using uGUIHelper ;
+
 public partial class SimpleDataPack
 {
 	/// <summary>
@@ -39,6 +41,9 @@ public partial class SimpleDataPack
 			{
 				// リフレクション版を使用する
 
+
+				DebugScreen.Out( "オブジェクト定義登録-開始" ) ;
+
 				// プリミティブ型、すなわち Enum Boolean ～ DateTime 型の場合はオブジェクト解析は実行しない
 				if
 				(
@@ -53,6 +58,8 @@ public partial class SimpleDataPack
 					// 問題があれば例外が発生する
 					m_ObjectDefinitionCache.Add( type, true ) ;
 				}
+
+				DebugScreen.Out( "オブジェクト定義登録-終了" ) ;
 			}
 //#if UNITY_EDITOR
 //			else
@@ -71,7 +78,11 @@ public partial class SimpleDataPack
 		// 全てのデータを格納する(objectType は Nullable の内部のタイプ)　※<T> を使うと entity.GetType() になってしまう
 		public void PutAnyObject( System.Object entity, Type objectType, ByteStream writer )
 		{
+			DebugScreen.Out( "シリアライズ-開始" ) ;
+
 			( ( IAdapter )GetAdapter( objectType ) ).Serialize( entity, writer ) ;
+
+			DebugScreen.Out( "シリアライズ-終了" ) ;
 		}
 	}
 }

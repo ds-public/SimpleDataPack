@@ -19,84 +19,6 @@ public partial class SimpleDataPack
 		public void SetEndian( bool isLittleEndian ){}
 
 		//-------------------------------------------------------------------------------------------
-/*
-		public void PutEnum( System.Object value, TypeCode typeCode, MemoryStream ms )
-		{
-			switch( typeCode )
-			{
-				case TypeCode.Byte		: ms.WriteByte( ( System.Byte )value )						; break ;
-				case TypeCode.SByte		: ms.WriteByte( ( System.Byte )( ( System.SByte )value ) )	; break ;
-				case TypeCode.Int16		: PutInt16( ( System.Int16 )value, ms )						; break ;
-				case TypeCode.UInt16	: PutUInt16( ( System.UInt16 )value, ms )					; break ;
-				case TypeCode.Int32		: PutInt32( ( System.Int32 )value, ms )						; break ;
-				case TypeCode.UInt32	: PutUInt32( ( System.UInt32 )value, ms )					; break ;
-				case TypeCode.Int64		: PutInt64( ( System.Int64 )value, ms )						; break ;
-				case TypeCode.UInt64	: PutUInt64( ( System.UInt64 )value, ms )					; break ;
-			}
-		}
-		public void PutEnumN( System.Object value, TypeCode typeCode, MemoryStream ms )
-		{
-			if( value == null )
-			{
-				ms.WriteByte( 0 ) ;
-			}
-			else
-			{
-				ms.WriteByte( 1 ) ;
-				switch( typeCode )
-				{
-					case TypeCode.Byte		: ms.WriteByte( ( System.Byte )value )						; break ;
-					case TypeCode.SByte		: ms.WriteByte( ( System.Byte )( ( System.SByte )value ) )	; break ;
-					case TypeCode.Int16		: PutInt16( ( System.Int16 )value, ms )						; break ;
-					case TypeCode.UInt16	: PutUInt16( ( System.UInt16 )value, ms )					; break ;
-					case TypeCode.Int32		: PutInt32( ( System.Int32 )value, ms )						; break ;
-					case TypeCode.UInt32	: PutUInt32( ( System.UInt32 )value, ms )					; break ;
-					case TypeCode.Int64		: PutInt64( ( System.Int64 )value, ms )						; break ;
-					case TypeCode.UInt64	: PutUInt64( ( System.UInt64 )value, ms )					; break ;
-				}
-			}
-		}
-		public void PutEnumX( System.Object value, TypeCode typeCode, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				switch( typeCode )
-				{
-					case TypeCode.Byte		: ms.WriteByte( ( System.Byte )value )						; break ;
-					case TypeCode.SByte		: ms.WriteByte( ( System.Byte )( ( System.SByte )value ) )	; break ;
-					case TypeCode.Int16		: PutInt16( ( System.Int16 )value, ms )						; break ;
-					case TypeCode.UInt16	: PutUInt16( ( System.UInt16 )value, ms )					; break ;
-					case TypeCode.Int32		: PutInt32( ( System.Int32 )value, ms )						; break ;
-					case TypeCode.UInt32	: PutUInt32( ( System.UInt32 )value, ms )					; break ;
-					case TypeCode.Int64		: PutInt64( ( System.Int64 )value, ms )						; break ;
-					case TypeCode.UInt64	: PutUInt64( ( System.UInt64 )value, ms )					; break ;
-				}
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					ms.WriteByte( 1 ) ;
-					switch( typeCode )
-					{
-						case TypeCode.Byte		: ms.WriteByte( ( System.Byte )value )						; break ;
-						case TypeCode.SByte		: ms.WriteByte( ( System.Byte )( ( System.SByte )value ) )	; break ;
-						case TypeCode.Int16		: PutInt16( ( System.Int16 )value, ms )						; break ;
-						case TypeCode.UInt16	: PutUInt16( ( System.UInt16 )value, ms )					; break ;
-						case TypeCode.Int32		: PutInt32( ( System.Int32 )value, ms )						; break ;
-						case TypeCode.UInt32	: PutUInt32( ( System.UInt32 )value, ms )					; break ;
-						case TypeCode.Int64		: PutInt64( ( System.Int64 )value, ms )						; break ;
-						case TypeCode.UInt64	: PutUInt64( ( System.UInt64 )value, ms )					; break ;
-					}
-				}
-			}
-		}
-*/
-		//---------------
 
 		public void PutBoolean( System.Boolean value, MemoryStream ms )
 		{
@@ -111,24 +33,6 @@ public partial class SimpleDataPack
 			else
 			{
 				ms.WriteByte( ( System.Boolean )value == false ? ( byte )2 : ( byte )3 ) ;
-			}
-		}
-		public void PutBooleanX( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				ms.WriteByte( ( System.Boolean )value == false ? ( byte )0 : ( byte )1 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					ms.WriteByte( ( System.Boolean )value == false ? ( byte )2 : ( byte )3 ) ;
-				}
 			}
 		}
 
@@ -150,24 +54,10 @@ public partial class SimpleDataPack
 				ms.WriteByte( ( System.Byte )value ) ;
 			}
 		}
-		public void PutByteX( System.Object value, bool isNullable, MemoryStream ms )
+		public void PutByteT( System.Byte value, MemoryStream ms )
 		{
-			if( isNullable == false )
-			{
-				ms.WriteByte( ( System.Byte )value ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					ms.WriteByte( 1 ) ;
-					ms.WriteByte( ( System.Byte )value ) ;
-				}
-			}
+			ms.WriteByte( 1 ) ;
+			ms.WriteByte( ( System.Byte )value ) ;
 		}
 
 		//---------------
@@ -188,24 +78,10 @@ public partial class SimpleDataPack
 				ms.WriteByte( ( System.Byte )( ( System.SByte )value ) ) ;
 			}
 		}
-		public void PutSByteX( System.Object value, bool isNullable, MemoryStream ms )
+		public void PutSByteT( System.SByte value, MemoryStream ms )
 		{
-			if( isNullable == false )
-			{
-				ms.WriteByte( ( System.Byte )( ( System.SByte )value ) ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					ms.WriteByte( 1 ) ;
-					ms.WriteByte( ( System.Byte )( ( System.SByte )value ) ) ;
-				}
-			}
+			ms.WriteByte( 1 ) ;
+			ms.WriteByte( ( System.Byte )value ) ;
 		}
 
 		//---------------
@@ -229,31 +105,6 @@ public partial class SimpleDataPack
 				m_Work[ 2 ] = ( System.Byte )( v      ) ;
 				m_Work[ 1 ] = ( System.Byte )( v >> 8 ) ;
 				ms.Write( m_Work, 0, 3 ) ;
-			}
-		}
-		public void PutCharX( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ( System.Char )value ;
-				m_Work[ 1 ] = ( System.Byte )( v      ) ;
-				m_Work[ 0 ] = ( System.Byte )( v >> 8 ) ;
-				ms.Write( m_Work, 0, 2 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					var v = ( System.Char )value ;
-					m_Work[ 0 ] = 1 ;
-					m_Work[ 2 ] = ( System.Byte )( v      ) ;
-					m_Work[ 1 ] = ( System.Byte )( v >> 8 ) ;
-					ms.Write( m_Work, 0, 3 ) ;
-				}
 			}
 		}
 
@@ -280,30 +131,12 @@ public partial class SimpleDataPack
 				ms.Write( m_Work, 0, 3 ) ;
 			}
 		}
-		public void PutInt16X( System.Object value, bool isNullable, MemoryStream ms )
+		public void PutInt16T( System.Int16 value, MemoryStream ms )
 		{
-			if( isNullable == false )
-			{
-				var v = ( System.Int16 )value ;
-				m_Work[ 1 ] = ( System.Byte )( v      ) ;
-				m_Work[ 0 ] = ( System.Byte )( v >> 8 ) ;
-				ms.Write( m_Work, 0, 2 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					var v = ( System.Int16 )value ;
-					m_Work[ 0 ] = 1 ;
-					m_Work[ 2 ] = ( System.Byte )( v      ) ;
-					m_Work[ 1 ] = ( System.Byte )( v >> 8 ) ;
-					ms.Write( m_Work, 0, 3 ) ;
-				}
-			}
+			m_Work[ 0 ] = 1 ;
+			m_Work[ 2 ] = ( System.Byte )( value      ) ;
+			m_Work[ 1 ] = ( System.Byte )( value >> 8 ) ;
+			ms.Write( m_Work, 0, 3 ) ;
 		}
 
 		//---------------
@@ -329,30 +162,12 @@ public partial class SimpleDataPack
 				ms.Write( m_Work, 0, 3 ) ;
 			}
 		}
-		public void PutUInt16X( System.Object value, bool isNullable, MemoryStream ms )
+		public void PutUInt16T( System.UInt16 value, MemoryStream ms )
 		{
-			if( isNullable == false )
-			{
-				var v = ( System.UInt16 )value ;
-				m_Work[ 1 ] = ( System.Byte )( v      ) ;
-				m_Work[ 0 ] = ( System.Byte )( v >> 8 ) ;
-				ms.Write( m_Work, 0, 2 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					var v = ( System.UInt16 )value ;
-					m_Work[ 0 ] = 1 ;
-					m_Work[ 2 ] = ( System.Byte )( v      ) ;
-					m_Work[ 1 ] = ( System.Byte )( v >> 8 ) ;
-					ms.Write( m_Work, 0, 3 ) ;
-				}
-			}
+			m_Work[ 0 ] = 1 ;
+			m_Work[ 2 ] = ( System.Byte )( value      ) ;
+			m_Work[ 1 ] = ( System.Byte )( value >> 8 ) ;
+			ms.Write( m_Work, 0, 3 ) ;
 		}
 
 		//---------------
@@ -382,34 +197,14 @@ public partial class SimpleDataPack
 				ms.Write( m_Work, 0, 5 ) ;
 			}
 		}
-		public void PutInt32X( System.Object value, bool isNullable, MemoryStream ms )
+		public void PutInt32T( System.Int32 value, MemoryStream ms )
 		{
-			if( isNullable == false )
-			{
-				var v = ( System.Int32 )value ;
-				m_Work[ 3 ] = ( System.Byte )( v       ) ;
-				m_Work[ 2 ] = ( System.Byte )( v >>  8 ) ;
-				m_Work[ 1 ] = ( System.Byte )( v >> 16 ) ;
-				m_Work[ 0 ] = ( System.Byte )( v >> 24 ) ;
-				ms.Write( m_Work, 0, 4 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					var v = ( System.Int32 )value ;
-					m_Work[ 0 ] = 1 ;
-					m_Work[ 4 ] = ( System.Byte )( v       ) ;
-					m_Work[ 3 ] = ( System.Byte )( v >>  8 ) ;
-					m_Work[ 2 ] = ( System.Byte )( v >> 16 ) ;
-					m_Work[ 1 ] = ( System.Byte )( v >> 24 ) ;
-					ms.Write( m_Work, 0, 5 ) ;
-				}
-			}
+			m_Work[ 0 ] = 1 ;
+			m_Work[ 4 ] = ( System.Byte )( value       ) ;
+			m_Work[ 3 ] = ( System.Byte )( value >>  8 ) ;
+			m_Work[ 2 ] = ( System.Byte )( value >> 16 ) ;
+			m_Work[ 1 ] = ( System.Byte )( value >> 24 ) ;
+			ms.Write( m_Work, 0, 5 ) ;
 		}
 
 		//---------------
@@ -440,34 +235,14 @@ public partial class SimpleDataPack
 				ms.Write( m_Work, 0, 5 ) ;
 			}
 		}
-		public void PutUInt32X( System.Object value, bool isNullable, MemoryStream ms )
+		public void PutUInt32T( System.UInt32 value, MemoryStream ms )
 		{
-			if( isNullable == false )
-			{
-				var v = ( System.UInt32 )value ;
-				m_Work[ 3 ] = ( System.Byte )( v       ) ;
-				m_Work[ 2 ] = ( System.Byte )( v >>  8 ) ;
-				m_Work[ 1 ] = ( System.Byte )( v >> 16 ) ;
-				m_Work[ 0 ] = ( System.Byte )( v >> 24 ) ;
-				ms.Write( m_Work, 0, 4 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					var v = ( System.UInt32 )value ;
-					m_Work[ 0 ] = 1 ;
-					m_Work[ 4 ] = ( System.Byte )( v       ) ;
-					m_Work[ 3 ] = ( System.Byte )( v >>  8 ) ;
-					m_Work[ 2 ] = ( System.Byte )( v >> 16 ) ;
-					m_Work[ 1 ] = ( System.Byte )( v >> 24 ) ;
-					ms.Write( m_Work, 0, 5 ) ;
-				}
-			}
+			m_Work[ 0 ] = 1 ;
+			m_Work[ 4 ] = ( System.Byte )( value       ) ;
+			m_Work[ 3 ] = ( System.Byte )( value >>  8 ) ;
+			m_Work[ 2 ] = ( System.Byte )( value >> 16 ) ;
+			m_Work[ 1 ] = ( System.Byte )( value >> 24 ) ;
+			ms.Write( m_Work, 0, 5 ) ;
 		}
 
 		//---------------
@@ -505,42 +280,18 @@ public partial class SimpleDataPack
 				ms.Write( m_Work, 0, 9 ) ;
 			}
 		}
-		public void PutInt64X( System.Object value, bool isNullable, MemoryStream ms )
+		public void PutInt64T( System.Int64 value, MemoryStream ms )
 		{
-			if( isNullable == false )
-			{
-				var v = ( System.Int64 )value ;
-				m_Work[ 7 ] = ( System.Byte )( v       ) ;
-				m_Work[ 6 ] = ( System.Byte )( v >>  8 ) ;
-				m_Work[ 5 ] = ( System.Byte )( v >> 16 ) ;
-				m_Work[ 4 ] = ( System.Byte )( v >> 24 ) ;
-				m_Work[ 3 ] = ( System.Byte )( v >> 32 ) ;
-				m_Work[ 2 ] = ( System.Byte )( v >> 40 ) ;
-				m_Work[ 1 ] = ( System.Byte )( v >> 48 ) ;
-				m_Work[ 0 ] = ( System.Byte )( v >> 56 ) ;
-				ms.Write( m_Work, 0, 8 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					var v = ( System.Int64 )value ;
-					m_Work[ 0 ] = 1 ;
-					m_Work[ 8 ] = ( System.Byte )( v ) ;
-					m_Work[ 7 ] = ( System.Byte )( v >>  8 ) ;
-					m_Work[ 6 ] = ( System.Byte )( v >> 16 ) ;
-					m_Work[ 5 ] = ( System.Byte )( v >> 24 ) ;
-					m_Work[ 4 ] = ( System.Byte )( v >> 32 ) ;
-					m_Work[ 3 ] = ( System.Byte )( v >> 40 ) ;
-					m_Work[ 2 ] = ( System.Byte )( v >> 48 ) ;
-					m_Work[ 1 ] = ( System.Byte )( v >> 56 ) ;
-					ms.Write( m_Work, 0, 9 ) ;
-				}
-			}
+			m_Work[ 0 ] = 1 ;
+			m_Work[ 8 ] = ( System.Byte )( value       ) ;
+			m_Work[ 7 ] = ( System.Byte )( value >>  8 ) ;
+			m_Work[ 6 ] = ( System.Byte )( value >> 16 ) ;
+			m_Work[ 5 ] = ( System.Byte )( value >> 24 ) ;
+			m_Work[ 4 ] = ( System.Byte )( value >> 32 ) ;
+			m_Work[ 3 ] = ( System.Byte )( value >> 40 ) ;
+			m_Work[ 2 ] = ( System.Byte )( value >> 48 ) ;
+			m_Work[ 1 ] = ( System.Byte )( value >> 56 ) ;
+			ms.Write( m_Work, 0, 9 ) ;
 		}
 
 		//---------------
@@ -578,42 +329,18 @@ public partial class SimpleDataPack
 				ms.Write( m_Work, 0, 9 ) ;
 			}
 		}
-		public void PutUInt64X( System.Object value, bool isNullable, MemoryStream ms )
+		public void PutUInt64T( System.UInt64 value, MemoryStream ms )
 		{
-			if( isNullable == false )
-			{
-				var v = ( System.UInt64 )value ;
-				m_Work[ 7 ] = ( System.Byte )( v       ) ;
-				m_Work[ 6 ] = ( System.Byte )( v >>  8 ) ;
-				m_Work[ 5 ] = ( System.Byte )( v >> 16 ) ;
-				m_Work[ 4 ] = ( System.Byte )( v >> 24 ) ;
-				m_Work[ 3 ] = ( System.Byte )( v >> 32 ) ;
-				m_Work[ 2 ] = ( System.Byte )( v >> 40 ) ;
-				m_Work[ 1 ] = ( System.Byte )( v >> 48 ) ;
-				m_Work[ 0 ] = ( System.Byte )( v >> 56 ) ;
-				ms.Write( m_Work, 0, 8 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					var v = ( System.UInt64 )value ;
-					m_Work[ 0 ] = 1 ;
-					m_Work[ 8 ] = ( System.Byte )( v       ) ;
-					m_Work[ 7 ] = ( System.Byte )( v >>  8 ) ;
-					m_Work[ 6 ] = ( System.Byte )( v >> 16 ) ;
-					m_Work[ 5 ] = ( System.Byte )( v >> 24 ) ;
-					m_Work[ 4 ] = ( System.Byte )( v >> 32 ) ;
-					m_Work[ 3 ] = ( System.Byte )( v >> 40 ) ;
-					m_Work[ 2 ] = ( System.Byte )( v >> 48 ) ;
-					m_Work[ 1 ] = ( System.Byte )( v >> 56 ) ;
-					ms.Write( m_Work, 0, 9 ) ;
-				}
-			}
+			m_Work[ 0 ] = 1 ;
+			m_Work[ 8 ] = ( System.Byte )( value       ) ;
+			m_Work[ 7 ] = ( System.Byte )( value >>  8 ) ;
+			m_Work[ 6 ] = ( System.Byte )( value >> 16 ) ;
+			m_Work[ 5 ] = ( System.Byte )( value >> 24 ) ;
+			m_Work[ 4 ] = ( System.Byte )( value >> 32 ) ;
+			m_Work[ 3 ] = ( System.Byte )( value >> 40 ) ;
+			m_Work[ 2 ] = ( System.Byte )( value >> 48 ) ;
+			m_Work[ 1 ] = ( System.Byte )( value >> 56 ) ;
+			ms.Write( m_Work, 0, 9 ) ;
 		}
 
 		//---------------
@@ -636,29 +363,6 @@ public partial class SimpleDataPack
 				byte[] b = BitConverter.GetBytes( value.Value ) ;
 				m_Work[ 0 ] = b[ 3 ] ; m_Work[ 1 ] = b[ 2 ] ; m_Work[ 2 ] = b[ 1 ] ; m_Work[ 3 ] = b[ 0 ] ; 
 				ms.Write( m_Work, 0, 4 ) ;
-			}
-		}
-		public void PutSingleX( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				byte[] b = BitConverter.GetBytes( ( System.Single )value ) ;
-				m_Work[ 0 ] = b[ 3 ] ; m_Work[ 1 ] = b[ 2 ] ; m_Work[ 2 ] = b[ 1 ] ; m_Work[ 3 ] = b[ 0 ] ; 
-				ms.Write( m_Work, 0, 4 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					ms.WriteByte( 1 ) ;
-					byte[] b = BitConverter.GetBytes( ( System.Single )value ) ;
-					m_Work[ 0 ] = b[ 3 ] ; m_Work[ 1 ] = b[ 2 ] ; m_Work[ 2 ] = b[ 1 ] ; m_Work[ 3 ] = b[ 0 ] ; 
-					ms.Write( m_Work, 0, 4 ) ;
-				}
 			}
 		}
 
@@ -684,29 +388,6 @@ public partial class SimpleDataPack
 				ms.Write( m_Work, 0, 8 ) ;
 			}
 		}
-		public void PutDoubleX( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				byte[] b = BitConverter.GetBytes( ( System.Double )value ) ;
-				m_Work[ 0 ] = b[ 7 ] ; m_Work[ 1 ] = b[ 6 ] ; m_Work[ 2 ] = b[ 5 ] ; m_Work[ 3 ] = b[ 4 ] ; m_Work[ 4 ] = b[ 3 ] ; m_Work[ 5 ] = b[ 2 ] ; m_Work[ 6 ] = b[ 1 ] ; m_Work[ 7 ] = b[ 0 ] ;
-				ms.Write( m_Work, 0, 8 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					ms.WriteByte( 1 ) ;
-					byte[] b = BitConverter.GetBytes( ( System.Double )value ) ;
-					m_Work[ 0 ] = b[ 7 ] ; m_Work[ 1 ] = b[ 6 ] ; m_Work[ 2 ] = b[ 5 ] ; m_Work[ 3 ] = b[ 4 ] ; m_Work[ 4 ] = b[ 3 ] ; m_Work[ 5 ] = b[ 2 ] ; m_Work[ 6 ] = b[ 1 ] ; m_Work[ 7 ] = b[ 0 ] ;
-					ms.Write( m_Work, 0, 8 ) ;
-				}
-			}
-		}
 
 		//---------------
 
@@ -727,28 +408,6 @@ public partial class SimpleDataPack
 				byte[] b = Encoding.UTF8.GetBytes( value.Value.ToString() ) ;
 				ms.WriteByte( ( System.Byte )b.Length ) ;
 				ms.Write( b, 0, b.Length ) ;
-			}
-		}
-		public void PutDecimalX( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				byte[] b = Encoding.UTF8.GetBytes( ( ( System.Decimal )value ).ToString() ) ;
-				ms.WriteByte( ( System.Byte )b.Length ) ;
-				ms.Write( b, 0, b.Length ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					byte[] b = Encoding.UTF8.GetBytes( ( ( System.Decimal )value ).ToString() ) ;
-					ms.WriteByte( ( System.Byte )b.Length ) ;
-					ms.Write( b, 0, b.Length ) ;
-				}
 			}
 		}
 
@@ -792,25 +451,6 @@ public partial class SimpleDataPack
 			{
 				ms.WriteByte( 1 ) ;
 				PutInt64( ( System.Int64 )( value.Value.Ticks ), ms ) ;
-			}
-		}
-		public void PutDateTimeX( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				PutInt64( ( System.Int64 )( ( ( System.DateTime )value ).Ticks ), ms ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					ms.WriteByte( 1 ) ;
-					PutInt64( ( System.Int64 )( ( ( System.DateTime )value ).Ticks ), ms ) ;
-				}
 			}
 		}
 
@@ -919,86 +559,6 @@ public partial class SimpleDataPack
 		}
 
 		//-------------------------------------------------------------------------------------------
-/*
-		public System.Object GetEnum( Type type, TypeCode typeCode, ByteStream ms )
-		{
-			switch( typeCode )
-			{
-				case TypeCode.Byte		: var v0 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, v0 ) ; 
-				case TypeCode.SByte		: var v1 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, ( System.SByte )v1 ) ;
-				case TypeCode.Int16		: return Enum.ToObject( type, GetInt16( ms ) ) ;
-				case TypeCode.UInt16	: return Enum.ToObject( type, GetUInt16( ms ) ) ;
-				case TypeCode.Int32		: return Enum.ToObject( type, GetInt32( ms ) ) ;
-				case TypeCode.UInt32	: return Enum.ToObject( type, GetUInt32( ms ) ) ;
-				case TypeCode.Int64		: return Enum.ToObject( type, GetInt64( ms ) ) ;
-				case TypeCode.UInt64	: return Enum.ToObject( type, GetUInt64( ms ) ) ;
-				default					: break ;
-			}
-			throw new Exception( message:"Invalid data." ) ;
-		}
-		public System.Object GetEnumN( Type type, TypeCode typeCode, ByteStream ms )
-		{
-			var n = ms.Data[ ms.Step ] ; ms.Step ++ ; 
-			if( n == 0 )
-			{
-				return null ;
-			}
-			switch( typeCode )
-			{
-				case TypeCode.Byte		: var v0 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, v0 ) ; 
-				case TypeCode.SByte		: var v1 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, ( System.SByte )v1 ) ;
-				case TypeCode.Int16		: return Enum.ToObject( type, GetInt16( ms ) ) ;
-				case TypeCode.UInt16	: return Enum.ToObject( type, GetUInt16( ms ) ) ;
-				case TypeCode.Int32		: return Enum.ToObject( type, GetInt32( ms ) ) ;
-				case TypeCode.UInt32	: return Enum.ToObject( type, GetUInt32( ms ) ) ;
-				case TypeCode.Int64		: return Enum.ToObject( type, GetInt64( ms ) ) ;
-				case TypeCode.UInt64	: return Enum.ToObject( type, GetUInt64( ms ) ) ;
-				default : break ;
-			}
-			throw new Exception( message:"Invalid data." ) ;
-		}
-		public System.Object GetEnumX( Type type, TypeCode typeCode, bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				switch( typeCode )
-				{
-					case TypeCode.Byte		: var v0 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, v0 ) ; 
-					case TypeCode.SByte		: var v1 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, ( System.SByte )v1 ) ;
-					case TypeCode.Int16		: return Enum.ToObject( type, GetInt16( ms ) ) ;
-					case TypeCode.UInt16	: return Enum.ToObject( type, GetUInt16( ms ) ) ;
-					case TypeCode.Int32		: return Enum.ToObject( type, GetInt32( ms ) ) ;
-					case TypeCode.UInt32	: return Enum.ToObject( type, GetUInt32( ms ) ) ;
-					case TypeCode.Int64		: return Enum.ToObject( type, GetInt64( ms ) ) ;
-					case TypeCode.UInt64	: return Enum.ToObject( type, GetUInt64( ms ) ) ;
-					default : break ;
-				}
-				throw new Exception( message:"Invalid data." ) ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ; 
-				if( n == 0 )
-				{
-					return null ;
-				}
-				switch( typeCode )
-				{
-					case TypeCode.Byte		: var v0 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, v0 ) ; 
-					case TypeCode.SByte		: var v1 = ms.Data[ ms.Step ] ; ms.Step ++ ; return Enum.ToObject( type, ( System.SByte )v1 ) ;
-					case TypeCode.Int16		: return Enum.ToObject( type, GetInt16( ms ) ) ;
-					case TypeCode.UInt16	: return Enum.ToObject( type, GetUInt16( ms ) ) ;
-					case TypeCode.Int32		: return Enum.ToObject( type, GetInt32( ms ) ) ;
-					case TypeCode.UInt32	: return Enum.ToObject( type, GetUInt32( ms ) ) ;
-					case TypeCode.Int64		: return Enum.ToObject( type, GetInt64( ms ) ) ;
-					case TypeCode.UInt64	: return Enum.ToObject( type, GetUInt64( ms ) ) ;
-					default : break ;
-				}
-				throw new Exception( message:"Invalid data." ) ;
-			}
-		}
-*/
-		//---------------
 
 		public System.Boolean GetBoolean( ByteStream ms )
 		{
@@ -1016,26 +576,6 @@ public partial class SimpleDataPack
 				default : break ;
 			}
 			throw new Exception( message:"Unknown code"  ) ;
-		}
-		public System.Object GetBooleanX( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ms.Data[ ms.Step ] ; ms.Step ++ ; 
-				return ( v != 0 ) ;
-			}
-			else
-			{
-				var v = ms.Data[ ms.Step ] ; ms.Step ++ ; 
-				switch( v )
-				{
-					case 0 : return null ;
-					case 2 : return false ;
-					case 3 : return true ;
-					default : break ;
-				}
-				throw new Exception( message:"Unknown code"  ) ;
-			}
 		}
 
 		//---------------
@@ -1055,24 +595,6 @@ public partial class SimpleDataPack
 			var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
 			return v ;
 		}
-		public System.Object GetByteX( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				return v ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				return v ;
-			}
-		}
 
 		//---------------
 
@@ -1090,24 +612,6 @@ public partial class SimpleDataPack
 			}
 			var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
 			return ( System.SByte )v ;
-		}
-		public System.Object GetSByteX( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				return ( System.SByte )v ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				return ( System.SByte )v ;
-			}
 		}
 
 		//---------------
@@ -1127,24 +631,6 @@ public partial class SimpleDataPack
 			var v = ( System.Char )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
 			return v ;
 		}
-		public System.Object GetCharX( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ( System.Char )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
-				return v ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				var v = ( System.Char )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
-				return v ;
-			}
-		}
 
 		//---------------
 
@@ -1162,24 +648,6 @@ public partial class SimpleDataPack
 			}
 			var v = ( System.Int16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
 			return v ;
-		}
-		public System.Object GetInt16X( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ( System.Int16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
-				return v ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				var v = ( System.Int16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
-				return v ;
-			}
 		}
 
 		//---------------
@@ -1199,24 +667,6 @@ public partial class SimpleDataPack
 			var v = ( System.UInt16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
 			return v ;
 		}
-		public System.Object GetUInt16X( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ( System.UInt16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
-				return v ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				var v = ( System.UInt16 )( ms.Data[ ms.Step + 1 ] | ( ms.Data[ ms.Step ] << 8 ) ) ; ms.Step += 2 ;
-				return v ;
-			}
-		}
 
 		//---------------
 
@@ -1235,24 +685,6 @@ public partial class SimpleDataPack
 			var v = ( System.Int32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
 			return v ;
 		}
-		public System.Object GetInt32X( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ( System.Int32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
-				return v ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				var v = ( System.Int32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
-				return v ;
-			}
-		}
 
 		//---------------
 
@@ -1270,24 +702,6 @@ public partial class SimpleDataPack
 			}
 			var v = ( System.UInt32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
 			return v ;
-		}
-		public System.Object GetUInt32X( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ( System.UInt32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
-				return v ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				var v = ( System.UInt32 )( ms.Data[ ms.Step + 3 ] | ( ms.Data[ ms.Step + 2 ] <<  8 ) | ( ms.Data[ ms.Step + 1 ] << 16 ) | ( ms.Data[ ms.Step ] << 24 ) ) ; ms.Step += 4 ;
-				return v ;
-			}
 		}
 
 		//---------------
@@ -1309,24 +723,6 @@ public partial class SimpleDataPack
 			var v = ( System.Int64 )( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
 			return v ;
 		}
-		public System.Object GetInt64X( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ( System.Int64 )( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
-				return v ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				var v = ( System.Int64 )( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
-				return v ;
-			}
-		}
 
 		//---------------
 
@@ -1344,24 +740,6 @@ public partial class SimpleDataPack
 			}
 			var v = ( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
 			return v ;
-		}
-		public System.Object GetUInt64X( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
-				return v ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				var v = ( ( System.UInt64 )ms.Data[ ms.Step + 7 ] | ( ( System.UInt64 )ms.Data[ ms.Step + 6 ] <<  8 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 5 ] << 16 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 4 ] << 24 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 3 ] << 32 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 2 ] << 40 ) | ( ( System.UInt64 )ms.Data[ ms.Step + 1 ] << 48 ) | ( ( System.UInt64 )ms.Data[ ms.Step ] << 56 ) ) ; ms.Step += 8 ;
-				return v ;
-			}
 		}
 
 		//---------------
@@ -1381,24 +759,6 @@ public partial class SimpleDataPack
 			m_Work[ 0 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 3 ] = ms.Data[ ms.Step ] ; ms.Step += 4 ;
 			return BitConverter.ToSingle( m_Work, 0 ) ;
 		}
-		public System.Object GetSingleX( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				m_Work[ 0 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 3 ] = ms.Data[ ms.Step ] ; ms.Step += 4 ;
-				return BitConverter.ToSingle( m_Work, 0 ) ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				m_Work[ 0 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 3 ] = ms.Data[ ms.Step ] ; ms.Step += 4 ;
-				return BitConverter.ToSingle( m_Work, 0 ) ;
-			}
-		}
 
 		//---------------
 
@@ -1417,24 +777,6 @@ public partial class SimpleDataPack
 			m_Work[ 0 ] = ms.Data[ ms.Step + 7 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 6 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 5 ] ; m_Work[ 3 ] = ms.Data[ ms.Step + 4 ] ; m_Work[ 4 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 5 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 6 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 7 ] = ms.Data[ ms.Step ] ; ms.Step += 8 ;
 			return BitConverter.ToDouble( m_Work, 0 ) ;
 		}
-		public System.Object GetDoubleX( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				m_Work[ 0 ] = ms.Data[ ms.Step + 7 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 6 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 5 ] ; m_Work[ 3 ] = ms.Data[ ms.Step + 4 ] ; m_Work[ 4 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 5 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 6 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 7 ] = ms.Data[ ms.Step ] ; ms.Step += 8 ;
-				return BitConverter.ToDouble( m_Work, 0 ) ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				m_Work[ 0 ] = ms.Data[ ms.Step + 7 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 6 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 5 ] ; m_Work[ 3 ] = ms.Data[ ms.Step + 4 ] ; m_Work[ 4 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 5 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 6 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 7 ] = ms.Data[ ms.Step ] ; ms.Step += 8 ;
-				return BitConverter.ToDouble( m_Work, 0 ) ;
-			}
-		}
 
 		//---------------
 
@@ -1450,23 +792,6 @@ public partial class SimpleDataPack
 			if( length == 0 )
 			{
 				return null ;
-			}
-			var s = Encoding.UTF8.GetString( ms.Data, ms.Step, length ) ; ms.Step += length ;
-			return System.Decimal.Parse( s ) ;
-		}
-		public System.Object GetDecimalX( bool isNullable, ByteStream ms )
-		{
-			System.Int32 length = ms.Data[ ms.Step ] ; ms.Step ++ ;
-			if( length == 0 )
-			{
-				if( isNullable == true )
-				{
-					return null ;
-				}
-				else
-				{
-					throw new Exception( message:"Invalid data." ) ;
-				}
 			}
 			var s = Encoding.UTF8.GetString( ms.Data, ms.Step, length ) ; ms.Step += length ;
 			return System.Decimal.Parse( s ) ;
@@ -1509,22 +834,6 @@ public partial class SimpleDataPack
 				return null ;
 			}
 			return new DateTime( ticks:GetInt64( ms ) ) ;
-		}
-		public System.Object GetDateTimeX( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				return new DateTime( ticks:GetInt64( ms ) ) ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				return new DateTime( ticks:GetInt64( ms ) ) ;
-			}
 		}
 
 		//-----------------------------------------------------------

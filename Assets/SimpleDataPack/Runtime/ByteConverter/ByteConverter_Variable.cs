@@ -18,124 +18,49 @@ public partial class SimpleDataPack
 			{
 				PutSingle_Dispatcher	= PutSingle_Inner ;
 				PutSingleN_Dispatcher	= PutSingleN_Inner ;
-				PutSingleX_Dispatcher	= PutSingleX_Inner ;
 
 				PutDouble_Dispatcher	= PutDouble_Inner ;
 				PutDoubleN_Dispatcher	= PutDoubleN_Inner ;
-				PutDoubleX_Dispatcher	= PutDoubleX_Inner ;
 
 				//---
 
 				GetSingle_Dispatcher	= GetSingle_Inner ;
 				GetSingleN_Dispatcher	= GetSingleN_Inner ;
-				GetSingleX_Dispatcher	= GetSingleX_Inner ;
 
 				GetDouble_Dispatcher	= GetDouble_Inner ;
 				GetDoubleN_Dispatcher	= GetDoubleN_Inner ;
-				GetDoubleX_Dispatcher	= GetDoubleX_Inner ;
 			}
 			else
 			{
 				PutSingle_Dispatcher	= PutSingle_Inner_Reverse ;
 				PutSingleN_Dispatcher	= PutSingleN_Inner_Reverse ;
-				PutSingleX_Dispatcher	= PutSingleX_Inner_Reverse ;
 
 				PutDouble_Dispatcher	= PutDouble_Inner_Reverse ;
 				PutDoubleN_Dispatcher	= PutDoubleN_Inner_Reverse ;
-				PutDoubleX_Dispatcher	= PutDoubleX_Inner_Reverse ;
 
 				//---
 
 				GetSingle_Dispatcher	= GetSingle_Inner_Reverse ;
 				GetSingleN_Dispatcher	= GetSingleN_Inner_Reverse ;
-				GetSingleX_Dispatcher	= GetSingleX_Inner_Reverse ;
 
 				GetDouble_Dispatcher	= GetDouble_Inner_Reverse ;
 				GetDoubleN_Dispatcher	= GetDoubleN_Inner_Reverse ;
-				GetDoubleX_Dispatcher	= GetDoubleX_Inner_Reverse ;
 			}
 		}
 
 		private Action<System.Single,MemoryStream>			PutSingle_Dispatcher ;
 		private Action<System.Single?,MemoryStream>			PutSingleN_Dispatcher ;
-		private Action<System.Object,bool,MemoryStream>		PutSingleX_Dispatcher ;
 
 		private Action<System.Double,MemoryStream>			PutDouble_Dispatcher ;
 		private Action<System.Double?,MemoryStream>			PutDoubleN_Dispatcher ;
-		private Action<System.Object,bool,MemoryStream>		PutDoubleX_Dispatcher ;
 
 		private Func<ByteStream,System.Single>				GetSingle_Dispatcher ;
 		private Func<ByteStream,System.Single?>				GetSingleN_Dispatcher ;
-		private Func<bool,ByteStream,System.Object>			GetSingleX_Dispatcher ;
 
 		private Func<ByteStream,System.Double>				GetDouble_Dispatcher ;
 		private Func<ByteStream,System.Double?>				GetDoubleN_Dispatcher ;
-		private Func<bool,ByteStream,System.Object>			GetDoubleX_Dispatcher ;
-
 
 		//-------------------------------------------------------------------------------------------
-/*
-		public void PutEnum( System.Object value, TypeCode typeCode, MemoryStream ms )
-		{
-			switch( typeCode )
-			{
-				case TypeCode.Byte		: ms.WriteByte( ( System.Byte )value )							; break ;
-				case TypeCode.SByte		: ms.WriteByte( ( System.Byte )( ( System.SByte )value ) )		; break ;
-				case TypeCode.Int16		: PutVUInt16( ( System.UInt16 )( ( System.Int16 )value ), ms )	; break ;
-				case TypeCode.UInt16	: PutVUInt16( ( System.UInt16 )value, ms )						; break ;
-				case TypeCode.Int32		: PutVUInt32( ( System.UInt32 )( ( System.Int32 )value ), ms )	; break ;
-				case TypeCode.UInt32	: PutVUInt32( ( System.UInt32 )value, ms )						; break ;
-				case TypeCode.Int64		: PutVUInt64( ( System.UInt64 )( ( System.Int64 )value ), ms )	; break ;
-				case TypeCode.UInt64	: PutVUInt64( ( System.UInt64 )value, ms )						; break ;
-			}
-		}
-		public void PutEnumN( System.Object value, TypeCode typeCode, MemoryStream ms )
-		{
-			switch( typeCode )
-			{
-				case TypeCode.Byte		: PutVUInt09( ( System.Byte? )value, ms )							; break ;
-				case TypeCode.SByte		: PutVUInt09( ( System.Byte? )( ( System.SByte? )value ), ms )		; break ;
-				case TypeCode.Int16		: PutVUInt17( ( System.UInt16? )( ( System.Int16? )value ), ms )	; break ;
-				case TypeCode.UInt16	: PutVUInt17( ( System.UInt16? )value, ms )							; break ;
-				case TypeCode.Int32		: PutVUInt33( ( System.UInt32? )( ( System.Int32? )value ), ms )	; break ;
-				case TypeCode.UInt32	: PutVUInt33( ( System.UInt32? )value, ms )							; break ;
-				case TypeCode.Int64		: PutVUInt65( ( System.UInt64? )( ( System.Int64? )value ), ms )	; break ;
-				case TypeCode.UInt64	: PutVUInt65( ( System.UInt64? )value, ms )							; break ;
-			}
-		}
-		public void PutEnumX( System.Object value, TypeCode typeCode, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				switch( typeCode )
-				{
-					case TypeCode.Byte		: ms.WriteByte( ( System.Byte )value )							; break ;
-					case TypeCode.SByte		: ms.WriteByte( ( System.Byte )( ( System.SByte )value ) )		; break ;
-					case TypeCode.Int16		: PutVUInt16( ( System.UInt16 )( ( System.Int16 )value ), ms )	; break ;
-					case TypeCode.UInt16	: PutVUInt16( ( System.UInt16 )value, ms )						; break ;
-					case TypeCode.Int32		: PutVUInt32( ( System.UInt32 )( ( System.Int32 )value ), ms )	; break ;
-					case TypeCode.UInt32	: PutVUInt32( ( System.UInt32 )value, ms )						; break ;
-					case TypeCode.Int64		: PutVUInt64( ( System.UInt64 )( ( System.Int64 )value ), ms )	; break ;
-					case TypeCode.UInt64	: PutVUInt64( ( System.UInt64 )value, ms )						; break ;
-				}
-			}
-			else
-			{
-				switch( typeCode )
-				{
-					case TypeCode.Byte		: PutVUInt09( ( System.Byte? )value, ms )							; break ;
-					case TypeCode.SByte		: PutVUInt09( ( System.Byte? )( ( System.SByte? )value ), ms )		; break ;
-					case TypeCode.Int16		: PutVUInt17( ( System.UInt16? )( ( System.Int16? )value ), ms )	; break ;
-					case TypeCode.UInt16	: PutVUInt17( ( System.UInt16? )value, ms )							; break ;
-					case TypeCode.Int32		: PutVUInt33( ( System.UInt32? )( ( System.Int32? )value ), ms )	; break ;
-					case TypeCode.UInt32	: PutVUInt33( ( System.UInt32? )value, ms )							; break ;
-					case TypeCode.Int64		: PutVUInt65( ( System.UInt64? )( ( System.Int64? )value ), ms )	; break ;
-					case TypeCode.UInt64	: PutVUInt65( ( System.UInt64? )value, ms )							; break ;
-				}
-			}
-		}
-*/
-		//---------------
 
 		public void PutBoolean( System.Boolean value, MemoryStream ms )
 		{
@@ -152,24 +77,6 @@ public partial class SimpleDataPack
 				ms.WriteByte( ( System.Boolean )value == false ? ( byte )2 : ( byte )3 ) ;
 			}
 		}
-		public void PutBooleanX( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				ms.WriteByte( ( System.Boolean )value == false ? ( byte )0 : ( byte )1 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					ms.WriteByte( ( System.Boolean )value == false ? ( byte )2 : ( byte )3 ) ;
-				}
-			}
-		}
 
 		//---------------
 
@@ -179,17 +86,8 @@ public partial class SimpleDataPack
 		public void PutByteN( System.Byte? value, MemoryStream ms )
 			=> PutVUInt09( value, ms ) ;	// 1 + 8 = 9 bit
 
-		public void PutByteX( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				ms.WriteByte( ( System.Byte )value ) ;
-			}
-			else
-			{
-				PutVUInt09( ( System.Byte? )value, ms ) ;	// 1 + 8 = 9 bit
-			}
-		}
+		public void PutByteT( System.Byte value, MemoryStream ms )
+			=> PutVUInt09T( value, ms ) ;	// 1 + 8 = 9 bit
 
 		//---------------
 
@@ -199,17 +97,8 @@ public partial class SimpleDataPack
 		public void PutSByteN( System.SByte? value, MemoryStream ms )
 			=> PutVUInt09( ( System.Byte? )value, ms ) ;	// 1 + 8 = 9 bit
 
-		public void PutSByteX( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				ms.WriteByte( ( System.Byte )( ( System.SByte )value ) ) ;
-			}
-			else
-			{
-				PutVUInt09( ( System.Byte? )( ( System.SByte? )value ), ms ) ;	// 1 + 8 = 9 bit
-			}
-		}
+		public void PutSByteT( System.SByte value, MemoryStream ms )
+			=> PutVUInt09T( ( System.Byte )value, ms ) ;	// 1 + 8 = 9 bit
 
 		//---------------
 
@@ -219,18 +108,6 @@ public partial class SimpleDataPack
 		public void PutCharN( System.Char? value, MemoryStream ms )
 			=> PutVUInt17( ( System.UInt16? )( ( System.Char? )value ), ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
 
-		public void PutCharX( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				PutVUInt16( ( System.UInt16 )( ( System.Char )value ), ms ) ;	// 7 + 1 + 7 + 1 + 2 = 18 bit
-			}
-			else
-			{
-				PutVUInt17( ( System.UInt16? )( ( System.Char? )value ), ms ) ;
-			}
-		}
-
 		//---------------
 
 		public void PutInt16( System.Int16 value, MemoryStream ms )
@@ -239,17 +116,8 @@ public partial class SimpleDataPack
 		public void PutInt16N( System.Int16? value, MemoryStream ms )
 			=> PutVUInt17( ( System.UInt16? )value, ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
 
-		public void PutInt16X( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				PutVUInt16( ( System.UInt16 )( ( System.Int16 )value ), ms ) ;	// 7 + 1 + 7 + 1 + 2 = 18 bit
-			}
-			else
-			{
-				PutVUInt17( ( System.UInt16? )( ( System.Int16? )value ), ms ) ;
-			}
-		}
+		public void PutInt16T( System.Int16 value, MemoryStream ms )
+			=> PutVUInt17T( ( System.UInt16 )value, ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
 
 		//---------------
 
@@ -259,17 +127,8 @@ public partial class SimpleDataPack
 		public void PutUInt16N( System.UInt16? value, MemoryStream ms )
 			=> PutVUInt17( value, ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
 
-		public void PutUInt16X( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				PutVUInt16( ( System.UInt16 )value, ms ) ;	// 7 + 1 + 7 + 1 + 2 = 18 bit
-			}
-			else
-			{
-				PutVUInt17( ( System.UInt16? )value, ms ) ;
-			}
-		}
+		public void PutUInt16T( System.UInt16 value, MemoryStream ms )
+			=> PutVUInt17T( value, ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
 
 		//---------------
 
@@ -279,17 +138,8 @@ public partial class SimpleDataPack
 		public void PutInt32N( System.Int32? value, MemoryStream ms )
 			=> PutVUInt33( ( System.UInt32? )value, ms ) ;	// 1 + 32 bit
 
-		public void PutInt32X( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				PutVUInt32( ( System.UInt32 )( ( System.Int32 )value ), ms ) ;	// 7 + 1 + 7 + 1 + 7 + 1 + 7 + 1 + 8 = 36 bit
-			}
-			else
-			{
-				PutVUInt33( ( System.UInt32? )( ( System.Int32? )value ), ms ) ;	// 1 + 32 bit
-			}
-		}
+		public void PutInt32T( System.Int32 value, MemoryStream ms )
+			=> PutVUInt33T( ( System.UInt32 )value, ms ) ;	// 1 + 32 bit
 
 		//---------------
 
@@ -299,17 +149,8 @@ public partial class SimpleDataPack
 		public void PutUInt32N( System.UInt32? value, MemoryStream ms )
 			=> PutVUInt33( value, ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
 
-		public void PutUInt32X( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				PutVUInt32( ( System.UInt32 )value, ms ) ;	// 7 + 1 + 7 + 1 + 7 + 1 + 7 + 1 + 8 = 36 bit(5byte)
-			}
-			else
-			{
-				PutVUInt33( ( System.UInt32? )value, ms ) ;
-			}
-		}
+		public void PutUInt32T( System.UInt32 value, MemoryStream ms )
+			=> PutVUInt33T( value, ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
 
 		//---------------
 
@@ -319,17 +160,8 @@ public partial class SimpleDataPack
 		public void PutInt64N( System.Int64? value, MemoryStream ms )
 			=> PutVUInt65( ( System.UInt64? )value, ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
 
-		public void PutInt64X( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				PutVUInt64( ( System.UInt64 )( ( System.Int64 )value ), ms ) ;	// 7 + 1 + 7 + 1 + 7 + 1 + 7 + 1 + 7 + 1 + 7 + 1 + 7 + 1 + 7 + 1 + 8 = 64 bit(9byte)
-			}
-			else
-			{
-				PutVUInt65( ( System.UInt64? )( ( System.Int64? )value ), ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
-			}
-		}
+		public void PutInt64T( System.Int64 value, MemoryStream ms )
+			=> PutVUInt65T( ( System.UInt64 )value, ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
 
 		//---------------
 
@@ -339,17 +171,8 @@ public partial class SimpleDataPack
 		public void PutUInt64N( System.UInt64? value, MemoryStream ms )
 			=> PutVUInt65( value, ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
 
-		public void PutUInt64X( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				PutVUInt64( ( System.UInt64 )value, ms ) ;
-			}
-			else
-			{
-				PutVUInt65( ( System.UInt64? )value, ms ) ;
-			}
-		}
+		public void PutUInt64T( System.UInt64 value, MemoryStream ms )
+			=> PutVUInt65T( value, ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
 
 		//---------------
 
@@ -358,9 +181,6 @@ public partial class SimpleDataPack
 
 		public void PutSingleN( System.Single? value, MemoryStream ms )
 			=> PutSingleN_Dispatcher( value, ms ) ;
-
-		public void PutSingleX( System.Object value, bool isNullable, MemoryStream ms )
-			=> PutSingleX_Dispatcher( value, isNullable, ms ) ;
 
 		//-----
 
@@ -378,25 +198,6 @@ public partial class SimpleDataPack
 			{
 				ms.WriteByte( 1 ) ;
 				ms.Write( BitConverter.GetBytes( value.Value ), 0, 4 ) ;
-			}
-		}
-		public void PutSingleX_Inner( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				ms.Write( BitConverter.GetBytes( ( System.Single )value ), 0, 4 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					ms.WriteByte( 1 ) ;
-					ms.Write( BitConverter.GetBytes( ( System.Single )value ), 0, 4 ) ;
-				}
 			}
 		}
 
@@ -422,29 +223,6 @@ public partial class SimpleDataPack
 				ms.Write( m_Work, 0, 4 ) ;
 			}
 		}
-		private void PutSingleX_Inner_Reverse( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				byte[] b = BitConverter.GetBytes( ( System.Single )value ) ;
-				m_Work[ 0 ] = b[ 3 ] ; m_Work[ 1 ] = b[ 2 ] ; m_Work[ 2 ] = b[ 1 ] ; m_Work[ 3 ] = b[ 0 ] ;
-				ms.Write( m_Work, 0, 4 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					ms.WriteByte( 1 ) ;
-					byte[] b = BitConverter.GetBytes( ( System.Single )value ) ;
-					m_Work[ 0 ] = b[ 3 ] ; m_Work[ 1 ] = b[ 2 ] ; m_Work[ 2 ] = b[ 1 ] ; m_Work[ 3 ] = b[ 0 ] ;
-					ms.Write( m_Work, 0, 4 ) ;
-				}
-			}
-		}
 
 		//---------------
 
@@ -453,9 +231,6 @@ public partial class SimpleDataPack
 
 		public void PutDoubleN( System.Double? value, MemoryStream ms )
 			=> PutDoubleN_Dispatcher( value, ms ) ;
-
-		public void PutDoubleX( System.Object value, bool isNullable, MemoryStream ms )
-			=> PutDoubleX_Dispatcher( value, isNullable, ms ) ;
 
 		//-----
 
@@ -473,25 +248,6 @@ public partial class SimpleDataPack
 			{
 				ms.WriteByte( 1 ) ;
 				ms.Write( BitConverter.GetBytes( value.Value ), 0, 8 ) ;
-			}
-		}
-		private void PutDoubleX_Inner( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				ms.Write( BitConverter.GetBytes( ( System.Double )value ), 0, 8 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					ms.WriteByte( 1 ) ;
-					ms.Write( BitConverter.GetBytes( ( System.Double )value ), 0, 8 ) ;
-				}
 			}
 		}
 
@@ -517,29 +273,6 @@ public partial class SimpleDataPack
 				ms.Write( m_Work, 0, 8 ) ;
 			}
 		}
-		private void PutDoubleX_Inner_Reverse( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				byte[] b = BitConverter.GetBytes( ( System.Double )value ) ;
-				m_Work[ 0 ] = b[ 7 ] ; m_Work[ 1 ] = b[ 6 ] ; m_Work[ 2 ] = b[ 5 ] ; m_Work[ 3 ] = b[ 4 ] ; m_Work[ 4 ] = b[ 3 ] ; m_Work[ 5 ] = b[ 2 ] ; m_Work[ 6 ] = b[ 1 ] ; m_Work[ 7 ] = b[ 0 ] ;
-				ms.Write( m_Work, 0, 8 ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					ms.WriteByte( 1 ) ;
-					byte[] b = BitConverter.GetBytes( ( System.Double ) value ) ;
-					m_Work[ 0 ] = b[ 7 ] ; m_Work[ 1 ] = b[ 6 ] ; m_Work[ 2 ] = b[ 5 ] ; m_Work[ 3 ] = b[ 4 ] ; m_Work[ 4 ] = b[ 3 ] ; m_Work[ 5 ] = b[ 2 ] ; m_Work[ 6 ] = b[ 1 ] ; m_Work[ 7 ] = b[ 0 ] ;
-					ms.Write( m_Work, 0, 8 ) ;
-				}
-			}
-		}
 
 		//---------------
 
@@ -560,28 +293,6 @@ public partial class SimpleDataPack
 				byte[] b = Encoding.UTF8.GetBytes( value.Value.ToString() ) ;
 				ms.WriteByte( ( System.Byte )b.Length ) ;
 				ms.Write( b, 0, b.Length ) ;
-			}
-		}
-		public void PutDecimalX( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				byte[] b = Encoding.UTF8.GetBytes( ( ( System.Decimal )value ).ToString() ) ;
-				ms.WriteByte( ( System.Byte )b.Length ) ;
-				ms.Write( b, 0, b.Length ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					byte[] b = Encoding.UTF8.GetBytes( ( ( System.Decimal )value ).ToString() ) ;
-					ms.WriteByte( ( System.Byte )b.Length ) ;
-					ms.Write( b, 0, b.Length ) ;
-				}
 			}
 		}
 
@@ -627,25 +338,6 @@ public partial class SimpleDataPack
 				PutInt64( ( System.Int64 )value.Value.Ticks, ms ) ;
 			}
 		}
-		public void PutDateTimeX( System.Object value, bool isNullable, MemoryStream ms )
-		{
-			if( isNullable == false )
-			{
-				PutInt64( ( System.Int64 )( ( System.DateTime )value ).Ticks, ms ) ;
-			}
-			else
-			{
-				if( value == null )
-				{
-					ms.WriteByte( 0 ) ;
-				}
-				else
-				{
-					ms.WriteByte( 1 ) ;
-					PutInt64( ( System.Int64 )( ( System.DateTime )value ).Ticks, ms ) ;
-				}
-			}
-		}
 
 		//-----------------------------------------------------------
 
@@ -660,6 +352,23 @@ public partial class SimpleDataPack
 
 			//----------------------------------
 
+			System.UInt16 value = ( System.UInt16 )( ( value08 << 1 ) | 1 ) ;
+
+			if( value <  128 )
+			{
+				ms.WriteByte( ( byte )value ) ;
+			}
+			else
+			{
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;				// +0(7)
+				value >>= 7 ;
+
+				ms.WriteByte( ( byte )value ) ;							// +1(2(1+1))
+			}
+		}
+
+		public void PutVUInt09T( System.Byte value08, MemoryStream ms )	// Max 2 byte ( 9(8+1) bit )
+		{
 			System.UInt16 value = ( System.UInt16 )( ( value08 << 1 ) | 1 ) ;
 
 			if( value <  128 )
@@ -711,6 +420,33 @@ public partial class SimpleDataPack
 
 			//----------------------------------
 
+			System.UInt32 value = ( System.UInt32 )( ( value16 << 1 ) | 1 ) ;
+
+			if( value <  128 )
+			{
+				ms.WriteByte( ( byte )value ) ;
+			}
+			else
+			{
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;		// +0(7)
+				value >>= 7 ;
+
+				if( value <  128 )
+				{
+					ms.WriteByte( ( byte )value ) ;
+				}
+				else
+				{
+					ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +1(7)
+					value >>= 7 ;
+
+					ms.WriteByte( ( byte )value ) ;				// +2(3(2+1))
+				}
+			}
+		}
+
+		private void PutVUInt17T( System.UInt16 value16, MemoryStream ms )	// Max 3 byte ( 17(16+1) bit )
+		{
 			System.UInt32 value = ( System.UInt32 )( ( value16 << 1 ) | 1 ) ;
 
 			if( value <  128 )
@@ -790,6 +526,56 @@ public partial class SimpleDataPack
 				return ;
 			}
 
+			//----------------------------------
+			// ６４ビット値はキャストが無いとビットが消えてしまう
+
+			System.UInt64 value = ( System.UInt64 )( ( ( System.UInt64 )value32 << 1 ) | 1 ) ;
+
+			if( value <  128 )
+			{
+				ms.WriteByte( ( byte )value ) ;
+			}
+			else
+			{
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;				// +0(7)
+				value >>= 7 ;
+
+				if( value <  128 )
+				{
+					ms.WriteByte( ( byte )value ) ;
+				}
+				else
+				{
+					ms.WriteByte( ( byte )( value | 0x80 ) ) ;			// +1(7)
+					value >>= 7 ;
+
+					if( value <  128 )
+					{
+						ms.WriteByte( ( byte )value ) ;
+					}
+					else
+					{
+						ms.WriteByte( ( byte )( value | 0x80 ) ) ;		// +2(7)
+						value >>= 7 ;
+
+						if( value <  128 )
+						{
+							ms.WriteByte( ( byte )value ) ;
+						}
+						else
+						{
+							ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +3(7)
+							value >>= 7 ;
+
+							ms.WriteByte( ( byte )value ) ;				// +4(4+1)
+						}
+					}
+				}
+			}
+		}
+
+		public void PutVUInt33T( System.UInt32 value32, MemoryStream ms )	// Max 5 byte ( 33 bit )
+		{
 			//----------------------------------
 			// ６４ビット値はキャストが無いとビットが消えてしまう
 
@@ -1080,121 +866,143 @@ public partial class SimpleDataPack
 			}
 		}
 
-		//-------------------------------------------------------------------------------------------
-/*
-		public System.Object GetEnum( Type type, TypeCode typeCode, ByteStream ms )
+		private void PutVUInt65T( System.UInt64 value, MemoryStream ms )	// Max 10 byte ( 65 bit )
 		{
-			var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
-			switch( typeCode )
-			{
-				case TypeCode.Byte		: return Enum.ToObject( type, v ) ; 
-				case TypeCode.SByte		: return Enum.ToObject( type, ( System.SByte )v ) ;
-				case TypeCode.Int16		: return Enum.ToObject( type, ( System.Int16 )GetVUInt16( ms ) ) ;
-				case TypeCode.UInt16	: return Enum.ToObject( type, GetVUInt16( ms ) ) ;
-				case TypeCode.Int32		: return Enum.ToObject( type, ( System.Int32 )GetVUInt32( ms ) ) ;
-				case TypeCode.UInt32	: return Enum.ToObject( type, GetVUInt32( ms ) ) ;
-				case TypeCode.Int64		: return Enum.ToObject( type, ( System.Int64 )GetVUInt64( ms ) ) ;
-				case TypeCode.UInt64	: return Enum.ToObject( type, GetVUInt64( ms ) ) ;
-				default : break ;
-			}
-			throw new Exception( message:"Invalid data." ) ;
-		}
-		public System.Object GetEnumN( Type type, TypeCode typeCode, ByteStream ms )
-		{
-			System.Byte?	uint08 ;
-			System.UInt16?	uint16 ;
-			System.UInt32?	uint32 ;
-			System.UInt64?	uint64 ;
+			// 最上位１ビットを退避する
+			byte upperBit = ( byte )( value >> 63 ) ;
 
-			switch( typeCode )
+			value = ( value << 1 ) | 1 ;	// notNull ビット追加
+
+			if( upperBit == 0 )
 			{
-				case TypeCode.Byte :
-					uint08 = GetVUInt09( ms ) ;
-					return uint08 == null ? null : Enum.ToObject( type, ( System.Byte )uint08 ) ;
-				case TypeCode.SByte :
-					uint08 = GetVUInt09( ms ) ;
-					return uint08 == null ? null : Enum.ToObject( type, ( System.SByte )uint08 ) ;
-				case TypeCode.Int16 :
-					uint16 = GetVUInt17( ms ) ;
-					return uint16 == null ? null : Enum.ToObject( type, ( System.Int16 )uint16 ) ;
-				case TypeCode.UInt16 :
-					uint16 = GetVUInt17( ms ) ;
-					return uint16 == null ? null : Enum.ToObject( type, uint16 ) ;
-				case TypeCode.Int32	:
-					uint32 = GetVUInt33( ms ) ;
-					return uint32 == null ? null : Enum.ToObject( type, ( System.Int32 )uint32 ) ;
-				case TypeCode.UInt32 :
-					uint32 = GetVUInt33( ms ) ;
-					return uint32 == null ? null : Enum.ToObject( type, uint32 ) ;
-				case TypeCode.Int64	:
-					uint64 = GetVUInt65( ms ) ;
-					return uint64 == null ? null : Enum.ToObject( type, ( System.Int64 )uint64 ) ;
-				case TypeCode.UInt64 :
-					uint64 = GetVUInt65( ms ) ;
-					return uint64 == null ? null : Enum.ToObject( type, uint64 ) ;
-				default : break ;
-			}
-			throw new Exception( message:"Invalid data." ) ;
-		}
-		public System.Object GetEnumX( Type type, TypeCode typeCode, bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				switch( typeCode )
+				// 最上位１ビットは無い
+				if( value <  128 )
 				{
-					case TypeCode.Byte		: return Enum.ToObject( type, v ) ; 
-					case TypeCode.SByte		: return Enum.ToObject( type, ( System.SByte )v ) ;
-					case TypeCode.Int16		: return Enum.ToObject( type, ( System.Int16 )GetVUInt16( ms ) ) ;
-					case TypeCode.UInt16	: return Enum.ToObject( type, GetVUInt16( ms ) ) ;
-					case TypeCode.Int32		: return Enum.ToObject( type, ( System.Int32 )GetVUInt32( ms ) ) ;
-					case TypeCode.UInt32	: return Enum.ToObject( type, GetVUInt32( ms ) ) ;
-					case TypeCode.Int64		: return Enum.ToObject( type, ( System.Int64 )GetVUInt64( ms ) ) ;
-					case TypeCode.UInt64	: return Enum.ToObject( type, GetVUInt64( ms ) ) ;
-					default : break ;
+					ms.WriteByte( ( byte )value ) ;
 				}
-				throw new Exception( message:"Invalid data." ) ;
+				else
+				{
+					ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +0(7)
+					value >>= 7 ;
+
+					if( value <  128 )
+					{
+						ms.WriteByte( ( byte )value ) ;
+					}
+					else
+					{
+						ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +1(7)
+						value >>= 7 ;
+
+						if( value <  128 )
+						{
+							ms.WriteByte( ( byte )value ) ;
+						}
+						else
+						{
+							ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +2(7)
+							value >>= 7 ;
+
+							if( value <  128 )
+							{
+								ms.WriteByte( ( byte )value ) ;
+							}
+							else
+							{
+								ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +3(7)
+								value >>= 7 ;
+
+								if( value <  128 )
+								{
+									ms.WriteByte( ( byte )value ) ;
+								}
+								else
+								{
+									ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +4(7)
+									value >>= 7 ;
+
+									if( value <  128 )
+									{
+										ms.WriteByte( ( byte )value ) ;
+									}
+									else
+									{
+										ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +5(7)
+										value >>= 7 ;
+
+										if( value <  128 )
+										{
+											ms.WriteByte( ( byte )value ) ;
+										}
+										else
+										{
+											ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +6(7)
+											value >>= 7 ;
+
+											if( value <  128 )
+											{
+												ms.WriteByte( ( byte )value ) ;
+											}
+											else
+											{
+												ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +7(7)
+												value >>= 7 ;
+
+												if( value <  128 )
+												{
+													ms.WriteByte( ( byte )value ) ;
+												}
+												else
+												{
+													ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +8(7)
+													value >>= 7 ;
+
+													ms.WriteByte( ( byte )value ) ;				// +9(1)
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 			else
 			{
-				System.Byte?	uint08 ;
-				System.UInt16?	uint16 ;
-				System.UInt32?	uint32 ;
-				System.UInt64?	uint64 ;
+				// 最上位ビットが有る
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +0(7)
+				value >>= 7 ;
 
-				switch( typeCode )
-				{
-					case TypeCode.Byte :
-						uint08 = GetVUInt09( ms ) ;
-						return uint08 == null ? null : Enum.ToObject( type, ( System.Byte )uint08 ) ;
-					case TypeCode.SByte :
-						uint08 = GetVUInt09( ms ) ;
-						return uint08 == null ? null : Enum.ToObject( type, ( System.SByte )uint08 ) ;
-					case TypeCode.Int16 :
-						uint16 = GetVUInt17( ms ) ;
-						return uint16 == null ? null : Enum.ToObject( type, ( System.Int16 )uint16 ) ;
-					case TypeCode.UInt16 :
-						uint16 = GetVUInt17( ms ) ;
-						return uint16 == null ? null : Enum.ToObject( type, uint16 ) ;
-					case TypeCode.Int32	:
-						uint32 = GetVUInt33( ms ) ;
-						return uint32 == null ? null : Enum.ToObject( type, ( System.Int32 )uint32 ) ;
-					case TypeCode.UInt32 :
-						uint32 = GetVUInt33( ms ) ;
-						return uint32 == null ? null : Enum.ToObject( type, uint32 ) ;
-					case TypeCode.Int64	:
-						uint64 = GetVUInt65( ms ) ;
-						return uint64 == null ? null : Enum.ToObject( type, ( System.Int64 )uint64 ) ;
-					case TypeCode.UInt64 :
-						uint64 = GetVUInt65( ms ) ;
-						return uint64 == null ? null : Enum.ToObject( type, uint64 ) ;
-					default : break ;
-				}
-				throw new Exception( message:"Invalid data." ) ;
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +1(7)
+				value >>= 7 ;
+
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +2(7)
+				value >>= 7 ;
+
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +3(7)
+				value >>= 7 ;
+
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +4(7)
+				value >>= 7 ;
+
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +5(7)
+				value >>= 7 ;
+
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +6(7)
+				value >>= 7 ;
+
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +7(7)
+				value >>= 7 ;
+
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +8(7)
+				value >>= 7 ;
+
+				ms.WriteByte( ( byte )( ( ( byte )value | ( upperBit << 1 ) ) ) ) ;	// +9(2)
 			}
 		}
-*/
-		//---------------
+
+		//-------------------------------------------------------------------------------------------
 
 		public System.Boolean GetBoolean( ByteStream ms )
 		{
@@ -1213,26 +1021,6 @@ public partial class SimpleDataPack
 			}
 			throw new Exception( message:"Unknown code"  ) ;
 		}
-		public System.Object GetBooleanX( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ms.Data[ ms.Step ] ; ms.Step ++ ; 
-				return ( v != 0 ) ;
-			}
-			else
-			{
-				var v = ms.Data[ ms.Step ] ; ms.Step ++ ; 
-				switch( v )
-				{
-					case 0 : return null ;
-					case 2 : return false ;
-					case 3 : return true ;
-					default : break ;
-				}
-				throw new Exception( message:"Unknown code"  ) ;
-			}
-		}
 
 		//---------------
 
@@ -1244,19 +1032,6 @@ public partial class SimpleDataPack
 		public System.Byte? GetByteN( ByteStream ms )
 			=> GetVUInt09( ms ) ;
 
-		public System.Object GetByteX( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				return ( System.Byte )v ;
-			}
-			else
-			{
-				return GetVUInt09( ms ) ;
-			}
-		}
-
 		//---------------
 
 		public System.SByte GetSByte( ByteStream ms )
@@ -1267,19 +1042,6 @@ public partial class SimpleDataPack
 		public System.SByte? GetSByteN( ByteStream ms )
 			=> ( System.SByte? )GetVUInt09( ms ) ;
 
-		public System.Object GetSByteX( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				return ( System.SByte )v ;
-			}
-			else
-			{
-				return ( System.SByte? )GetVUInt09( ms ) ;
-			}
-		}
-
 		//---------------
 
 		public System.Char GetChar( ByteStream ms )
@@ -1287,9 +1049,6 @@ public partial class SimpleDataPack
 
 		public System.Char? GetCharN( ByteStream ms )
 			=> ( System.Char ? )GetVUInt17( ms ) ;
-
-		public System.Object GetCharX( bool isNullable, ByteStream ms )
-			=> isNullable == false ? ( System.Char )GetVUInt16( ms ) : ( System.Char ? )GetVUInt17( ms ) ;
 
 		//---------------
 
@@ -1299,9 +1058,6 @@ public partial class SimpleDataPack
 		public System.Int16? GetInt16N( ByteStream ms )
 			=> ( System.Int16 ? )GetVUInt17( ms ) ;
 
-		public System.Object GetInt16X( bool isNullable, ByteStream ms )
-			=> isNullable == false ? ( System.Int16 )GetVUInt16( ms ) : ( System.Int16 ? )GetVUInt17( ms ) ;
-
 		//---------------
 
 		public System.UInt16 GetUInt16( ByteStream ms )
@@ -1309,9 +1065,6 @@ public partial class SimpleDataPack
 
 		public System.UInt16? GetUInt16N( ByteStream ms )
 			=> GetVUInt17( ms ) ;
-
-		public System.Object GetUInt16X( bool isNullable, ByteStream ms )
-			=> isNullable == false ? GetVUInt16( ms ) : GetVUInt17( ms ) ;
 
 		//---------------
 
@@ -1321,9 +1074,6 @@ public partial class SimpleDataPack
 		public System.Int32? GetInt32N( ByteStream ms )
 			=> ( System.Int32? )GetVUInt33( ms ) ;
 
-		public System.Object GetInt32X( bool isNullable, ByteStream ms )
-			=> isNullable == false ? ( System.Int32 )GetVUInt32( ms ) : ( System.Int32? )GetVUInt33( ms ) ;
-
 		//---------------
 
 		public System.UInt32 GetUInt32( ByteStream ms )
@@ -1331,9 +1081,6 @@ public partial class SimpleDataPack
 
 		public System.UInt32? GetUInt32N( ByteStream ms )
 			=> GetVUInt33( ms ) ;
-
-		public System.Object GetUInt32X( bool isNullable, ByteStream ms )
-			=> isNullable == false ? GetVUInt32( ms ) : GetVUInt33( ms ) ;
 
 		//---------------
 
@@ -1343,9 +1090,6 @@ public partial class SimpleDataPack
 		public System.Int64? GetInt64N( ByteStream ms )
 			=> ( System.Int64? )GetVUInt65( ms ) ;
 
-		public System.Object GetInt64X( bool isNullable, ByteStream ms )
-			=> isNullable == false ? ( System.Int64 )GetVUInt64( ms ) : ( System.Int64? )GetVUInt65( ms ) ;
-
 		//---------------
 
 		public System.UInt64 GetUInt64( ByteStream ms )
@@ -1354,9 +1098,6 @@ public partial class SimpleDataPack
 		public System.UInt64? GetUInt64N( ByteStream ms )
 			=> GetVUInt65( ms ) ;
 
-		public System.Object GetUInt64X( bool isNullable, ByteStream ms )
-			=> isNullable == false ? GetVUInt64( ms ) : GetVUInt65( ms ) ;
-
 		//---------------
 
 		public System.Single GetSingle( ByteStream ms )
@@ -1364,9 +1105,6 @@ public partial class SimpleDataPack
 
 		public System.Single? GetSingleN( ByteStream ms )
 			=> GetSingleN_Dispatcher( ms ) ;
-
-		public System.Object GetSingleX( bool isNullable, ByteStream ms )
-			=> GetSingleX_Dispatcher( isNullable, ms ) ;
 
 		//-----
 
@@ -1384,24 +1122,6 @@ public partial class SimpleDataPack
 			}
 			var v = BitConverter.ToSingle( ms.Data, ms.Step ) ; ms.Step += 4 ;
 			return v ;
-		}
-		private System.Object GetSingleX_Inner( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = BitConverter.ToSingle( ms.Data, ms.Step ) ; ms.Step += 4 ;
-				return v ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				var v = BitConverter.ToSingle( ms.Data, ms.Step ) ; ms.Step += 4 ;
-				return v ;
-			}
 		}
 
 		//-----
@@ -1421,24 +1141,6 @@ public partial class SimpleDataPack
 			m_Work[ 0 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 3 ] = ms.Data[ ms.Step ] ; ms.Step += 4 ;
 			return BitConverter.ToSingle( m_Work, 0 ) ;
 		}
-		private System.Object GetSingleX_Inner_Reverse( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				m_Work[ 0 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 3 ] = ms.Data[ ms.Step ] ; ms.Step += 4 ;
-				return BitConverter.ToSingle( m_Work, 0 ) ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				m_Work[ 0 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 3 ] = ms.Data[ ms.Step ] ; ms.Step += 4 ;
-				return BitConverter.ToSingle( m_Work, 0 ) ;
-			}
-		}
 
 		//---------------
 
@@ -1447,9 +1149,6 @@ public partial class SimpleDataPack
 
 		public System.Double? GetDoubleN( ByteStream ms )
 			=> GetDoubleN_Dispatcher( ms ) ;
-
-		public System.Object GetDoubleX( bool isNullable, ByteStream ms )
-			=> GetDoubleX_Dispatcher( isNullable, ms ) ;
 
 		//-----
 
@@ -1467,24 +1166,6 @@ public partial class SimpleDataPack
 			}
 			var v = BitConverter.ToDouble( ms.Data, ms.Step ) ; ms.Step += 8 ;
 			return v ;
-		}
-		private System.Object GetDoubleX_Inner( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				var v = BitConverter.ToDouble( ms.Data, ms.Step ) ; ms.Step += 8 ;
-				return v ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				var v = BitConverter.ToDouble( ms.Data, ms.Step ) ; ms.Step += 8 ;
-				return v ;
-			}
 		}
 
 		//-----
@@ -1504,24 +1185,6 @@ public partial class SimpleDataPack
 			m_Work[ 0 ] = ms.Data[ ms.Step + 7 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 6 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 5 ] ; m_Work[ 3 ] = ms.Data[ ms.Step + 4 ] ; m_Work[ 4 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 5 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 6 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 7 ] = ms.Data[ ms.Step ] ; ms.Step += 8 ;
 			return BitConverter.ToDouble( m_Work, 0 ) ;
 		}
-		private System.Object GetDoubleX_Inner_Reverse( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				m_Work[ 0 ] = ms.Data[ ms.Step + 7 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 6 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 5 ] ; m_Work[ 3 ] = ms.Data[ ms.Step + 4 ] ; m_Work[ 4 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 5 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 6 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 7 ] = ms.Data[ ms.Step ] ; ms.Step += 8 ;
-				return BitConverter.ToDouble( m_Work, 0 ) ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				m_Work[ 0 ] = ms.Data[ ms.Step + 7 ] ; m_Work[ 1 ] = ms.Data[ ms.Step + 6 ] ; m_Work[ 2 ] = ms.Data[ ms.Step + 5 ] ; m_Work[ 3 ] = ms.Data[ ms.Step + 4 ] ; m_Work[ 4 ] = ms.Data[ ms.Step + 3 ] ; m_Work[ 5 ] = ms.Data[ ms.Step + 2 ] ; m_Work[ 6 ] = ms.Data[ ms.Step + 1 ] ; m_Work[ 7 ] = ms.Data[ ms.Step ] ; ms.Step += 8 ;
-				return BitConverter.ToDouble( m_Work, 0 ) ;
-			}
-		}
 
 		//---------------
 
@@ -1537,23 +1200,6 @@ public partial class SimpleDataPack
 			if( length == 0 )
 			{
 				return null ;
-			}
-			var s = Encoding.UTF8.GetString( ms.Data, ms.Step, length ) ; ms.Step += length ;
-			return System.Decimal.Parse( s ) ;
-		}
-		public System.Object GetDecimalX( bool isNullable, ByteStream ms )
-		{
-			System.Int32 length = ms.Data[ ms.Step ] ; ms.Step ++ ;
-			if( length == 0 )
-			{
-				if( isNullable == true )
-				{
-					return null ;
-				}
-				else
-				{
-					throw new Exception( message:"Invalid data." ) ;
-				}
 			}
 			var s = Encoding.UTF8.GetString( ms.Data, ms.Step, length ) ; ms.Step += length ;
 			return System.Decimal.Parse( s ) ;
@@ -1596,22 +1242,6 @@ public partial class SimpleDataPack
 				return null ;
 			}
 			return new DateTime( ticks:GetInt64( ms ) ) ;
-		}
-		public System.Object GetDateTimeX( bool isNullable, ByteStream ms )
-		{
-			if( isNullable == false )
-			{
-				return new DateTime( ticks:GetInt64( ms ) ) ;
-			}
-			else
-			{
-				var n = ms.Data[ ms.Step ] ; ms.Step ++ ;
-				if( n == 0 )
-				{
-					return null ;
-				}
-				return new DateTime( ticks:GetInt64( ms ) ) ;
-			}
 		}
 
 		//-----------------------------------------------------------

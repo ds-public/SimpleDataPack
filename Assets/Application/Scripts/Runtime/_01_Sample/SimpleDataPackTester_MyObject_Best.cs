@@ -53,7 +53,7 @@ namespace DSW.MyData
 
 
 	[SimpleDataPackObject(keyAsCode:true)][MessagePackObject(keyAsPropertyName:false)][Serializable]
-	public partial class MySample_B
+	public partial class MyObject_B
 	{
 //		[SimpleDataPackMember(0)][Key(0)][SerializeField]
 //		protected ushort?[] P000 = new ushort?[]{ 0x0000, 0x0000, 0x0000, 0x0000, 0x0000 } ; 

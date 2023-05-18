@@ -117,7 +117,7 @@ namespace DSW.MyData
 
 
 		//-----------------------------------------------------------
-
+/*
 		[SimpleDataPackMember(0)][Key(0)][SerializeField]
 		public bool P0 = false ;
 //		public bool P0{ get ; private set ; } = false ;
@@ -141,6 +141,7 @@ namespace DSW.MyData
 		[SimpleDataPackMember(5)][Key(5)][SerializeField]
 		public int P5 = 65535 ; 
 //		public int P5{ get ; private set ; } = 65535 ; 
+
 
 		[SimpleDataPackMember(6)][Key(6)][SerializeField]
 		public int P6 = -1000000000 ; 
@@ -230,7 +231,6 @@ namespace DSW.MyData
 		[SimpleDataPackMember(29)][Key(29)][SerializeField]
 		protected decimal? P29 = 123456789012.12345M ; 
 
-
 		[SimpleDataPackMember(30)][Key(30)][SerializeField]
 		public string? P30 = "あいうえおかきくけこさしすせそ" ;
 
@@ -241,9 +241,11 @@ namespace DSW.MyData
 //		[SimpleDataPackMember(32)][Key(32)][SerializeField]
 //		protected MySampleSub_W? P32 = new MySampleSub_W() ;
 
+
+*/
 		[SimpleDataPackMember(33)][Key(33)][SerializeField]
 		public Status_W? P33 = Status_W.Strength ;
-
+/*
 		//-----------------------------------------------------------
 
 		[SimpleDataPackMember(34)][Key(34)][SerializeField]
@@ -471,7 +473,7 @@ namespace DSW.MyData
 
 		[SimpleDataPackMember(101)][Key(101)][SerializeField]
 		public List<Status_W?> P101 = new List<Status_W?>{ Status_W.Strength, Status_W.Intelligence, null } ;
-
+*/
 		//-----------------------------------------------------------
 		// Struct 系
 /*

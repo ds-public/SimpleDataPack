@@ -25,9 +25,9 @@ public class SimpleDataPackAdapter : SimpleDataPack.IExternalAdapter
 		SimpleDataPack.AddToExternalAdapterCache( typeof( DSW.MyData.MyStruct_B? ), new ObjectAdapter_DSW_MyData_MyStruct_B_Nullable() ) ;
 		SimpleDataPack.AddToExternalAdapterCache( typeof( DSW.MyData.MyStruct_B?[] ), new SimpleDataPack.Array1DGenericAdapter<DSW.MyData.MyStruct_B?>() ) ;
 		SimpleDataPack.AddToExternalAdapterCache( typeof( List<DSW.MyData.MyStruct_B?> ), new SimpleDataPack.ListGenericAdapter<DSW.MyData.MyStruct_B?>() ) ;
-		SimpleDataPack.AddToExternalAdapterCache( typeof( DSW.MyData.MySample_B ), new ObjectAdapter_DSW_MyData_MySample_B() ) ;
-		SimpleDataPack.AddToExternalAdapterCache( typeof( DSW.MyData.MySample_B[] ), new SimpleDataPack.Array1DGenericAdapter<DSW.MyData.MySample_B>() ) ;
-		SimpleDataPack.AddToExternalAdapterCache( typeof( List<DSW.MyData.MySample_B> ), new SimpleDataPack.ListGenericAdapter<DSW.MyData.MySample_B>() ) ;
+		SimpleDataPack.AddToExternalAdapterCache( typeof( DSW.MyData.MyObject_B ), new ObjectAdapter_DSW_MyData_MyObject_B() ) ;
+		SimpleDataPack.AddToExternalAdapterCache( typeof( DSW.MyData.MyObject_B[] ), new SimpleDataPack.Array1DGenericAdapter<DSW.MyData.MyObject_B>() ) ;
+		SimpleDataPack.AddToExternalAdapterCache( typeof( List<DSW.MyData.MyObject_B> ), new SimpleDataPack.ListGenericAdapter<DSW.MyData.MyObject_B>() ) ;
 		SimpleDataPack.AddToExternalAdapterCache( typeof( DSW.MyData.MySampleSub_B ), new ObjectAdapter_DSW_MyData_MySampleSub_B() ) ;
 		SimpleDataPack.AddToExternalAdapterCache( typeof( DSW.MyData.MySampleSub_B[] ), new SimpleDataPack.Array1DGenericAdapter<DSW.MyData.MySampleSub_B>() ) ;
 		SimpleDataPack.AddToExternalAdapterCache( typeof( List<DSW.MyData.MySampleSub_B> ), new SimpleDataPack.ListGenericAdapter<DSW.MyData.MySampleSub_B>() ) ;
@@ -81,7 +81,7 @@ public class SimpleDataPackAdapter : SimpleDataPack.IExternalAdapter
 			return entity ;
 		}
 	}
-	class ObjectAdapter_DSW_MyData_MySample_B : SimpleDataPack.IAdapter
+	class ObjectAdapter_DSW_MyData_MyObject_B : SimpleDataPack.IAdapter
 	{
 		public void Serialize( System.Object entity, SimpleDataPack.ByteStream writer )
 		{
@@ -91,7 +91,7 @@ public class SimpleDataPackAdapter : SimpleDataPack.IExternalAdapter
 				return ;
 			}
 			writer.PutByte( 1 ) ;
-			( ( DSW.MyData.MySample_B )entity ).Serialize__SimpleDataPack( writer ) ;
+			( ( DSW.MyData.MyObject_B )entity ).Serialize__SimpleDataPack( writer ) ;
 		}
 		public System.Object Deserialize( SimpleDataPack.ByteStream reader )
 		{
@@ -99,7 +99,7 @@ public class SimpleDataPackAdapter : SimpleDataPack.IExternalAdapter
 			{
 				return null ;
 			}
-			var entity = new DSW.MyData.MySample_B() ;
+			var entity = new DSW.MyData.MyObject_B() ;
 			entity.Deserialize__SimpleDataPack( reader ) ;
 			return entity ;
 		}
