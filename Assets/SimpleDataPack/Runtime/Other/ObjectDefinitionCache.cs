@@ -519,6 +519,8 @@ public partial class SimpleDataPack
 				}
 			}
 
+			//----------------------------------------------------------
+
 			if( members.Count == 0 )
 			{
 				// 対象のメンバーが存在しない

@@ -1025,7 +1025,7 @@ public partial class SimpleDataPack
 		//-------------------------------------------------------------------------------------------
 
 		// Null がありえる(class struct?)
-		public class InternalObjectAdapter<T> : IAdapter
+		public class InternalObjectAdapter : IAdapter
 		{
 			// class または struct (Nullable Array List Dictionary という事は無い)
 			private readonly Type				m_ObjectType ;
@@ -1095,7 +1095,7 @@ public partial class SimpleDataPack
 		}
 
 		// Null はありえない(struct)
-		public class InternalObjectAdapter_NotNullable<T> : IAdapter
+		public class InternalObjectAdapter_NotNullable : IAdapter
 		{
 			private readonly Type				m_ObjectType ;
 			private readonly MemberDefinition[]	m_Members ;
@@ -1150,11 +1150,9 @@ public partial class SimpleDataPack
 			{
 				// class
 
-//				Debug.Log( "type:" + ObjectType.Name ) ;
-
 				// スカラ
-//				var adapter = new InternalObjectAdapter( this ) ;
-				var adapter = ( IAdapter )Activator.CreateInstance( typeof( InternalObjectAdapter<> ).MakeGenericType( ObjectType ), this ) ;
+				var adapter = ( IAdapter )( new InternalObjectAdapter( this ) ) ;
+//				var adapter = ( IAdapter )Activator.CreateInstance( typeof( InternalObjectAdapter<> ).MakeGenericType( ObjectType ), this ) ;
 				AddToInternalAdapters( ObjectType, adapter ) ;
 
 				// アレイ(１次元)
@@ -1168,7 +1166,8 @@ public partial class SimpleDataPack
 			else
 			{
 				// struct
-				var adapter_NotNullable = ( IAdapter )Activator.CreateInstance( typeof( InternalObjectAdapter_NotNullable<> ).MakeGenericType( ObjectType ), this ) ;
+				var adapter_NotNullable = ( IAdapter )( new InternalObjectAdapter_NotNullable( this ) ) ;
+//				var adapter_NotNullable = ( IAdapter )Activator.CreateInstance( typeof( InternalObjectAdapter_NotNullable<> ).MakeGenericType( ObjectType ), this ) ;
 				AddToInternalAdapters( ObjectType, adapter_NotNullable ) ;
 
 				// アレイ(１次元)
@@ -1184,7 +1183,8 @@ public partial class SimpleDataPack
 
 				Type nullableObjectType = typeof( Nullable<> ).MakeGenericType( ObjectType ) ;
 
-				var adapter = ( IAdapter )Activator.CreateInstance( typeof( InternalObjectAdapter<> ).MakeGenericType( nullableObjectType ), this ) ;
+				var adapter = ( IAdapter )( new InternalObjectAdapter( this ) ) ;
+//				var adapter = ( IAdapter )Activator.CreateInstance( typeof( InternalObjectAdapter<> ).MakeGenericType( nullableObjectType ), this ) ;
 				AddToInternalAdapters( nullableObjectType, adapter ) ;
 
 				// アレイ(１次元)

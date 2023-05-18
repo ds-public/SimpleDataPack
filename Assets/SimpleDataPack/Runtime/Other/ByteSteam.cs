@@ -19,15 +19,18 @@ public partial class SimpleDataPack
 		//-----------------------------------------------------------
 
 		// 共通の設定
-		public void Initialize( byte[] data, bool isBigEndian, PriorityTypes priorityType )
+		public void Initialize( ReadOnlySpan<byte> data, bool isBigEndian, PriorityTypes priorityType )
+//		public void Initialize( byte[] data, bool isBigEndian, PriorityTypes priorityType )
 		{
 			if( data == null )
 			{
+				// Writer Mode
 				m_MS = new MemoryStream( 4096 ) ;
 			}
 			else
 			{
-				Data = data ;
+				// Reader Mode
+				Data = data.ToArray() ;
 				Step = 0 ;
 			}
 
@@ -77,14 +80,18 @@ public partial class SimpleDataPack
 		/// <returns></returns>
 		public byte[] GetData()
 		{
-//			if( m_MS == null )
-//			{
-//				return null ;
-//			}
+			if( m_MS != null )
+			{
+				// Writer Mode
+				m_MS.Flush() ;
 
-			m_MS.Flush() ;
-
-			return m_MS.ToArray() ;
+				return m_MS.ToArray() ;
+			}
+			else
+			{
+				// Reader Mode
+				return Data ;
+			}
 		}
 
 		/// <summary>
@@ -118,12 +125,16 @@ public partial class SimpleDataPack
 		/// <param name="skip"></param>
 		public void Skip( int skip )
 		{
-//			if( m_MS != null && m_MS.CanSeek == true )
-//			{
-//				m_MS.Seek( skip, SeekOrigin.Current ) ;
-//			}
-
-			Step += skip ;
+			if( m_MS != null )
+			{
+				// Writer Mode
+				m_MS.Seek( skip, SeekOrigin.Current ) ;
+			}
+			else
+			{
+				// Reader Mode
+				Step += skip ;
+			}
 		}
 
 		/// <summary>
@@ -135,10 +146,12 @@ public partial class SimpleDataPack
 			{
 				if( m_MS != null )
 				{
+					// Writer Mode
 					return m_MS.Position ;
 				}
 				else
 				{
+					// Reader Mode
 					return Step ;
 				}
 			}
@@ -153,20 +166,18 @@ public partial class SimpleDataPack
 			{
 				if( m_MS != null )
 				{
+					// Writer Mode
 					return m_MS.Length ;
 				}
 				else
 				{
+					// Reader Mode
 					return Data.Length ;
 				}
 			}
 		}
 
 		//-----------------------------------------------------------
-
-//		public void						PutEnum( System.Object value, TypeCode typeCode )						=> m_BC.PutEnum( value, typeCode, m_MS ) ;
-//		public void						PutEnumN( System.Object value, TypeCode typeCode )						=> m_BC.PutEnumN( value, typeCode, m_MS ) ;
-//		public void						PutEnumX( System.Object value, TypeCode typeCode, bool isNullable )		=> m_BC.PutEnumX( value, typeCode, isNullable, m_MS ) ;
 
 		public void						PutBoolean( System.Boolean value )										=> m_BC.PutBoolean( value, m_MS ) ;
 		public void						PutBooleanN( System.Boolean? value )									=> m_BC.PutBooleanN( value, m_MS ) ;
@@ -233,10 +244,6 @@ public partial class SimpleDataPack
 
 		//-----------------------------------------------------------
 
-//		public System.Object			GetEnum( Type type, TypeCode typeCode )									=> m_BC.GetEnum( type, typeCode, this ) ;
-//		public System.Object			GetEnumN( Type type, TypeCode typeCode )								=> m_BC.GetEnumN( type, typeCode, this ) ;
-//		public System.Object			GetEnumX( Type type, TypeCode typeCode, bool isNullable )				=> m_BC.GetEnumX( type, typeCode, isNullable, this ) ;
-
 		public System.Boolean			GetBoolean()															=> m_BC.GetBoolean( this ) ;
 		public System.Boolean?			GetBooleanN()															=> m_BC.GetBooleanN( this ) ;
 		public System.Object			GetBooleanX( bool isNullable )											=> m_BC.GetBooleanX( isNullable, this ) ;
@@ -299,20 +306,5 @@ public partial class SimpleDataPack
 
 		public System.UInt32			GetVUInt32()															=> m_BC.GetVUInt32( this ) ;
 		public System.UInt32?			GetVUInt33()															=> m_BC.GetVUInt33( this ) ;
-
-
-		//-------------------------------------------------------------------------------------------
-
-		//-------------------------------------------------------------------------------------------
-
-		// オブジェクト格納メソッド
-		public Action<System.Object,Type,bool,ByteStream> PutObject ;
-
-		// オブジェクト取得メソッド
-		public Func<Type,bool,ByteStream,System.Object>	GetObject ;
-
-		public Func<Type,bool,ByteStream,System.Object> GetAllObjects ;
-
-
 	}
 }

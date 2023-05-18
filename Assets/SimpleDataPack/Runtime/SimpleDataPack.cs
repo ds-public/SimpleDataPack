@@ -278,8 +278,8 @@ public partial class SimpleDataPack
 	/// </summary>
 	/// <param name="target"></param>
 	/// <returns></returns>
-//	private static System.Object Deserialize_ToObject( Type type, ReadOnlySpan<byte> data )
-	private static System.Object Deserialize_ToObject( Type type, byte[] data )
+	private static System.Object Deserialize_ToObject( Type type, ReadOnlySpan<byte> data )
+//	private static System.Object Deserialize_ToObject( Type type, byte[] data )
 	{
 		if( data == null || data.Length <  4 )
 		{

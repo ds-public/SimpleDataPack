@@ -1,7 +1,9 @@
 {
     "name": "SimpleDataPack",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:f50acf98e1b3a4e439ace4e7c4e75a7e"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

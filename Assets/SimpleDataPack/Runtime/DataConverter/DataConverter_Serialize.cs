@@ -54,12 +54,12 @@ public partial class SimpleDataPack
 					m_ObjectDefinitionCache.Add( type, true ) ;
 				}
 			}
-#if UNITY_EDITOR
-			else
-			{
-				Debug.Log( "<color=#FFFF00>[Serialize]高速展開が有効</color>" ) ;
-			}
-#endif
+//#if UNITY_EDITOR
+//			else
+//			{
+//				Debug.Log( "<color=#FFFF00>[Serialize]高速展開が有効</color>" ) ;
+//			}
+//#endif
 			//----------------------------------------------------------
 
 			// 実際の値を格納する

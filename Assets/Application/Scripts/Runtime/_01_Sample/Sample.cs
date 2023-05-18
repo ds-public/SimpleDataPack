@@ -28,48 +28,41 @@ namespace DSW.Screens
 
 		internal async UniTask Start()
 		{
+			// 実機用の簡易デバッグログ表示を有効にする
+//			DebugScreen.Create( 0xFFFFFF, 36, 48, 1 ) ;
+
 			//----------------------------------------------------------
 
 #if NET_STANDARD_2_1 && ENABLE_MONO
-			LOG( "MONOが有効です" ) ;
+			LOG( "<color=#FFFFFF>MONOが有効です</color>" ) ;
 #endif
 			//--------------------------------------------------------------------------
 			// SimpleDataPack のテスト
 
+			int si, sl = 1000 ;
+
+//			var o1 = new T() ;
+//			var o1 = new List<MyData.MySample_W>() ;
+			var o0 = new MyData.MyObject_W[ sl ]  ;
+//			var o0 = new MyData.MyStruct_W[ sl ]  ;
+
+			for( si  = 0 ; si <  sl ; si ++ )
+			{
+//				o1.Add( new MyData.MySample_W() ) ;
+				o0[ si ] = new MyData.MyObject_W() ;
+//				o0[ si ] = new MyData.MyStruct_W() ;
+			}
+
 //			await RunDebug<List<MyData.MySample_W>>() ;
 //			await RunDebug<MyData.MySample_W[]>() ;
-			await RunDebug<MyData.MyStruct_W[]>() ;
+			var o1 = await RunDebug<MyData.MyObject_W[]>( o0 ) ;
 
 			await Yield() ;
 		}
 
-		//-------------------------------------------------------------------------------------------
-
-		private StringBuilder m_SB = new StringBuilder() ;
-
-		private void LOG( string log )
-		{
-			m_SB.Append( log ) ;
-			m_SB.Append( "\n" ) ;
-
-			m_Log.Text = m_SB.ToString() ;
-
-			m_ScrollView.ContentSize = m_Log.Height ;
-
-			float y = m_ScrollView.ContentSize - m_ScrollView.ViewSize ;
-			if( y <  0 )
-			{
-				y  = 0 ;
-			}
-			m_ScrollView.ContentPosition = y ;
-
-			//----------------------------------
-			Debug.Log( log ) ;
-		}
-
 		//--------------------------------------------------------------------------------------------
 
-		public async UniTask RunDebug<T>()// where T : class,new()
+		public async UniTask<T> RunDebug<T>( T o1 )// where T : class,new()
 		{
 			LOG( "<color=#7F7FFF>==================== SimpleDataPack 検証 ====================</color>" ) ;
 
@@ -78,7 +71,7 @@ namespace DSW.Screens
 			int i ;
 
 			// 高速アダプター設定
-	//			SimpleDataPack.SetAdapter( new SimpleDataPackAdapter() ) ;
+//			SimpleDataPack.SetAdapter( new SimpleDataPackAdapter() ) ;
 
 
 	#if false
@@ -113,12 +106,23 @@ namespace DSW.Screens
 	#endif
 
 			// ビッグエンディアン
-	//			SimpleDataPack.IsBigEndian = true ;
+//			SimpleDataPack.IsBigEndian = true ;
 
 			// 高速展開用アダプターの使用を制限する
 //			SimpleDataPack.ExternalAdapterDisabled = true ;
 
 			SimpleDataPack.PriorityTypes priorityType = SimpleDataPack.PriorityTypes.Speed ;
+
+			if( SimpleDataPack.ExternalAdapterEnabled == true && SimpleDataPack.ExternalAdapterDisabled == false )
+			{
+				LOG( "<color=#DFFF3F>自動生成コードによる高速処理が有効</color>" ) ;
+			}
+			else
+			{
+				LOG( "<color=#DFDFDF>リフレクションによる通常処理</color>" ) ;
+			}
+
+			LOG( "<color=#7FFFDF>優先 : " + priorityType + "</color>" ) ;
 
 			SimpleDataPack.Clear() ;
 
@@ -126,20 +130,6 @@ namespace DSW.Screens
 			await WaitForSeconds( 0.1f ) ;
 
 			//------------------------------------------------------------------------------------------
-
-			int si, sl = 1000 ;
-
-//			var o1 = new T() ;
-//			var o1 = new List<MyData.MySample_W>() ;
-//			var o1 = new MyData.MySample_W[ sl ]  ;
-			var o1 = new MyData.MyStruct_W[ sl ]  ;
-
-			for( si  = 0 ; si <  sl ; si ++ )
-			{
-//				o1.Add( new MyData.MySample_W() ) ;
-//				o1[ si ] = new MyData.MySample_W() ;
-//				o1[ si ] = new MyData.MyStruct_W() ;
-			}
 
 //			o1[ sl - 1 ].P5 = 12345 ;
 //			o1[ sl - 1 ].Modify_1() ;
@@ -278,7 +268,9 @@ namespace DSW.Screens
 
 			t1 = Time.realtimeSinceStartup ;
 			byte[] data1 = SimpleDataPack.Serialize( o1, priorityType:priorityType ) ;
-			LOG( "<color=#00FF00>[SimpleDataPack]シリアライズ時間(１回目) = " + ( Time.realtimeSinceStartup - t1 ) + "</color>" ) ;
+			t1 = Time.realtimeSinceStartup - t1 ;
+
+			LOG( "<color=#00FF00>[SimpleDataPack]シリアライズ時間(１回目) = " + t1 + "</color>" ) ;
 
 			if( data1 == null )
 			{
@@ -288,7 +280,7 @@ namespace DSW.Screens
 			{
 				LOG( "<color=#00FF7F>[SimpledataPack]★★★シリアライズに成功しました(１回目) : Size = " + data1.Length + "★★★</color>" ) ;
 
-	//				StorageAccessor.Save( "Pack.bin", data1 ) ;
+//				StorageAccessor.Save( "Pack.bin", data1 ) ;
 			}
 
 			await Yield() ;
@@ -425,12 +417,14 @@ namespace DSW.Screens
 			// 以下、デシリアライズ
 
 			// アダプターキャッシュクリア
-	//			SimpleDataPack.Clear() ;
+//			SimpleDataPack.Clear() ;
 
 
 			t1 = Time.realtimeSinceStartup ;
 			var sd1 = SimpleDataPack.Deserialize<T>( data1 ) ;
-			LOG( "<color=#00FFFF>[SimpleDataPack]デシリアライズ時間(１回目) = " + ( Time.realtimeSinceStartup - t1 ) + "</color>" ) ;
+			t1 = Time.realtimeSinceStartup - t1 ;
+
+			LOG( "<color=#00FFFF>[SimpleDataPack]デシリアライズ時間(１回目) = " + t1 + "</color>" ) ;
 
 			if( sd1 == null )
 			{
@@ -649,6 +643,32 @@ namespace DSW.Screens
 				Debug.Log( "<color=#FF7F00>Json のデシリアライズに失敗しました</color>" ) ;
 			}
 #endif
+
+			return sd1 ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+
+		private StringBuilder m_SB = new StringBuilder() ;
+
+		private void LOG( string log )
+		{
+			m_SB.Append( log ) ;
+			m_SB.Append( "\n" ) ;
+
+			m_Log.Text = m_SB.ToString() ;
+
+			m_ScrollView.ContentSize = m_Log.Height ;
+
+			float y = m_ScrollView.ContentSize - m_ScrollView.ViewSize ;
+			if( y <  0 )
+			{
+				y  = 0 ;
+			}
+			m_ScrollView.ContentPosition = y ;
+
+			//----------------------------------
+			Debug.Log( log ) ;
 		}
 	}
 
