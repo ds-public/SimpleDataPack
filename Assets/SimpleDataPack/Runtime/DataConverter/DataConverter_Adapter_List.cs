@@ -75,8 +75,13 @@ public partial class SimpleDataPack
 
 					if( innerElementType.IsEnum == true )
 					{
-						// Enum?
+						// Enum ※IL2CPP では ValueType を Generic 対象にしたクラスのインスタンスが生成できない事に注意
+#if UNITY_EDITOR || ENABLE_MONO
+						// Mono
 						adapter = ( IAdapter )Activator.CreateInstance( typeof( ListEnumNAdapter<> ).MakeGenericType( elementType ) ) ;
+#else
+						adapter = ( IAdapter )Activator.CreateInstance( typeof( ListSEnumNAdapter<> ).MakeGenericType( objectType ), innerElementType ) ;
+#endif
 					}
 					else
 					if
@@ -117,8 +122,14 @@ public partial class SimpleDataPack
 			else
 			if( elementType.IsEnum == true )
 			{
-				// Enum
+				// Enum ※IL2CPP では ValueType を Generic 対象にしたクラスのインスタンスが生成できない事に注意
+#if UNITY_EDITOR || ENABLE_MONO
+				// Mono
 				adapter = ( IAdapter )Activator.CreateInstance( typeof( ListEnumAdapter<> ).MakeGenericType( elementType ) ) ;
+#else
+				// IL2CPP
+				adapter = ( IAdapter )Activator.CreateInstance( typeof( ListSEnumAdapter<> ).MakeGenericType( objectType ), elementType ) ;
+#endif
 			}
 			else
 			if

@@ -300,7 +300,7 @@ namespace DSW.Screens
 
 
 
-	#if false
+#if false
 			//--------------
 
 	//			MyData.MySample o2 = new MyData.MySample() ;
@@ -340,9 +340,9 @@ namespace DSW.Screens
 			}
 
 			await Yield() ;
-	#endif
-			//------------------------------------------------------------------------------------------
-			// Json 関係
+#endif
+//------------------------------------------------------------------------------------------
+// Json 関係
 /*
 			float tje = Time.realtimeSinceStartup ;
 
@@ -356,9 +356,9 @@ namespace DSW.Screens
 
 			await Yield() ;
 */
-			//-----------------------------------------------------------
-			// 元に戻すテスト
-	#if false
+//-----------------------------------------------------------
+// 元に戻すテスト
+#if false
 			Debug.Log( "<color=#FF7FFF>-----------------------------------</color>" ) ;
 
 			float tjd = Time.realtimeSinceStartup ;
@@ -407,14 +407,14 @@ namespace DSW.Screens
 			}
 
 			await Yield() ;
-	#endif
-			//------------------------------------------------------------------------------------------
-			// 以下、デシリアライズ
+#endif
+//------------------------------------------------------------------------------------------
+// 以下、デシリアライズ
 
-			// アダプターキャッシュクリア
+// アダプターキャッシュクリア
 //			SimpleDataPack.Clear() ;
 
-
+//#if false
 			t1 = Time.realtimeSinceStartup ;
 			var sd1 = SimpleDataPack.Deserialize<T>( data1 ) ;
 			t1 = Time.realtimeSinceStartup - t1 ;
@@ -496,7 +496,6 @@ namespace DSW.Screens
 			}
 
 			await Yield() ;
-
 	/*
 			t1 = Time.realtimeSinceStartup ;
 			var md1 = MessagePackSerializer.Deserialize<T>( m_data1, MessagePackSerializer.DefaultOptions ) ;
@@ -515,6 +514,8 @@ namespace DSW.Screens
 			}
 	*/
 			await Yield() ;
+//#endif
+
 #if false
 
 
@@ -639,7 +640,8 @@ namespace DSW.Screens
 			}
 #endif
 
-			return sd1 ;
+//			return sd1 ;
+			return default ;
 		}
 
 		//-------------------------------------------------------------------------------------------

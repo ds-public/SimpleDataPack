@@ -294,9 +294,6 @@ public partial class SimpleDataPack
 				switch( ValueType )
 				{
 					case ValueTypes.Enum :
-						
-						DebugScreen.Out( "Enum です : " + Name + " TC = " + ObjectTypeCode + " IN = " + IsNullable ) ;
-
 						switch( ObjectTypeCode )
 						{
 							case TypeCode.Byte :
@@ -307,8 +304,6 @@ public partial class SimpleDataPack
 								}
 								else
 								{
-									DebugScreen.Out( "Enum? が設定された" ) ;
-
 									Serialize	= Serialize_Enum_ByteN ;
 									Deserialize	= Deserialize_Enum_ByteN ;
 								}
@@ -641,7 +636,7 @@ public partial class SimpleDataPack
 			{
 				// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
 				var _ = GetValue( entity ) ;
-				if( _ == null ){ writer.PutSByte( 0 ) ; }else{ writer.PutSByteT( ( System.SByte )_ ) ; } ;
+				if( _ == null ){ writer.PutByte( 0 ) ; }else{ writer.PutSByteT( ( System.SByte )_ ) ; } ;
 			}
 
 			private void Deserialize_Enum_SByteN( System.Object entity, ByteStream reader )

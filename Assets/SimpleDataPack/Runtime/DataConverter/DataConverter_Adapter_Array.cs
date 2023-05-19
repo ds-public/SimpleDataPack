@@ -3,6 +3,7 @@ using System.Collections ;
 using System.Collections.Generic ;
 
 using UnityEngine ;
+using uGUIHelper ;
 
 public partial class SimpleDataPack
 {
@@ -89,7 +90,9 @@ public partial class SimpleDataPack
 					var innerElementType = Nullable.GetUnderlyingType( elementType ) ;
 					if( innerElementType.IsEnum == true )
 					{
-						// Enum?
+						// Enum? ※IL2CPP では ValueType を Generic 対象にしたクラスのインスタンスが生成できない事に注意
+#if UNITY_EDITOR || ENABLE_MONO
+						// Mono
 						adapter = rank switch
 						{
 							1 => ( IAdapter )Activator.CreateInstance( typeof( Array1DEnumNAdapter<> ).MakeGenericType( elementType ) ),
@@ -98,6 +101,10 @@ public partial class SimpleDataPack
 							4 => ( IAdapter )Activator.CreateInstance( typeof( Array4DEnumNAdapter<> ).MakeGenericType( elementType ) ),
 							_ => ( IAdapter )Activator.CreateInstance( typeof( ArrayNDEnumNAdapter<> ).MakeGenericType( elementType ), rank ),
 						} ;
+#else
+						// IL2CPP
+						adapter = ( IAdapter )( new Array1DsEnumNAdapter( elementType ) ) ;
+#endif
 					}
 					else
 					if
@@ -112,13 +119,6 @@ public partial class SimpleDataPack
 						// ５次元以上を必要に応じて生成する必要がある
 						// １次元～４次元は実際は使用されない(ビルトインがヒットする)
 						adapter = ( IAdapter )Activator.CreateInstance( typeof( ArrayNDPrimitiveNAdapter<> ).MakeGenericType( elementType ), rank ) ;
-//						{
-//							1 => ( IAdapter )Activator.CreateInstance( typeof( Array1DPrimitiveNAdapter<> ).MakeGenericType( elementType ) ),
-//							2 => ( IAdapter )Activator.CreateInstance( typeof( Array2DPrimitiveNAdapter<> ).MakeGenericType( elementType ) ),
-//							3 => ( IAdapter )Activator.CreateInstance( typeof( Array3DPrimitiveNAdapter<> ).MakeGenericType( elementType ) ),
-//							4 => ( IAdapter )Activator.CreateInstance( typeof( Array4DPrimitiveNAdapter<> ).MakeGenericType( elementType ) ),
-//							_ => ( IAdapter )Activator.CreateInstance( typeof( ArrayNDPrimitiveNAdapter<> ).MakeGenericType( elementType ), rank ),
-//						} ;
 					}
 					else
 					{
@@ -152,7 +152,9 @@ public partial class SimpleDataPack
 			else
 			if( elementType.IsEnum == true )
 			{
-				// Enum
+				// Enum ※IL2CPP では ValueType を Generic 対象にしたクラスのインスタンスが生成できない事に注意
+#if UNITY_EDITOR || ENABLE_MONO
+				// Mono
 				adapter = rank switch
 				{
 					1 => ( IAdapter )Activator.CreateInstance( typeof( Array1DEnumAdapter<> ).MakeGenericType( elementType ) ),
@@ -161,6 +163,10 @@ public partial class SimpleDataPack
 					4 => ( IAdapter )Activator.CreateInstance( typeof( Array4DEnumAdapter<> ).MakeGenericType( elementType ) ),
 					_ => ( IAdapter )Activator.CreateInstance( typeof( ArrayNDEnumAdapter<> ).MakeGenericType( elementType ), rank ),
 				} ;
+#else
+				// IL2CPP
+				adapter = ( IAdapter )( new Array1DsEnumAdapter( elementType ) ) ;
+#endif
 			}
 			else
 			if

@@ -23,8 +23,6 @@ public partial class SimpleDataPack
 				case TypeCode.Byte :
 					SetValue = ( System.Object value, ByteStream writer ) =>
 					{
-						Debug.Log( "ValueType : " + value.GetType().ToString() ) ;
-
 						writer.PutByte( ( System.Byte )value ) ;
 					} ;
 					GetValue = ( ByteStream reader ) =>
@@ -146,7 +144,8 @@ public partial class SimpleDataPack
 				case TypeCode.Byte :
 					SetValue = ( System.Object value, ByteStream writer ) =>
 					{
-						writer.PutByteN( ( System.Byte? )value ) ;
+						// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+						if( value == null ){ writer.PutByte( 0 ) ; }else{ writer.PutByteT( ( System.Byte )value ) ; } ;
 					} ;
 					GetValue = ( ByteStream reader ) =>
 					{
@@ -156,7 +155,8 @@ public partial class SimpleDataPack
 				case TypeCode.SByte :
 					SetValue = ( System.Object value, ByteStream writer ) =>
 					{
-						writer.PutSByteN( ( System.SByte? )value ) ;
+						// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+						if( value == null ){ writer.PutByte( 0 ) ; }else{ writer.PutSByteT( ( System.SByte )value ) ; } ;
 					} ;
 					GetValue = ( ByteStream reader ) =>
 					{
@@ -166,7 +166,8 @@ public partial class SimpleDataPack
 				case TypeCode.Int16 :
 					SetValue = ( System.Object value, ByteStream writer ) =>
 					{
-						writer.PutInt16N( ( System.Int16? )value ) ;
+						// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+						if( value == null ){ writer.PutByte( 0 ) ; }else{ writer.PutInt16T( ( System.Int16 )value ) ; } ;
 					} ;
 					GetValue = ( ByteStream reader ) =>
 					{
@@ -176,7 +177,8 @@ public partial class SimpleDataPack
 				case TypeCode.UInt16 :
 					SetValue = ( System.Object value, ByteStream writer ) =>
 					{
-						writer.PutUInt16N( ( System.UInt16? )value ) ;
+						// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+						if( value == null ){ writer.PutByte( 0 ) ; }else{ writer.PutUInt16T( ( System.UInt16 )value ) ; } ;
 					} ;
 					GetValue = ( ByteStream reader ) =>
 					{
@@ -186,7 +188,8 @@ public partial class SimpleDataPack
 				case TypeCode.Int32 :
 					SetValue = ( System.Object value, ByteStream writer ) =>
 					{
-						writer.PutInt32N( ( System.Int32? )value ) ;
+						// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+						if( value == null ){ writer.PutByte( 0 ) ; }else{ writer.PutInt32T( ( System.Int32 )value ) ; } ;
 					} ;
 					GetValue = ( ByteStream reader ) =>
 					{
@@ -196,7 +199,8 @@ public partial class SimpleDataPack
 				case TypeCode.UInt32 :
 					SetValue = ( System.Object value, ByteStream writer ) =>
 					{
-						writer.PutUInt32N( ( System.UInt32? )value ) ;
+						// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+						if( value == null ){ writer.PutByte( 0 ) ; }else{ writer.PutUInt32T( ( System.UInt32 )value ) ; } ;
 					} ;
 					GetValue = ( ByteStream reader ) =>
 					{
@@ -206,7 +210,8 @@ public partial class SimpleDataPack
 				case TypeCode.Int64 :
 					SetValue = ( System.Object value, ByteStream writer ) =>
 					{
-						writer.PutInt64N( ( System.Int64? )value ) ;
+						// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+						if( value == null ){ writer.PutByte( 0 ) ; }else{ writer.PutInt64T( ( System.Int64 )value ) ; } ;
 					} ;
 					GetValue = ( ByteStream reader ) =>
 					{
@@ -216,7 +221,8 @@ public partial class SimpleDataPack
 				case TypeCode.UInt64 :
 					SetValue = ( System.Object value, ByteStream writer ) =>
 					{
-						writer.PutUInt64N( ( System.UInt64? )value ) ;
+						// System.Enum? → System.ValueType? キャストはやってはいけない(危険・IL2CPPでは動かない)
+						if( value == null ){ writer.PutByte( 0 ) ; }else{ writer.PutUInt64T( ( System.UInt64 )value ) ; } ;
 					} ;
 					GetValue = ( ByteStream reader ) =>
 					{

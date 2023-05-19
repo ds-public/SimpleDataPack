@@ -117,7 +117,7 @@ namespace DSW.MyData
 
 
 		//-----------------------------------------------------------
-/*
+
 		[SimpleDataPackMember(0)][Key(0)][SerializeField]
 		public bool P0 = false ;
 //		public bool P0{ get ; private set ; } = false ;
@@ -242,10 +242,10 @@ namespace DSW.MyData
 //		protected MySampleSub_W? P32 = new MySampleSub_W() ;
 
 
-*/
+
 		[SimpleDataPackMember(33)][Key(33)][SerializeField]
 		public Status_W? P33 = Status_W.Strength ;
-/*
+
 		//-----------------------------------------------------------
 
 		[SimpleDataPackMember(34)][Key(34)][SerializeField]
@@ -473,7 +473,7 @@ namespace DSW.MyData
 
 		[SimpleDataPackMember(101)][Key(101)][SerializeField]
 		public List<Status_W?> P101 = new List<Status_W?>{ Status_W.Strength, Status_W.Intelligence, null } ;
-*/
+
 		//-----------------------------------------------------------
 		// Struct 系
 /*
