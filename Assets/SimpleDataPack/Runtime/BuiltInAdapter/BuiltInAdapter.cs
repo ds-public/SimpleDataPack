@@ -49,12 +49,12 @@ public partial class SimpleDataPack
 			// アレイ型のアダプター生成
 
 			// １次元
-			Array1DPrimitive_Boolean	= new Array1DPrimitiveAdapter_Boolean()		;
-			Array1DPrimitive_BooleanN	= new Array1DPrimitiveAdapter_BooleanN()	;
-			Array1DPrimitive_Byte		= new Array1DPrimitiveAdapter_Byte()		;
-			Array1DPrimitive_ByteN		= new Array1DPrimitiveAdapter_ByteN()		;
-			Array1DPrimitive_SByte		= new Array1DPrimitiveAdapter_SByte()		;
-			Array1DPrimitive_SByteN		= new Array1DPrimitiveAdapter_SByteN()		;
+			Array1DBoolean				= new Array1DBooleanAdapter()				;
+			Array1DBooleanN				= new Array1DBooleanNAdapter()				;
+			Array1DByte					= new Array1DByteAdapter()					;
+			Array1DByteN				= new Array1DByteNAdapter()					;
+			Array1DSByte				= new Array1DSByteAdapter()					;
+			Array1DSByteN				= new Array1DSByteNAdapter()				;
 			Array1DPrimitive_Char		= new Array1DPrimitiveAdapter_Char()		;
 			Array1DPrimitive_CharN		= new Array1DPrimitiveAdapter_CharN()		;
 			Array1DPrimitive_Int16		= new Array1DPrimitiveAdapter_Int16()		;
@@ -242,15 +242,15 @@ public partial class SimpleDataPack
 			dapterCahce.Add( typeof( System.DateTime? ),			Primitive_DateTimeN )	;
 
 
-			// アレイ型のアダプター生成
+			// アレイ型のアダプター登録
 
 			// １次元
-			dapterCahce.Add( typeof( System.Boolean[] ),			Array1DPrimitive_Boolean )		;
-			dapterCahce.Add( typeof( System.Boolean?[] ),			Array1DPrimitive_BooleanN )		;
-			dapterCahce.Add( typeof( System.Byte[] ),				Array1DPrimitive_Byte )			;
-			dapterCahce.Add( typeof( System.Byte?[] ),				Array1DPrimitive_ByteN )		;
-			dapterCahce.Add( typeof( System.SByte[] ),				Array1DPrimitive_SByte )		;
-			dapterCahce.Add( typeof( System.SByte?[] ),				Array1DPrimitive_SByteN )		;
+			dapterCahce.Add( typeof( System.Boolean[] ),			Array1DBoolean )		;
+			dapterCahce.Add( typeof( System.Boolean?[] ),			Array1DBooleanN )		;
+			dapterCahce.Add( typeof( System.Byte[] ),				Array1DByte )			;
+			dapterCahce.Add( typeof( System.Byte?[] ),				Array1DByteN )		;
+			dapterCahce.Add( typeof( System.SByte[] ),				Array1DSByte )		;
+			dapterCahce.Add( typeof( System.SByte?[] ),				Array1DSByteN )		;
 			dapterCahce.Add( typeof( System.Char[] ),				Array1DPrimitive_Char )			;
 			dapterCahce.Add( typeof( System.Char?[] ),				Array1DPrimitive_CharN )		;
 			dapterCahce.Add( typeof( System.Int16[] ),				Array1DPrimitive_Int16 )		;
@@ -403,7 +403,7 @@ public partial class SimpleDataPack
 		}
 
 		//-------------------------------------------------------------------------------------------
-		// インスタンス
+		// インスタンス定義
 
 		// プリミティブ
 		public static PrimitiveAdapter_Boolean				Primitive_Boolean{ get ; private set ; }
@@ -439,12 +439,12 @@ public partial class SimpleDataPack
 		// アレイ
 
 		// １次元
-		public static Array1DPrimitiveAdapter_Boolean		Array1DPrimitive_Boolean{ get ; private set ; }
-		public static Array1DPrimitiveAdapter_BooleanN		Array1DPrimitive_BooleanN{ get ; private set ; }
-		public static Array1DPrimitiveAdapter_Byte			Array1DPrimitive_Byte{ get ; private set ; }
-		public static Array1DPrimitiveAdapter_ByteN			Array1DPrimitive_ByteN{ get ; private set ; }
-		public static Array1DPrimitiveAdapter_SByte			Array1DPrimitive_SByte{ get ; private set ; }
-		public static Array1DPrimitiveAdapter_SByteN		Array1DPrimitive_SByteN{ get ; private set ; }
+		public static Array1DBooleanAdapter					Array1DBoolean{ get ; private set ; }
+		public static Array1DBooleanNAdapter				Array1DBooleanN{ get ; private set ; }
+		public static Array1DByteAdapter					Array1DByte{ get ; private set ; }
+		public static Array1DByteNAdapter					Array1DByteN{ get ; private set ; }
+		public static Array1DSByteAdapter					Array1DSByte{ get ; private set ; }
+		public static Array1DSByteNAdapter					Array1DSByteN{ get ; private set ; }
 		public static Array1DPrimitiveAdapter_Char			Array1DPrimitive_Char{ get ; private set ; }
 		public static Array1DPrimitiveAdapter_CharN			Array1DPrimitive_CharN{ get ; private set ; }
 		public static Array1DPrimitiveAdapter_Int16			Array1DPrimitive_Int16{ get ; private set ; }

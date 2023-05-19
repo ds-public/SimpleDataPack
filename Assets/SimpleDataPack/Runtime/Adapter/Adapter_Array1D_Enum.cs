@@ -179,6 +179,8 @@ public partial class SimpleDataPack
 			}
 		}
 
+		//-------------------------------------------------------------------------------------------
+		
 		/// <summary>
 		/// シリアライズを実行する
 		/// </summary>
@@ -220,6 +222,114 @@ public partial class SimpleDataPack
 		/// <param name="reader"></param>
 		/// <returns></returns>
 		public System.Object Deserialize( ByteStream reader )
+		{
+			if( reader.GetByte() == 0 )
+			{
+				return null ;
+			}
+
+			// ランクは 1 限定
+
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				return new T[ 0 ] ;
+			}
+
+			T[] elements = new T[ length_0 ] ;
+
+			GetValue( elements, length_0, reader ) ;
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コードからの直接実行
+
+		public static void PutObject( T[] elements, ByteStream writer )
+		{
+			// 既にアダプターが生成済みであればそれを使う
+			Array1DEnumAdapter<T> adapter ;
+
+			Type type = typeof( T[] ) ;
+			if( ActiveAdapterCache.ContainsKey( type ) == true )
+			{
+				// アダプターが有る
+				adapter = ( Array1DEnumAdapter<T> )ActiveAdapterCache[ type ] ;
+			}
+			else
+			{
+				// アダプターが無い
+				adapter = new Array1DEnumAdapter<T>() ;
+				ActiveAdapterCache.Add( type, adapter ) ;
+			}
+
+			adapter.SerializeT( elements, writer ) ;
+		}
+
+		public static T[] GetObject( ByteStream reader )
+		{
+			// 既にアダプターが生成済みであればそれを使う
+			Array1DEnumAdapter<T> adapter ;
+
+			Type type = typeof( T[] ) ;
+			if( ActiveAdapterCache.ContainsKey( type ) == true )
+			{
+				// アダプターが有る
+				adapter = ( Array1DEnumAdapter<T> )ActiveAdapterCache[ type ] ;
+			}
+			else
+			{
+				// アダプターが無い
+				adapter = new Array1DEnumAdapter<T>() ;
+				ActiveAdapterCache.Add( type, adapter ) ;
+			}
+
+			return adapter.DeserializeT( reader ) ;
+		}
+
+		//-----------------------------------
+
+		/// <summary>
+		/// シリアライズを実行する
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="entity"></param>
+		/// <param name="writer"></param>
+		public void SerializeT( T[] elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// ランクを 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
+			SetValue( elements, length_0, writer ) ;
+		}
+
+		/// <summary>
+		/// デシリアライズを実行する
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <returns></returns>
+		public T[] DeserializeT( ByteStream reader )
 		{
 			if( reader.GetByte() == 0 )
 			{
@@ -468,6 +578,114 @@ public partial class SimpleDataPack
 		/// <param name="reader"></param>
 		/// <returns></returns>
 		public System.Object Deserialize( ByteStream reader )
+		{
+			if( reader.GetByte() == 0 )
+			{
+				return null ;
+			}
+
+			// ランクは 1 限定
+
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				return new T[ 0 ] ;
+			}
+
+			T[] elements = new T[ length_0 ] ;
+
+			GetValue( elements, length_0, reader ) ;
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コードからの直接実行
+
+		public static void PutObject( T[] elements, ByteStream writer )
+		{
+			// 既にアダプターが生成済みであればそれを使う
+			Array1DEnumNAdapter<T> adapter ;
+
+			Type type = typeof( T[] ) ;
+			if( ActiveAdapterCache.ContainsKey( type ) == true )
+			{
+				// アダプターが有る
+				adapter = ( Array1DEnumNAdapter<T> )ActiveAdapterCache[ type ] ;
+			}
+			else
+			{
+				// アダプターが無い
+				adapter = new Array1DEnumNAdapter<T>() ;
+				ActiveAdapterCache.Add( type, adapter ) ;
+			}
+
+			adapter.SerializeT( elements, writer ) ;
+		}
+
+		public static T[] GetObject( ByteStream reader )
+		{
+			// 既にアダプターが生成済みであればそれを使う
+			Array1DEnumNAdapter<T> adapter ;
+
+			Type type = typeof( T[] ) ;
+			if( ActiveAdapterCache.ContainsKey( type ) == true )
+			{
+				// アダプターが有る
+				adapter = ( Array1DEnumNAdapter<T> )ActiveAdapterCache[ type ] ;
+			}
+			else
+			{
+				// アダプターが無い
+				adapter = new Array1DEnumNAdapter<T>() ;
+				ActiveAdapterCache.Add( type, adapter ) ;
+			}
+
+			return adapter.DeserializeT( reader ) ;
+		}
+
+		//-----------------------------------
+
+		/// <summary>
+		/// シリアライズを実行する
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="entity"></param>
+		/// <param name="writer"></param>
+		public void SerializeT( T[] elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// ランクを 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
+			SetValue( elements, length_0, writer ) ;
+		}
+
+		/// <summary>
+		/// デシリアライズを実行する
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <returns></returns>
+		public T[] DeserializeT( ByteStream reader )
 		{
 			if( reader.GetByte() == 0 )
 			{

@@ -122,13 +122,24 @@ public partial class SimpleDataPack
 
 			string elementOriginTypeName = GetTypeName( elementOriginType ) ;
 
+			int rank = type.GetArrayRank() ;
+
+			string rankCode = "N" ;
+			if( rank <= 4 )
+			{
+				rankCode = rank.ToString() ;
+			}
+
+			TypeCode elementTypeCode = Type.GetTypeCode( elementType ) ;
+			string N = isElementNullable == false ? string.Empty : "N" ;
+
 			//----------------------------------------------------------
 
 			if( elementType.IsArray == true )
 			{
 				// 要素がアレイ型は汎用(ビルトインアダプターにヒットする可能性があるため)
-				sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
-//					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetArrayGenericAdapterFromElementType( typeof( {elementOriginTypeName} ) ).Deserialize( reader ) ;\n" ;
+//				sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
+				sb += "\t\t\t" + $"{memberName} = SimpleDataPack.Array{rankCode}DGenericAdapter<{elementOriginTypeName}>.GetObject( reader ) ;\n" ;
 			}
 			else
 			if( elementType.IsGenericType == true )
@@ -138,15 +149,15 @@ public partial class SimpleDataPack
 				if( elementType.GetGenericTypeDefinition() == typeof( List<> ) )
 				{
 					// 要素がリスト型は汎用(ビルトインアダプターにヒットする可能性があるため)
-					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
-//						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetArrayGenericAdapterFromElementType( typeof( {elementOriginTypeName} ) ).Deserialize( reader ) ;\n" ;
+//					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
+					sb += "\t\t\t" + $"{memberName} = SimpleDataPack.Array{rankCode}DGenericAdapter<{elementOriginTypeName}>.GetObject( reader ) ;\n" ;
 				}
 				else
 				if( elementType.GetGenericTypeDefinition() == typeof( Dictionary<,> ) )
 				{
 					// 要素がディクショナリ型は汎用(ビルトインアダプターにヒットする可能性があるため)
-					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
-//						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetArrayGenericAdapterFromElementType( typeof( {elementOriginTypeName} ) ).Deserialize( reader ) ;\n" ;
+//					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
+					sb += "\t\t\t" + $"{memberName} = SimpleDataPack.Array{rankCode}DGenericAdapter<{elementOriginTypeName}>.GetObject( reader ) ;\n" ;
 				}
 				else
 				{
@@ -179,8 +190,8 @@ public partial class SimpleDataPack
 				{
 					// 要素がオブジェクト(class struct? struct ※メンバーが存在するもの)
 
-					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
-//						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetArrayGenericAdapterFromElementType( typeof( {elementOriginTypeName} ) ).Deserialize( reader ) ;\n" ;
+//					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
+					sb += "\t\t\t" + $"{memberName} = SimpleDataPack.Array{rankCode}DGenericAdapter<{elementOriginTypeName}>.GetObject( reader ) ;\n" ;
 
 					// ※１次元であれば任意のオブジェクト型も高速処理が可能
 				}
@@ -192,22 +203,12 @@ public partial class SimpleDataPack
 					if( elementType.IsEnum == true )
 					{
 						// 列挙子(列挙子はアダプターにヒットしないため別処理を施す必要がある)
-						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
-//							sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetArrayEnumAdapterFromEnumType( typeof( {elementOriginTypeName} ) ).Deserialize( reader ) ;\n" ;
+//						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
+						sb += "\t\t\t" + $"{memberName} = SimpleDataPack.Array{rankCode}DEnum{N}Adapter<{elementOriginTypeName}>.GetObject( reader ) ;\n" ;
 					}
 					else
 					{
 						// プリミティブ
-						int rank = type.GetArrayRank() ;
-
-						string rankCode = "N" ;
-						if( rank <= 4 )
-						{
-							rankCode = rank.ToString() ;
-						}
-
-						TypeCode elementTypeCode = Type.GetTypeCode( elementType ) ;
-						string N = isElementNullable == false ? string.Empty : "N" ;
 
 						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.BuiltInAdapter.Array{rankCode}DPrimitive_{elementTypeCode}{N}.Deserialize( reader ) ;\n" ;
 					}
@@ -251,13 +252,16 @@ public partial class SimpleDataPack
 
 			string elementOriginTypeName	= GetTypeName( elementOriginType ) ;
 
+			TypeCode elementTypeCode = Type.GetTypeCode( elementType ) ;
+			string N = isElementNullable == false ? string.Empty : "N" ;
+
 			//----------------------------------------------------------
 
 			if( elementType.IsArray == true )
 			{
 				// 要素がアレイ型は汎用(ビルトインアダプターにヒットする可能性があるため)
-				sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
-//				sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetListGenericAdapterFromElementType( typeof( {elementOriginTypeName} ) ).Deserialize( reader ) ;\n" ;
+//				sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
+				sb += "\t\t\t" + $"{memberName} = SimpleDataPack.ListGenericAdapter<{elementOriginTypeName}>.GetObject( reader ) ;\n" ;
 			}
 			else
 			if( elementType.IsGenericType == true )
@@ -267,15 +271,15 @@ public partial class SimpleDataPack
 				if( elementType.GetGenericTypeDefinition() == typeof( List<> ) )
 				{
 					// 要素がリスト型は汎用(ビルトインアダプターにヒットする可能性があるため)
-					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
-//					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetListGenericAdapterFromElementType( typeof( {elementOriginTypeName} ) ).Deserialize( reader ) ;\n" ;
+//					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
+					sb += "\t\t\t" + $"{memberName} = SimpleDataPack.ListGenericAdapter<{elementOriginTypeName}>.GetObject( reader ) ;\n" ;
 				}
 				else
 				if( elementType.GetGenericTypeDefinition() == typeof( Dictionary<,> ) )
 				{
 					// 要素がディクショナリ型は汎用(ビルトインアダプターにヒットする可能性があるため)
-					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
-//					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetListGenericAdapterFromElementType( typeof( {elementOriginTypeName} ) ).Deserialize( reader ) ;\n" ;
+//					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
+					sb += "\t\t\t" + $"{memberName} = SimpleDataPack.ListGenericAdapter<{elementOriginTypeName}>.GetObject( reader ) ;\n" ;
 				}
 				else
 				{
@@ -306,8 +310,8 @@ public partial class SimpleDataPack
 				{
 					// 要素がオブジェクト(class struct? struct ※メンバーが存在するもの)
 
-					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
-//					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetListGenericAdapterFromElementType( typeof( {elementOriginTypeName} ) ).Deserialize( reader ) ;\n" ;
+//					sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
+					sb += "\t\t\t" + $"{memberName} = SimpleDataPack.ListGenericAdapter<{elementOriginTypeName}>.GetObject( reader ) ;\n" ;
 
 					// ※１次元であれば任意のオブジェクト型も高速処理が可能
 				}
@@ -319,14 +323,12 @@ public partial class SimpleDataPack
 					if( elementType.IsEnum == true )
 					{
 						// 列挙子(列挙子はアダプターにヒットしないため別処理を施す必要がある)
-						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
-//						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetListEnumAdapterFromEnumType( typeof( {elementOriginTypeName} ) ).Deserialize( reader ) ;\n" ;
+//						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;
+						sb += "\t\t\t" + $"{memberName} = SimpleDataPack.ListEnum{N}Adapter<{elementOriginTypeName}>.GetObject( reader ) ;\n" ;
 					}
 					else
 					{
 						// プリミティブ
-						TypeCode elementTypeCode = Type.GetTypeCode( elementType ) ;
-						string N = isElementNullable == false ? string.Empty : "N" ;
 
 						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.BuiltInAdapter.ListPrimitive_{elementTypeCode}{N}.Deserialize( reader ) ;\n" ;
 					}

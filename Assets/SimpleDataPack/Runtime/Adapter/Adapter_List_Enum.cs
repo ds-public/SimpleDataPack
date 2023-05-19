@@ -238,6 +238,116 @@ public partial class SimpleDataPack
 
 			return elements ;
 		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コードからの直接実行
+
+		public static void PutObject( List<T> elements, ByteStream writer )
+		{
+			// 既にアダプターが生成済みであればそれを使う
+			ListEnumAdapter<T> adapter ;
+
+			Type type = typeof( List<T> ) ;
+			if( ActiveAdapterCache.ContainsKey( type ) == true )
+			{
+				// アダプターが有る
+				adapter = ( ListEnumAdapter<T> )ActiveAdapterCache[ type ] ;
+			}
+			else
+			{
+				// アダプターが無い
+				adapter = new ListEnumAdapter<T>() ;
+				ActiveAdapterCache.Add( type, adapter ) ;
+			}
+
+			adapter.SerializeT( elements, writer ) ;
+		}
+
+		public static List<T> GetObject( ByteStream reader )
+		{
+			// 既にアダプターが生成済みであればそれを使う
+			ListEnumAdapter<T> adapter ;
+
+			Type type = typeof( List<T> ) ;
+			if( ActiveAdapterCache.ContainsKey( type ) == true )
+			{
+				// アダプターが有る
+				adapter = ( ListEnumAdapter<T> )ActiveAdapterCache[ type ] ;
+			}
+			else
+			{
+				// アダプターが無い
+				adapter = new ListEnumAdapter<T>() ;
+				ActiveAdapterCache.Add( type, adapter ) ;
+			}
+
+			return adapter.DeserializeT( reader ) ;
+		}
+
+		//-----------------------------------
+
+		/// <summary>
+		/// シリアライズを実行する
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="entity"></param>
+		/// <param name="writer"></param>
+		public void SerializeT( List<T> elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// null 且つ length = 0
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			int length = elements.Count ;
+
+			if( length == 0 )
+			{
+				// 空リスト
+				writer.PutByte( 0 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数を格納
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//----------------------------------
+
+			SetValue( elements, length, writer ) ;
+		}
+
+		/// <summary>
+		/// デシリアライズを実行する
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <returns></returns>
+		public List<T> DeserializeT( ByteStream reader )
+		{
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			int length = ( int )_ ;
+
+			if( length == 0 )
+			{
+				// 空リスト
+				return new List<T>() ;
+			}
+
+			var elements = new List<T>( length ) ;
+
+			//----------------------------------
+
+			GetValue( elements, length, reader ) ;
+
+			return elements ;
+		}
 	}
 
 	//------------------------------------------------------------
@@ -490,9 +600,120 @@ public partial class SimpleDataPack
 
 			return elements ;
 		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コードからの直接実行
+
+		public static void PutObject( List<T> elements, ByteStream writer )
+		{
+			// 既にアダプターが生成済みであればそれを使う
+			ListEnumNAdapter<T> adapter ;
+
+			Type type = typeof( List<T> ) ;
+			if( ActiveAdapterCache.ContainsKey( type ) == true )
+			{
+				// アダプターが有る
+				adapter = ( ListEnumNAdapter<T> )ActiveAdapterCache[ type ] ;
+			}
+			else
+			{
+				// アダプターが無い
+				adapter = new ListEnumNAdapter<T>() ;
+				ActiveAdapterCache.Add( type, adapter ) ;
+			}
+
+			adapter.SerializeT( elements, writer ) ;
+		}
+
+		public static List<T> GetObject( ByteStream reader )
+		{
+			// 既にアダプターが生成済みであればそれを使う
+			ListEnumNAdapter<T> adapter ;
+
+			Type type = typeof( List<T> ) ;
+			if( ActiveAdapterCache.ContainsKey( type ) == true )
+			{
+				// アダプターが有る
+				adapter = ( ListEnumNAdapter<T> )ActiveAdapterCache[ type ] ;
+			}
+			else
+			{
+				// アダプターが無い
+				adapter = new ListEnumNAdapter<T>() ;
+				ActiveAdapterCache.Add( type, adapter ) ;
+			}
+
+			return adapter.DeserializeT( reader ) ;
+		}
+
+		//-----------------------------------
+
+		/// <summary>
+		/// シリアライズを実行する
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="entity"></param>
+		/// <param name="writer"></param>
+		public void SerializeT( List<T> elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// null 且つ length = 0
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			int length = elements.Count ;
+
+			if( length == 0 )
+			{
+				// 空リスト
+				writer.PutByte( 0 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数を格納
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//----------------------------------
+
+			SetValue( elements, length, writer ) ;
+		}
+
+		/// <summary>
+		/// デシリアライズを実行する
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <returns></returns>
+		public List<T> DeserializeT( ByteStream reader )
+		{
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			int length = ( int )_ ;
+
+			if( length == 0 )
+			{
+				// 空リスト
+				return new List<T>() ;
+			}
+
+			var elements = new List<T>( length ) ;
+
+			//----------------------------------
+
+			GetValue( elements, length, reader ) ;
+
+			return elements ;
+		}
 	}
 
 	//============================================================================================
+	// 自動生成コードを使用しない IL2CPP 用
 
 	/// <summary>
 	/// List<Enum> アダプター

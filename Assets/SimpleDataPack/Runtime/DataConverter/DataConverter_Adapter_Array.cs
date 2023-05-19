@@ -12,6 +12,11 @@ public partial class SimpleDataPack
 	/// </summary>
 	partial class DataConverter
 	{
+		/// <summary>
+		/// 対象が配列のケース
+		/// </summary>
+		/// <param name="objectType"></param>
+		/// <returns></returns>
 		public IAdapter GetArrayAdapter( Type objectType )
 		{
 			IAdapter adapter ;
@@ -22,7 +27,7 @@ public partial class SimpleDataPack
 
 			if( elementType.IsArray == true )
 			{
-				// Array
+				// element - Arry : TO[TE[]]
 
 				// 入れ子関係なので element のアダプターが未生成・未登録であれば先に再生・登録する
 				if( ActiveAdapterCache.ContainsKey( elementType ) == false )
@@ -45,7 +50,7 @@ public partial class SimpleDataPack
 				// Generic
 				if( elementType.GetGenericTypeDefinition() == typeof( List<> ) )
 				{
-					// List<>
+					// element - List<> : TO[List<TE>]
 
 					// 入れ子関係なので element のアダプターが未生成・未登録であれば先に再生・登録する
 					if( ActiveAdapterCache.ContainsKey( elementType ) == false )
@@ -65,7 +70,7 @@ public partial class SimpleDataPack
 				else
 				if( elementType.GetGenericTypeDefinition() == typeof( Dictionary<,> ) )
 				{
-					// Dictionary<,>
+					// element - Dictionary<,> : TO[Dictionary<TK,TV>]
 
 					// 入れ子関係なので element のアダプターが未生成・未登録であれば先に再生・登録する
 					if( ActiveAdapterCache.ContainsKey( elementType ) == false )
@@ -90,7 +95,7 @@ public partial class SimpleDataPack
 					var innerElementType = Nullable.GetUnderlyingType( elementType ) ;
 					if( innerElementType.IsEnum == true )
 					{
-						// Enum? ※IL2CPP では ValueType を Generic 対象にしたクラスのインスタンスが生成できない事に注意
+						// element - Enum? : Enum?[] ※IL2CPP では ValueType を Generic 対象にしたクラスのインスタンスが生成できない事に注意
 #if UNITY_EDITOR || ENABLE_MONO
 						// Mono
 						adapter = rank switch
@@ -114,7 +119,7 @@ public partial class SimpleDataPack
 						innerElementType == typeof( System.Decimal ) || innerElementType == typeof( System.DateTime )
 					)
 					{
-						// Primitive?
+						// element - ValueType? : ValueType?[]
 
 						// ５次元以上を必要に応じて生成する必要がある
 						// １次元～４次元は実際は使用されない(ビルトインがヒットする)
@@ -122,7 +127,7 @@ public partial class SimpleDataPack
 					}
 					else
 					{
-						// class? struct?
+						// element - class? struct? : class?[] struct?[]
 
 						// 登録済みでなければ例外となる
 						if( ActiveAdapterCache.ContainsKey( elementType ) == true )
@@ -152,7 +157,7 @@ public partial class SimpleDataPack
 			else
 			if( elementType.IsEnum == true )
 			{
-				// Enum ※IL2CPP では ValueType を Generic 対象にしたクラスのインスタンスが生成できない事に注意
+				// element Enum : Enum[] ※IL2CPP では ValueType を Generic 対象にしたクラスのインスタンスが生成できない事に注意
 #if UNITY_EDITOR || ENABLE_MONO
 				// Mono
 				adapter = rank switch
@@ -176,7 +181,7 @@ public partial class SimpleDataPack
 				elementType == typeof( System.Decimal ) || elementType == typeof( System.DateTime )
 			)
 			{
-				// Primitive
+				// Pelement - ValueType : ValueType[]
 
 				// ５次元以上を必要に応じて生成する必要がある
 				// １次元～４次元は実際は使用されない(ビルトインがヒットする)
@@ -191,7 +196,7 @@ public partial class SimpleDataPack
 			}
 			else
 			{
-				// class struct
+				// element - class struct : class[] struct[]
 
 				// 登録済みでなければ例外となる
 				if( ActiveAdapterCache.ContainsKey( elementType ) == true )

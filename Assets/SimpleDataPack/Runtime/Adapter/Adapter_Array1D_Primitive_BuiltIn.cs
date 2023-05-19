@@ -80,10 +80,33 @@ public partial class SimpleDataPack
 	//===================================================================================================================
 
 	// アレイ(Boolean)
-	public class Array1DPrimitiveAdapter_Boolean : Array1DPrimitiveAdapterBase<System.Boolean>
+	public class Array1DBooleanAdapter : IAdapter
 	{
-		protected override void SetValue( System.Boolean[] elements, int length_0, ByteStream writer )
+		public void Serialize( System.Object entity, ByteStream writer )
 		{
+			if( entity == null )
+			{
+				// rank を 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			var elements = entity as System.Boolean[] ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
 			int index_0 ;
 			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
 			{
@@ -91,23 +114,138 @@ public partial class SimpleDataPack
 			}
 		}
 
-		protected override void GetValue( System.Boolean[] elements, int length_0, ByteStream reader )
+		public System.Object Deserialize( ByteStream reader )
 		{
+			// 次元数を取得する
+			if( reader.GetByte() == 0 )
+			{
+				// 終了
+				return null ;
+			}
+
+			//---------------------------------
+
+			// １次元限定
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				// 空配列
+				return new System.Boolean[ 0 ] ;
+			}
+
+			var elements = new System.Boolean[ length_0 ] ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
 			int index_0 ;
 			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
 			{
 				elements[ index_0 ] = reader.GetBoolean() ;
 			}
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コード用
+
+		public void SerializeT( System.Boolean[] elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// rank を 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
+			int index_0 ;
+			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
+			{
+				writer.PutBoolean( elements[ index_0 ] ) ;
+			}
+		}
+
+		public System.Boolean[] DeserializeT( ByteStream reader )
+		{
+			// 次元数を取得する
+			if( reader.GetByte() == 0 )
+			{
+				// 終了
+				return null ;
+			}
+
+			//---------------------------------
+
+			// １次元限定
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				// 空配列
+				return new System.Boolean[ 0 ] ;
+			}
+
+			var elements = new System.Boolean[ length_0 ] ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			int index_0 ;
+			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
+			{
+				elements[ index_0 ] = reader.GetBoolean() ;
+			}
+
+			return elements ;
 		}
 	}
 
 	//---------------
 
 	// アレイ(Boolean?)
-	public class Array1DPrimitiveAdapter_BooleanN : Array1DPrimitiveAdapterBase<System.Boolean?>
+	public class Array1DBooleanNAdapter : IAdapter
 	{
-		protected override void SetValue( System.Boolean?[] elements, int length_0, ByteStream writer )
+		public void Serialize( System.Object entity, ByteStream writer )
 		{
+			if( entity == null )
+			{
+				// rank を 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			var elements = entity as System.Boolean?[] ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
 			int index_0 ;
 			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
 			{
@@ -115,23 +253,138 @@ public partial class SimpleDataPack
 			}
 		}
 
-		protected override void GetValue( System.Boolean?[] elements, int length_0, ByteStream reader )
+		public System.Object Deserialize( ByteStream reader )
 		{
+			// 次元数を取得する
+			if( reader.GetByte() == 0 )
+			{
+				// 終了
+				return null ;
+			}
+
+			//---------------------------------
+
+			// １次元限定
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				// 空配列
+				return new System.Boolean?[ 0 ] ;
+			}
+
+			var elements = new System.Boolean?[ length_0 ] ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
 			int index_0 ;
 			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
 			{
 				elements[ index_0 ] = reader.GetBooleanN() ;
 			}
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コード用
+
+		public void SerializeT( System.Boolean?[] elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// rank を 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
+			int index_0 ;
+			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
+			{
+				writer.PutBooleanN( elements[ index_0 ] ) ;
+			}
+		}
+
+		public System.Boolean?[] DeserializeT( ByteStream reader )
+		{
+			// 次元数を取得する
+			if( reader.GetByte() == 0 )
+			{
+				// 終了
+				return null ;
+			}
+
+			//---------------------------------
+
+			// １次元限定
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				// 空配列
+				return new System.Boolean?[ 0 ] ;
+			}
+
+			var elements = new System.Boolean?[ length_0 ] ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			int index_0 ;
+			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
+			{
+				elements[ index_0 ] = reader.GetBooleanN() ;
+			}
+
+			return elements ;
 		}
 	}
 
 	//-----------------------------------
 
 	// アレイ(Byte)
-	public class Array1DPrimitiveAdapter_Byte : Array1DPrimitiveAdapterBase<System.Byte>
+	public class Array1DByteAdapter : IAdapter
 	{
-		protected override void SetValue( System.Byte[] elements, int length_0, ByteStream writer )
+		public void Serialize( System.Object entity, ByteStream writer )
 		{
+			if( entity == null )
+			{
+				// rank を 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			var elements = entity as System.Byte[] ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
 			int index_0 ;
 			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
 			{
@@ -139,23 +392,138 @@ public partial class SimpleDataPack
 			}
 		}
 
-		protected override void GetValue( System.Byte[] elements, int length_0, ByteStream reader )
+		public System.Object Deserialize( ByteStream reader )
 		{
+			// 次元数を取得する
+			if( reader.GetByte() == 0 )
+			{
+				// 終了
+				return null ;
+			}
+
+			//---------------------------------
+
+			// １次元限定
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				// 空配列
+				return new System.Byte[ 0 ] ;
+			}
+
+			var elements = new System.Byte[ length_0 ] ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
 			int index_0 ;
 			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
 			{
 				elements[ index_0 ] = reader.GetByte() ;
 			}
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コード用
+
+		public void SerializeT( System.Byte[] elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// rank を 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
+			int index_0 ;
+			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
+			{
+				writer.PutByte( elements[ index_0 ] ) ;
+			}
+		}
+
+		public System.Byte[] DeserializeT( ByteStream reader )
+		{
+			// 次元数を取得する
+			if( reader.GetByte() == 0 )
+			{
+				// 終了
+				return null ;
+			}
+
+			//---------------------------------
+
+			// １次元限定
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				// 空配列
+				return new System.Byte[ 0 ] ;
+			}
+
+			var elements = new System.Byte[ length_0 ] ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			int index_0 ;
+			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
+			{
+				elements[ index_0 ] = reader.GetByte() ;
+			}
+
+			return elements ;
 		}
 	}
 
 	//---------------
 
 	// アレイ(Byte?)
-	public class Array1DPrimitiveAdapter_ByteN : Array1DPrimitiveAdapterBase<System.Byte?>
+	public class Array1DByteNAdapter : IAdapter
 	{
-		protected override void SetValue( System.Byte?[] elements, int length_0, ByteStream writer )
+		public void Serialize( System.Object entity, ByteStream writer )
 		{
+			if( entity == null )
+			{
+				// rank を 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			var elements = entity as System.Byte?[] ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
 			int index_0 ;
 			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
 			{
@@ -163,23 +531,138 @@ public partial class SimpleDataPack
 			}
 		}
 
-		protected override void GetValue( System.Byte?[] elements, int length_0, ByteStream reader )
+		public System.Object Deserialize( ByteStream reader )
 		{
+			// 次元数を取得する
+			if( reader.GetByte() == 0 )
+			{
+				// 終了
+				return null ;
+			}
+
+			//---------------------------------
+
+			// １次元限定
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				// 空配列
+				return new System.Byte?[ 0 ] ;
+			}
+
+			var elements = new System.Byte?[ length_0 ] ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
 			int index_0 ;
 			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
 			{
 				elements[ index_0 ] = reader.GetByteN() ;
 			}
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コード用
+
+		public void SerializeT( System.Byte?[] elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// rank を 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
+			int index_0 ;
+			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
+			{
+				writer.PutByteN( elements[ index_0 ] ) ;
+			}
+		}
+
+		public System.Byte?[] DeserializeT( ByteStream reader )
+		{
+			// 次元数を取得する
+			if( reader.GetByte() == 0 )
+			{
+				// 終了
+				return null ;
+			}
+
+			//---------------------------------
+
+			// １次元限定
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				// 空配列
+				return new System.Byte?[ 0 ] ;
+			}
+
+			var elements = new System.Byte?[ length_0 ] ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			int index_0 ;
+			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
+			{
+				elements[ index_0 ] = reader.GetByteN() ;
+			}
+
+			return elements ;
 		}
 	}
 
 	//-----------------------------------
 
 	// アレイ(SByte)
-	public class Array1DPrimitiveAdapter_SByte : Array1DPrimitiveAdapterBase<System.SByte>
+	public class Array1DSByteAdapter : IAdapter
 	{
-		protected override void SetValue( System.SByte[] elements, int length_0, ByteStream writer )
+		public void Serialize( System.Object entity, ByteStream writer )
 		{
+			if( entity == null )
+			{
+				// rank を 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			var elements = entity as System.SByte[] ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
 			int index_0 ;
 			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
 			{
@@ -187,23 +670,138 @@ public partial class SimpleDataPack
 			}
 		}
 
-		protected override void GetValue( System.SByte[] elements, int length_0, ByteStream reader )
+		public System.Object Deserialize( ByteStream reader )
 		{
+			// 次元数を取得する
+			if( reader.GetByte() == 0 )
+			{
+				// 終了
+				return null ;
+			}
+
+			//---------------------------------
+
+			// １次元限定
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				// 空配列
+				return new System.SByte[ 0 ] ;
+			}
+
+			var elements = new System.SByte[ length_0 ] ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
 			int index_0 ;
 			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
 			{
 				elements[ index_0 ] = reader.GetSByte() ;
 			}
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コード用
+
+		public void SerializeT( System.SByte[] elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// rank を 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
+			int index_0 ;
+			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
+			{
+				writer.PutSByte( elements[ index_0 ] ) ;
+			}
+		}
+
+		public System.SByte[] DeserializeT( ByteStream reader )
+		{
+			// 次元数を取得する
+			if( reader.GetByte() == 0 )
+			{
+				// 終了
+				return null ;
+			}
+
+			//---------------------------------
+
+			// １次元限定
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				// 空配列
+				return new System.SByte[ 0 ] ;
+			}
+
+			var elements = new System.SByte[ length_0 ] ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			int index_0 ;
+			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
+			{
+				elements[ index_0 ] = reader.GetSByte() ;
+			}
+
+			return elements ;
 		}
 	}
 
 	//---------------
 
 	// アレイ(SByte?)
-	public class Array1DPrimitiveAdapter_SByteN : Array1DPrimitiveAdapterBase<System.SByte?>
+	public class Array1DSByteNAdapter : IAdapter
 	{
-		protected override void SetValue( System.SByte?[] elements, int length_0, ByteStream writer )
+		public void Serialize( System.Object entity, ByteStream writer )
 		{
+			if( entity == null )
+			{
+				// rank を 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			var elements = entity as System.SByte?[] ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
 			int index_0 ;
 			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
 			{
@@ -211,13 +809,105 @@ public partial class SimpleDataPack
 			}
 		}
 
-		protected override void GetValue( System.SByte?[] elements, int length_0, ByteStream reader )
+		public System.Object Deserialize( ByteStream reader )
 		{
+			// 次元数を取得する
+			if( reader.GetByte() == 0 )
+			{
+				// 終了
+				return null ;
+			}
+
+			//---------------------------------
+
+			// １次元限定
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				// 空配列
+				return new System.SByte?[ 0 ] ;
+			}
+
+			var elements = new System.SByte?[ length_0 ] ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
 			int index_0 ;
 			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
 			{
 				elements[ index_0 ] = reader.GetSByteN() ;
 			}
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コード用
+
+		public void SerializeT( System.SByte?[] elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// rank を 0 扱いで終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			//----------------------------------
+
+			// ランクは 1 限定
+			writer.PutByte( 1 ) ;
+
+			int length_0 = elements.Length ;
+
+			writer.PutVUInt32( ( System.UInt32 )length_0 ) ;
+
+			if( length_0 == 0 )
+			{
+				return ;
+			}
+
+			int index_0 ;
+			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
+			{
+				writer.PutSByteN( elements[ index_0 ] ) ;
+			}
+		}
+
+		public System.SByte?[] DeserializeT( ByteStream reader )
+		{
+			// 次元数を取得する
+			if( reader.GetByte() == 0 )
+			{
+				// 終了
+				return null ;
+			}
+
+			//---------------------------------
+
+			// １次元限定
+			int length_0 = ( int )reader.GetVUInt32() ;
+
+			if( length_0 == 0 )
+			{
+				// 空配列
+				return new System.SByte?[ 0 ] ;
+			}
+
+			var elements = new System.SByte?[ length_0 ] ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			int index_0 ;
+			for( index_0  = 0 ; index_0 <  length_0 ; index_0 ++ )
+			{
+				elements[ index_0 ] = reader.GetSByteN() ;
+			}
+
+			return elements ;
 		}
 	}
 
