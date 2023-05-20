@@ -334,7 +334,7 @@ public partial class SimpleDataPack
 					else
 					{
 						// プリミティブ
-						sb += "\t\t\t" + $"SimpleDataPack.BuiltInAdapter.ListPrimitive_{elementTypeCode}{N}.Serialize( {memberName}, writer ) ;\n" ;
+						sb += "\t\t\t" + $"SimpleDataPack.BuiltInAdapter.List{elementTypeCode}{N}.SerializeT( {memberName}, writer ) ;\n" ;
 					}
 				}
 			}

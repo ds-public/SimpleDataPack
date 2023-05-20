@@ -174,35 +174,35 @@ public partial class SimpleDataPack
 
 			// リスト型のアダプター生成
 
-			ListPrimitive_Boolean		= new ListPrimitiveAdapter_Boolean()		;
-			ListPrimitive_BooleanN		= new ListPrimitiveAdapter_BooleanN()		;
-			ListPrimitive_Byte			= new ListPrimitiveAdapter_Byte()			;
-			ListPrimitive_ByteN			= new ListPrimitiveAdapter_ByteN()			;
-			ListPrimitive_SByte			= new ListPrimitiveAdapter_SByte()			;
-			ListPrimitive_SByteN		= new ListPrimitiveAdapter_SByteN()			;
-			ListPrimitive_Char			= new ListPrimitiveAdapter_Char()			;
-			ListPrimitive_CharN			= new ListPrimitiveAdapter_CharN()			;
-			ListPrimitive_Int16			= new ListPrimitiveAdapter_Int16()			;
-			ListPrimitive_Int16N		= new ListPrimitiveAdapter_Int16N()			;
-			ListPrimitive_UInt16		= new ListPrimitiveAdapter_UInt16()			;
-			ListPrimitive_UInt16N		= new ListPrimitiveAdapter_UInt16N()		;
-			ListPrimitive_Int32			= new ListPrimitiveAdapter_Int32()			;
-			ListPrimitive_Int32N		= new ListPrimitiveAdapter_Int32N()			;
-			ListPrimitive_UInt32		= new ListPrimitiveAdapter_UInt32()			;
-			ListPrimitive_UInt32N		= new ListPrimitiveAdapter_UInt32N()		;
-			ListPrimitive_Int64			= new ListPrimitiveAdapter_Int64()			;
-			ListPrimitive_Int64N		= new ListPrimitiveAdapter_Int64N()			;
-			ListPrimitive_UInt64		= new ListPrimitiveAdapter_UInt64()			;
-			ListPrimitive_UInt64N		= new ListPrimitiveAdapter_UInt64N()		;
-			ListPrimitive_Single		= new ListPrimitiveAdapter_Single()			;
-			ListPrimitive_SingleN		= new ListPrimitiveAdapter_SingleN()		;
-			ListPrimitive_Double		= new ListPrimitiveAdapter_Double()			;
-			ListPrimitive_DoubleN		= new ListPrimitiveAdapter_DoubleN()		;
-			ListPrimitive_Decimal		= new ListPrimitiveAdapter_Decimal()		;
-			ListPrimitive_DecimalN		= new ListPrimitiveAdapter_DecimalN()		;
-			ListPrimitive_String		= new ListPrimitiveAdapter_String()			;
-			ListPrimitive_DateTime		= new ListPrimitiveAdapter_DateTime()		;
-			ListPrimitive_DateTimeN		= new ListPrimitiveAdapter_DateTimeN()		;
+			ListBoolean			= new ListBooleanAdapter()		;
+			ListBooleanN		= new ListBooleanNAdapter()		;
+			ListByte			= new ListByteAdapter()			;
+			ListByteN			= new ListByteNAdapter()		;
+			ListSByte			= new ListSByteAdapter()		;
+			ListSByteN			= new ListSByteNAdapter()		;
+			ListChar			= new ListCharAdapter()			;
+			ListCharN			= new ListCharNAdapter()		;
+			ListInt16			= new ListInt16Adapter()		;
+			ListInt16N			= new ListInt16NAdapter()		;
+			ListUInt16			= new ListUInt16Adapter()		;
+			ListUInt16N			= new ListUInt16NAdapter()		;
+			ListInt32			= new ListInt32Adapter()		;
+			ListInt32N			= new ListInt32NAdapter()		;
+			ListUInt32			= new ListUInt32Adapter()		;
+			ListUInt32N			= new ListUInt32NAdapter()		;
+			ListInt64			= new ListInt64Adapter()		;
+			ListInt64N			= new ListInt64NAdapter()		;
+			ListUInt64			= new ListUInt64Adapter()		;
+			ListUInt64N			= new ListUInt64NAdapter()		;
+			ListSingle			= new ListSingleAdapter()		;
+			ListSingleN			= new ListSingleNAdapter()		;
+			ListDouble			= new ListDoubleAdapter()		;
+			ListDoubleN			= new ListDoubleNAdapter()		;
+			ListDecimal			= new ListDecimalAdapter()		;
+			ListDecimalN		= new ListDecimalNAdapter()		;
+			ListString			= new ListStringAdapter()		;
+			ListDateTime		= new ListDateTimeAdapter()		;
+			ListDateTimeN		= new ListDateTimeNAdapter()	;
 		}
 
 		/// <summary>
@@ -371,35 +371,35 @@ public partial class SimpleDataPack
 
 			// リスト型のアダプター生成
 
-			dapterCahce.Add( typeof( List<System.Boolean> ),		ListPrimitive_Boolean )			;
-			dapterCahce.Add( typeof( List<System.Boolean?> ),		ListPrimitive_BooleanN )		;
-			dapterCahce.Add( typeof( List<System.Byte> ),			ListPrimitive_Byte )			;
-			dapterCahce.Add( typeof( List<System.Byte?> ),			ListPrimitive_ByteN )			;
-			dapterCahce.Add( typeof( List<System.SByte> ),			ListPrimitive_SByte )			;
-			dapterCahce.Add( typeof( List<System.SByte?> ),			ListPrimitive_SByteN )			;
-			dapterCahce.Add( typeof( List<System.Char> ),			ListPrimitive_Char )			;
-			dapterCahce.Add( typeof( List<System.Char?> ),			ListPrimitive_CharN )			;
-			dapterCahce.Add( typeof( List<System.Int16> ),			ListPrimitive_Int16 )			;
-			dapterCahce.Add( typeof( List<System.Int16?> ),			ListPrimitive_Int16N )			;
-			dapterCahce.Add( typeof( List<System.UInt16> ),			ListPrimitive_UInt16 )			;
-			dapterCahce.Add( typeof( List<System.UInt16?> ),		ListPrimitive_UInt16N )			;
-			dapterCahce.Add( typeof( List<System.Int32> ),			ListPrimitive_Int32 )			;
-			dapterCahce.Add( typeof( List<System.Int32?> ),			ListPrimitive_Int32N )			;
-			dapterCahce.Add( typeof( List<System.UInt32> ),			ListPrimitive_UInt32 )			;
-			dapterCahce.Add( typeof( List<System.UInt32?> ),		ListPrimitive_UInt32N )			;
-			dapterCahce.Add( typeof( List<System.Int64> ),			ListPrimitive_Int64 )			;
-			dapterCahce.Add( typeof( List<System.Int64?> ),			ListPrimitive_Int64N )			;
-			dapterCahce.Add( typeof( List<System.UInt64> ),			ListPrimitive_UInt64 )			;
-			dapterCahce.Add( typeof( List<System.UInt64?> ),		ListPrimitive_UInt64N )			;
-			dapterCahce.Add( typeof( List<System.Single> ),			ListPrimitive_Single )			;
-			dapterCahce.Add( typeof( List<System.Single?> ),		ListPrimitive_SingleN )			;
-			dapterCahce.Add( typeof( List<System.Double> ),			ListPrimitive_Double )			;
-			dapterCahce.Add( typeof( List<System.Double?> ),		ListPrimitive_DoubleN )			;
-			dapterCahce.Add( typeof( List<System.Decimal> ),		ListPrimitive_Decimal )			;
-			dapterCahce.Add( typeof( List<System.Decimal?> ),		ListPrimitive_DecimalN )		;
-			dapterCahce.Add( typeof( List<System.String> ),			ListPrimitive_String )			;
-			dapterCahce.Add( typeof( List<System.DateTime> ),		ListPrimitive_DateTime )		;
-			dapterCahce.Add( typeof( List<System.DateTime?> ),		ListPrimitive_DateTimeN )		;
+			dapterCahce.Add( typeof( List<System.Boolean> ),		ListBoolean )		;
+			dapterCahce.Add( typeof( List<System.Boolean?> ),		ListBooleanN )		;
+			dapterCahce.Add( typeof( List<System.Byte> ),			ListByte )			;
+			dapterCahce.Add( typeof( List<System.Byte?> ),			ListByteN )			;
+			dapterCahce.Add( typeof( List<System.SByte> ),			ListSByte )			;
+			dapterCahce.Add( typeof( List<System.SByte?> ),			ListSByteN )		;
+			dapterCahce.Add( typeof( List<System.Char> ),			ListChar )			;
+			dapterCahce.Add( typeof( List<System.Char?> ),			ListCharN )			;
+			dapterCahce.Add( typeof( List<System.Int16> ),			ListInt16 )			;
+			dapterCahce.Add( typeof( List<System.Int16?> ),			ListInt16N )		;
+			dapterCahce.Add( typeof( List<System.UInt16> ),			ListUInt16 )		;
+			dapterCahce.Add( typeof( List<System.UInt16?> ),		ListUInt16N )		;
+			dapterCahce.Add( typeof( List<System.Int32> ),			ListInt32 )			;
+			dapterCahce.Add( typeof( List<System.Int32?> ),			ListInt32N )		;
+			dapterCahce.Add( typeof( List<System.UInt32> ),			ListUInt32 )		;
+			dapterCahce.Add( typeof( List<System.UInt32?> ),		ListUInt32N )		;
+			dapterCahce.Add( typeof( List<System.Int64> ),			ListInt64 )			;
+			dapterCahce.Add( typeof( List<System.Int64?> ),			ListInt64N )		;
+			dapterCahce.Add( typeof( List<System.UInt64> ),			ListUInt64 )		;
+			dapterCahce.Add( typeof( List<System.UInt64?> ),		ListUInt64N )		;
+			dapterCahce.Add( typeof( List<System.Single> ),			ListSingle )		;
+			dapterCahce.Add( typeof( List<System.Single?> ),		ListSingleN )		;
+			dapterCahce.Add( typeof( List<System.Double> ),			ListDouble )		;
+			dapterCahce.Add( typeof( List<System.Double?> ),		ListDoubleN )		;
+			dapterCahce.Add( typeof( List<System.Decimal> ),		ListDecimal )		;
+			dapterCahce.Add( typeof( List<System.Decimal?> ),		ListDecimalN )		;
+			dapterCahce.Add( typeof( List<System.String> ),			ListString )		;
+			dapterCahce.Add( typeof( List<System.DateTime> ),		ListDateTime )		;
+			dapterCahce.Add( typeof( List<System.DateTime?> ),		ListDateTimeN )		;
 		}
 
 		//-------------------------------------------------------------------------------------------
@@ -564,35 +564,35 @@ public partial class SimpleDataPack
 
 		// リスト
 
-		public static ListPrimitiveAdapter_Boolean			ListPrimitive_Boolean{ get ; private set ; }
-		public static ListPrimitiveAdapter_BooleanN			ListPrimitive_BooleanN{ get ; private set ; }
-		public static ListPrimitiveAdapter_Byte				ListPrimitive_Byte{ get ; private set ; }
-		public static ListPrimitiveAdapter_ByteN			ListPrimitive_ByteN{ get ; private set ; }
-		public static ListPrimitiveAdapter_SByte			ListPrimitive_SByte{ get ; private set ; }
-		public static ListPrimitiveAdapter_SByteN			ListPrimitive_SByteN{ get ; private set ; }
-		public static ListPrimitiveAdapter_Char				ListPrimitive_Char{ get ; private set ; }
-		public static ListPrimitiveAdapter_CharN			ListPrimitive_CharN{ get ; private set ; }
-		public static ListPrimitiveAdapter_Int16			ListPrimitive_Int16{ get ; private set ; }
-		public static ListPrimitiveAdapter_Int16N			ListPrimitive_Int16N{ get ; private set ; }
-		public static ListPrimitiveAdapter_UInt16			ListPrimitive_UInt16{ get ; private set ; }
-		public static ListPrimitiveAdapter_UInt16N			ListPrimitive_UInt16N{ get ; private set ; }
-		public static ListPrimitiveAdapter_Int32			ListPrimitive_Int32{ get ; private set ; }
-		public static ListPrimitiveAdapter_Int32N			ListPrimitive_Int32N{ get ; private set ; }
-		public static ListPrimitiveAdapter_UInt32			ListPrimitive_UInt32{ get ; private set ; }
-		public static ListPrimitiveAdapter_UInt32N			ListPrimitive_UInt32N{ get ; private set ; }
-		public static ListPrimitiveAdapter_Int64			ListPrimitive_Int64{ get ; private set ; }
-		public static ListPrimitiveAdapter_Int64N			ListPrimitive_Int64N{ get ; private set ; }
-		public static ListPrimitiveAdapter_UInt64			ListPrimitive_UInt64{ get ; private set ; }
-		public static ListPrimitiveAdapter_UInt64N			ListPrimitive_UInt64N{ get ; private set ; }
-		public static ListPrimitiveAdapter_Single			ListPrimitive_Single{ get ; private set ; }
-		public static ListPrimitiveAdapter_SingleN			ListPrimitive_SingleN{ get ; private set ; }
-		public static ListPrimitiveAdapter_Double			ListPrimitive_Double{ get ; private set ; }
-		public static ListPrimitiveAdapter_DoubleN			ListPrimitive_DoubleN{ get ; private set ; }
-		public static ListPrimitiveAdapter_Decimal			ListPrimitive_Decimal{ get ; private set ; }
-		public static ListPrimitiveAdapter_DecimalN			ListPrimitive_DecimalN{ get ; private set ; }
-		public static ListPrimitiveAdapter_String			ListPrimitive_String{ get ; private set ; }
-		public static ListPrimitiveAdapter_DateTime			ListPrimitive_DateTime{ get ; private set ; }
-		public static ListPrimitiveAdapter_DateTimeN		ListPrimitive_DateTimeN{ get ; private set ; }
+		public static ListBooleanAdapter					ListBoolean{ get ; private set ; }
+		public static ListBooleanNAdapter					ListBooleanN{ get ; private set ; }
+		public static ListByteAdapter						ListByte{ get ; private set ; }
+		public static ListByteNAdapter						ListByteN{ get ; private set ; }
+		public static ListSByteAdapter						ListSByte{ get ; private set ; }
+		public static ListSByteNAdapter						ListSByteN{ get ; private set ; }
+		public static ListCharAdapter						ListChar{ get ; private set ; }
+		public static ListCharNAdapter						ListCharN{ get ; private set ; }
+		public static ListInt16Adapter						ListInt16{ get ; private set ; }
+		public static ListInt16NAdapter						ListInt16N{ get ; private set ; }
+		public static ListUInt16Adapter						ListUInt16{ get ; private set ; }
+		public static ListUInt16NAdapter					ListUInt16N{ get ; private set ; }
+		public static ListInt32Adapter						ListInt32{ get ; private set ; }
+		public static ListInt32NAdapter						ListInt32N{ get ; private set ; }
+		public static ListUInt32Adapter						ListUInt32{ get ; private set ; }
+		public static ListUInt32NAdapter					ListUInt32N{ get ; private set ; }
+		public static ListInt64Adapter						ListInt64{ get ; private set ; }
+		public static ListInt64NAdapter						ListInt64N{ get ; private set ; }
+		public static ListUInt64Adapter						ListUInt64{ get ; private set ; }
+		public static ListUInt64NAdapter					ListUInt64N{ get ; private set ; }
+		public static ListSingleAdapter						ListSingle{ get ; private set ; }
+		public static ListSingleNAdapter					ListSingleN{ get ; private set ; }
+		public static ListDoubleAdapter						ListDouble{ get ; private set ; }
+		public static ListDoubleNAdapter					ListDoubleN{ get ; private set ; }
+		public static ListDecimalAdapter					ListDecimal{ get ; private set ; }
+		public static ListDecimalNAdapter					ListDecimalN{ get ; private set ; }
+		public static ListStringAdapter						ListString{ get ; private set ; }
+		public static ListDateTimeAdapter					ListDateTime{ get ; private set ; }
+		public static ListDateTimeNAdapter					ListDateTimeN{ get ; private set ; }
 	}
 
 	//--------------------------------------------------------------------------------------------
