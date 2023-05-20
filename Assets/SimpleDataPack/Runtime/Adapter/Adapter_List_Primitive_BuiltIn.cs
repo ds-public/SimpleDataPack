@@ -61,7 +61,7 @@ public partial class SimpleDataPack
 				return new List<T>() ;
 			}
 
-			List<T> elements = new List<T>( length ) ;
+			var elements = new List<T>( length ) ;
 
 			//---------------------------------------------------------
 			// ループで取得
@@ -96,6 +96,138 @@ public partial class SimpleDataPack
 		}
 	}
 
+	public class ListBooleanAdapter : IAdapter
+	{
+		public void Serialize( System.Object entity, ByteStream writer )
+		{
+			if( entity == null )
+			{
+				// null & 要素数を 0 で終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+						
+			var elements = entity as List<System.Boolean> ;
+
+			int length = elements.Count ;
+
+			// 要素数を格納する(0もある)
+			if( length == 0 )
+			{
+				// 要素が無い場合は以下の無駄な処理はしない
+				// 最下位ビットを not null で 1 とする
+				writer.PutByte( 1 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数は最大で 28 ビットとなる
+			// 最下位ビットを not null で 1 とする
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//---------------------------------------------------------
+			// ループで格納
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				writer.PutBoolean( elements[ index ] ) ;
+			}
+		}
+
+		public System.Object Deserialize( ByteStream reader )
+		{
+			// null フラグと配列要素数を取得
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			System.Int32 length = ( System.Int32 )_ ;
+
+			if( length == 0 )
+			{
+				return new List<System.Boolean>() ;
+			}
+
+			var elements = new List<System.Boolean>( length ) ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				elements.Add( reader.GetBoolean() ) ;
+			}
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コード用
+
+		public void SerializeT( List<System.Boolean> elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// null & 要素数を 0 で終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+						
+			int length = elements.Count ;
+
+			// 要素数を格納する(0もある)
+			if( length == 0 )
+			{
+				// 要素が無い場合は以下の無駄な処理はしない
+				// 最下位ビットを not null で 1 とする
+				writer.PutByte( 1 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数は最大で 28 ビットとなる
+			// 最下位ビットを not null で 1 とする
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//---------------------------------------------------------
+			// ループで格納
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				writer.PutBoolean( elements[ index ] ) ;
+			}
+		}
+
+		public List<System.Boolean> DeserializeT( ByteStream reader )
+		{
+			// null フラグと配列要素数を取得
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			System.Int32 length = ( System.Int32 )_ ;
+
+			if( length == 0 )
+			{
+				return new List<System.Boolean>() ;
+			}
+
+			var elements = new List<System.Boolean>( length ) ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				elements.Add( reader.GetBoolean() ) ;
+			}
+
+			return elements ;
+		}
+	}
+
 	//---------------
 
 	// リスト(Boolean?)
@@ -115,6 +247,138 @@ public partial class SimpleDataPack
 			{
 				elements.Add( reader.GetBooleanN() ) ;
 			}
+		}
+	}
+
+	public class ListBooleanNAdapter : IAdapter
+	{
+		public void Serialize( System.Object entity, ByteStream writer )
+		{
+			if( entity == null )
+			{
+				// null & 要素数を 0 で終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+						
+			var elements = entity as List<System.Boolean?> ;
+
+			int length = elements.Count ;
+
+			// 要素数を格納する(0もある)
+			if( length == 0 )
+			{
+				// 要素が無い場合は以下の無駄な処理はしない
+				// 最下位ビットを not null で 1 とする
+				writer.PutByte( 1 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数は最大で 28 ビットとなる
+			// 最下位ビットを not null で 1 とする
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//---------------------------------------------------------
+			// ループで格納
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				writer.PutBooleanN( elements[ index ] ) ;
+			}
+		}
+
+		public System.Object Deserialize( ByteStream reader )
+		{
+			// null フラグと配列要素数を取得
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			System.Int32 length = ( System.Int32 )_ ;
+
+			if( length == 0 )
+			{
+				return new List<System.Boolean?>() ;
+			}
+
+			var elements = new List<System.Boolean?>( length ) ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				elements.Add( reader.GetBooleanN() ) ;
+			}
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コード用
+
+		public void SerializeT( List<System.Boolean?> elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// null & 要素数を 0 で終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+						
+			int length = elements.Count ;
+
+			// 要素数を格納する(0もある)
+			if( length == 0 )
+			{
+				// 要素が無い場合は以下の無駄な処理はしない
+				// 最下位ビットを not null で 1 とする
+				writer.PutByte( 1 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数は最大で 28 ビットとなる
+			// 最下位ビットを not null で 1 とする
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//---------------------------------------------------------
+			// ループで格納
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				writer.PutBooleanN( elements[ index ] ) ;
+			}
+		}
+
+		public List<System.Boolean?> DeserializeT( ByteStream reader )
+		{
+			// null フラグと配列要素数を取得
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			System.Int32 length = ( System.Int32 )_ ;
+
+			if( length == 0 )
+			{
+				return new List<System.Boolean?>() ;
+			}
+
+			var elements = new List<System.Boolean?>( length ) ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				elements.Add( reader.GetBooleanN() ) ;
+			}
+
+			return elements ;
 		}
 	}
 
@@ -140,6 +404,138 @@ public partial class SimpleDataPack
 		}
 	}
 
+	public class ListByteAdapter : IAdapter
+	{
+		public void Serialize( System.Object entity, ByteStream writer )
+		{
+			if( entity == null )
+			{
+				// null & 要素数を 0 で終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+						
+			var elements = entity as List<System.Byte> ;
+
+			int length = elements.Count ;
+
+			// 要素数を格納する(0もある)
+			if( length == 0 )
+			{
+				// 要素が無い場合は以下の無駄な処理はしない
+				// 最下位ビットを not null で 1 とする
+				writer.PutByte( 1 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数は最大で 28 ビットとなる
+			// 最下位ビットを not null で 1 とする
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//---------------------------------------------------------
+			// ループで格納
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				writer.PutByte( elements[ index ] ) ;
+			}
+		}
+
+		public System.Object Deserialize( ByteStream reader )
+		{
+			// null フラグと配列要素数を取得
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			System.Int32 length = ( System.Int32 )_ ;
+
+			if( length == 0 )
+			{
+				return new List<System.Byte>() ;
+			}
+
+			var elements = new List<System.Byte>( length ) ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				elements.Add( reader.GetByte() ) ;
+			}
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コード用
+
+		public void SerializeT( List<System.Byte> elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// null & 要素数を 0 で終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+						
+			int length = elements.Count ;
+
+			// 要素数を格納する(0もある)
+			if( length == 0 )
+			{
+				// 要素が無い場合は以下の無駄な処理はしない
+				// 最下位ビットを not null で 1 とする
+				writer.PutByte( 1 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数は最大で 28 ビットとなる
+			// 最下位ビットを not null で 1 とする
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//---------------------------------------------------------
+			// ループで格納
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				writer.PutByte( elements[ index ] ) ;
+			}
+		}
+
+		public List<System.Byte> DeserializeT( ByteStream reader )
+		{
+			// null フラグと配列要素数を取得
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			System.Int32 length = ( System.Int32 )_ ;
+
+			if( length == 0 )
+			{
+				return new List<System.Byte>() ;
+			}
+
+			var elements = new List<System.Byte>( length ) ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				elements.Add( reader.GetByte() ) ;
+			}
+
+			return elements ;
+		}
+	}
+
 	//---------------
 
 	// リスト(Byte?)
@@ -159,6 +555,138 @@ public partial class SimpleDataPack
 			{
 				elements.Add( reader.GetByteN() ) ;
 			}
+		}
+	}
+
+	public class ListByteNAdapter : IAdapter
+	{
+		public void Serialize( System.Object entity, ByteStream writer )
+		{
+			if( entity == null )
+			{
+				// null & 要素数を 0 で終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+						
+			var elements = entity as List<System.Byte?> ;
+
+			int length = elements.Count ;
+
+			// 要素数を格納する(0もある)
+			if( length == 0 )
+			{
+				// 要素が無い場合は以下の無駄な処理はしない
+				// 最下位ビットを not null で 1 とする
+				writer.PutByte( 1 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数は最大で 28 ビットとなる
+			// 最下位ビットを not null で 1 とする
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//---------------------------------------------------------
+			// ループで格納
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				writer.PutByteN( elements[ index ] ) ;
+			}
+		}
+
+		public System.Object Deserialize( ByteStream reader )
+		{
+			// null フラグと配列要素数を取得
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _== null )
+			{
+				return null ;
+			}
+
+			System.Int32 length = ( System.Int32 )_ ;
+
+			if( length == 0 )
+			{
+				return new List<System.Byte?>() ;
+			}
+
+			var elements = new List<System.Byte?>( length ) ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				elements.Add( reader.GetByteN() ) ;
+			}
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コード用
+
+		public void SerializeT( List<System.Byte?> elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// null & 要素数を 0 で終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+						
+			int length = elements.Count ;
+
+			// 要素数を格納する(0もある)
+			if( length == 0 )
+			{
+				// 要素が無い場合は以下の無駄な処理はしない
+				// 最下位ビットを not null で 1 とする
+				writer.PutByte( 1 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数は最大で 28 ビットとなる
+			// 最下位ビットを not null で 1 とする
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//---------------------------------------------------------
+			// ループで格納
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				writer.PutByteN( elements[ index ] ) ;
+			}
+		}
+
+		public List<System.Byte?> DeserializeT( ByteStream reader )
+		{
+			// null フラグと配列要素数を取得
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			System.Int32 length = ( System.Int32 )_ ;
+
+			if( length == 0 )
+			{
+				return new List<System.Byte?>() ;
+			}
+
+			var elements = new List<System.Byte?>( length ) ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				elements.Add( reader.GetByteN() ) ;
+			}
+
+			return elements ;
 		}
 	}
 
@@ -184,6 +712,138 @@ public partial class SimpleDataPack
 		}
 	}
 
+	public class ListSByteAdapter : IAdapter
+	{
+		public void Serialize( System.Object entity, ByteStream writer )
+		{
+			if( entity == null )
+			{
+				// null & 要素数を 0 で終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+						
+			var elements = entity as List<System.SByte> ;
+
+			int length = elements.Count ;
+
+			// 要素数を格納する(0もある)
+			if( length == 0 )
+			{
+				// 要素が無い場合は以下の無駄な処理はしない
+				// 最下位ビットを not null で 1 とする
+				writer.PutByte( 1 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数は最大で 28 ビットとなる
+			// 最下位ビットを not null で 1 とする
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//---------------------------------------------------------
+			// ループで格納
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				writer.PutSByte( elements[ index ] ) ;
+			}
+		}
+
+		public System.Object Deserialize( ByteStream reader )
+		{
+			// null フラグと配列要素数を取得
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			System.Int32 length = ( System.Int32 )_ ;
+
+			if( length == 0 )
+			{
+				return new List<System.SByte>() ;
+			}
+
+			var elements = new List<System.SByte>( length ) ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				elements.Add( reader.GetSByte() ) ;
+			}
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コード用
+
+		public void SerializeT( List<System.SByte> elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// null & 要素数を 0 で終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+						
+			int length = elements.Count ;
+
+			// 要素数を格納する(0もある)
+			if( length == 0 )
+			{
+				// 要素が無い場合は以下の無駄な処理はしない
+				// 最下位ビットを not null で 1 とする
+				writer.PutByte( 1 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数は最大で 28 ビットとなる
+			// 最下位ビットを not null で 1 とする
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//---------------------------------------------------------
+			// ループで格納
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				writer.PutSByte( elements[ index ] ) ;
+			}
+		}
+
+		public List<System.SByte> DeserializeT( ByteStream reader )
+		{
+			// null フラグと配列要素数を取得
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			System.Int32 length = ( System.Int32 )_ ;
+
+			if( length == 0 )
+			{
+				return new List<System.SByte>() ;
+			}
+
+			var elements = new List<System.SByte>( length ) ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				elements.Add( reader.GetSByte() ) ;
+			}
+
+			return elements ;
+		}
+	}
+
 	//---------------
 
 	// リスト(SByte?)
@@ -203,6 +863,138 @@ public partial class SimpleDataPack
 			{
 				elements.Add( reader.GetSByteN() ) ;
 			}
+		}
+	}
+
+	public class ListSByteNAdapter : IAdapter
+	{
+		public void Serialize( System.Object entity, ByteStream writer )
+		{
+			if( entity == null )
+			{
+				// null & 要素数を 0 で終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+						
+			var elements = entity as List<System.SByte?> ;
+
+			int length = elements.Count ;
+
+			// 要素数を格納する(0もある)
+			if( length == 0 )
+			{
+				// 要素が無い場合は以下の無駄な処理はしない
+				// 最下位ビットを not null で 1 とする
+				writer.PutByte( 1 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数は最大で 28 ビットとなる
+			// 最下位ビットを not null で 1 とする
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//---------------------------------------------------------
+			// ループで格納
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				writer.PutSByteN( elements[ index ] ) ;
+			}
+		}
+
+		public System.Object Deserialize( ByteStream reader )
+		{
+			// null フラグと配列要素数を取得
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			System.Int32 length = ( System.Int32 )_ ;
+
+			if( length == 0 )
+			{
+				return new List<System.SByte?>() ;
+			}
+
+			var elements = new List<System.SByte?>( length ) ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				elements.Add( reader.GetSByteN() ) ;
+			}
+
+			return elements ;
+		}
+
+		//-------------------------------------------------------------------------------------------
+		// 自動生成コード用
+
+		public void SerializeT( List<System.SByte?> elements, ByteStream writer )
+		{
+			if( elements == null )
+			{
+				// null & 要素数を 0 で終了
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+						
+			int length = elements.Count ;
+
+			// 要素数を格納する(0もある)
+			if( length == 0 )
+			{
+				// 要素が無い場合は以下の無駄な処理はしない
+				// 最下位ビットを not null で 1 とする
+				writer.PutByte( 1 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数は最大で 28 ビットとなる
+			// 最下位ビットを not null で 1 とする
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//---------------------------------------------------------
+			// ループで格納
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				writer.PutSByteN( elements[ index ] ) ;
+			}
+		}
+
+		public List<System.SByte?> DeserializeT( ByteStream reader )
+		{
+			// null フラグと配列要素数を取得
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			System.Int32 length = ( System.Int32 )_ ;
+
+			if( length == 0 )
+			{
+				return new List<System.SByte?>() ;
+			}
+
+			var elements = new List<System.SByte?>( length ) ;
+
+			//---------------------------------------------------------
+			// ループで取得
+
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				elements.Add( reader.GetSByteN() ) ;
+			}
+
+			return elements ;
 		}
 	}
 

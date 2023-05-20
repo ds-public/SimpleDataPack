@@ -210,7 +210,7 @@ public partial class SimpleDataPack
 					{
 						// プリミティブ
 
-						sb += "\t\t\t" + $"{memberName} = ( {originTypeName} )SimpleDataPack.BuiltInAdapter.Array{rankCode}DPrimitive_{elementTypeCode}{N}.Deserialize( reader ) ;\n" ;
+						sb += "\t\t\t" + $"{memberName} = SimpleDataPack.BuiltInAdapter.Array{rankCode}D{elementTypeCode}{N}.DeserializeT( reader ) ;\n" ;
 					}
 				}
 			}

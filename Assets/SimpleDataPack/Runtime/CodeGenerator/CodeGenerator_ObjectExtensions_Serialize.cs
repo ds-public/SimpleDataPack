@@ -210,15 +210,13 @@ public partial class SimpleDataPack
 					{
 						// 列挙子(列挙子はアダプターにヒットしないため別処理を施す必要がある)
 //						sb += "\t\t\t" + $"SimpleDataPack.PutAnyObject( {memberName}, typeof( {originTypeName} ), writer ) ;\n" ;
-//						sb += "\t\t\t" + $"SimpleDataPack.GetArrayEnumAdapterFromEnumType( typeof( {elementOriginTypeName} ) ).Serialize( {memberName}, writer ) ;\n" ;
-
 						sb += "\t\t\t" + $"SimpleDataPack.Array{rankCode}DEnum{N}Adapter<{elementOriginTypeName}>.PutObject( {memberName}, writer ) ;\n" ;
 					}
 					else
 					{
 						// プリミティブ
 
-						sb += "\t\t\t" + $"SimpleDataPack.BuiltInAdapter.Array{rankCode}DPrimitive_{elementTypeCode}{N}.Serialize( {memberName}, writer ) ;\n" ;
+						sb += "\t\t\t" + $"SimpleDataPack.BuiltInAdapter.Array{rankCode}D{elementTypeCode}{N}.SerializeT( {memberName}, writer ) ;\n" ;
 					}
 				}
 			}
