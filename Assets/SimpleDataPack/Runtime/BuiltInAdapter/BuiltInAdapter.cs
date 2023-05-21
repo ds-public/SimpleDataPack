@@ -111,66 +111,66 @@ public partial class SimpleDataPack
 			Array2DDateTimeN			= new Array2DDateTimeNAdapter()		;
 
 			// ３次元
-			Array3DPrimitive_Boolean	= new Array3DPrimitiveAdapter_Boolean()		;
-			Array3DPrimitive_BooleanN	= new Array3DPrimitiveAdapter_BooleanN()	;
-			Array3DPrimitive_Byte		= new Array3DPrimitiveAdapter_Byte()		;
-			Array3DPrimitive_ByteN		= new Array3DPrimitiveAdapter_ByteN()		;
-			Array3DPrimitive_SByte		= new Array3DPrimitiveAdapter_SByte()		;
-			Array3DPrimitive_SByteN		= new Array3DPrimitiveAdapter_SByteN()		;
-			Array3DPrimitive_Char		= new Array3DPrimitiveAdapter_Char()		;
-			Array3DPrimitive_CharN		= new Array3DPrimitiveAdapter_CharN()		;
-			Array3DPrimitive_Int16		= new Array3DPrimitiveAdapter_Int16()		;
-			Array3DPrimitive_Int16N		= new Array3DPrimitiveAdapter_Int16N()		;
-			Array3DPrimitive_UInt16		= new Array3DPrimitiveAdapter_UInt16()		;
-			Array3DPrimitive_UInt16N	= new Array3DPrimitiveAdapter_UInt16N()		;
-			Array3DPrimitive_Int32		= new Array3DPrimitiveAdapter_Int32()		;
-			Array3DPrimitive_Int32N		= new Array3DPrimitiveAdapter_Int32N()		;
-			Array3DPrimitive_UInt32		= new Array3DPrimitiveAdapter_UInt32()		;
-			Array3DPrimitive_UInt32N	= new Array3DPrimitiveAdapter_UInt32N()		;
-			Array3DPrimitive_Int64		= new Array3DPrimitiveAdapter_Int64()		;
-			Array3DPrimitive_Int64N		= new Array3DPrimitiveAdapter_Int64N()		;
-			Array3DPrimitive_UInt64		= new Array3DPrimitiveAdapter_UInt64()		;
-			Array3DPrimitive_UInt64N	= new Array3DPrimitiveAdapter_UInt64N()		;
-			Array3DPrimitive_Single		= new Array3DPrimitiveAdapter_Single()		;
-			Array3DPrimitive_SingleN	= new Array3DPrimitiveAdapter_SingleN()		;
-			Array3DPrimitive_Double		= new Array3DPrimitiveAdapter_Double()		;
-			Array3DPrimitive_DoubleN	= new Array3DPrimitiveAdapter_DoubleN()		;
-			Array3DPrimitive_Decimal	= new Array3DPrimitiveAdapter_Decimal()		;
-			Array3DPrimitive_DecimalN	= new Array3DPrimitiveAdapter_DecimalN()	;
-			Array3DPrimitive_String		= new Array3DPrimitiveAdapter_String()		;
-			Array3DPrimitive_DateTime	= new Array3DPrimitiveAdapter_DateTime()	;
-			Array3DPrimitive_DateTimeN	= new Array3DPrimitiveAdapter_DateTimeN()	;
-
+			Array3DBoolean				= new Array3DBooleanAdapter()		;
+			Array3DBooleanN				= new Array3DBooleanNAdapter()		;
+			Array3DByte					= new Array3DByteAdapter()			;
+			Array3DByteN				= new Array3DByteNAdapter()			;
+			Array3DSByte				= new Array3DSByteAdapter()			;
+			Array3DSByteN				= new Array3DSByteNAdapter()		;
+			Array3DChar					= new Array3DCharAdapter()			;
+			Array3DCharN				= new Array3DCharNAdapter()			;
+			Array3DInt16				= new Array3DInt16Adapter()			;
+			Array3DInt16N				= new Array3DInt16NAdapter()		;
+			Array3DUInt16				= new Array3DUInt16Adapter()		;
+			Array3DUInt16N				= new Array3DUInt16NAdapter()		;
+			Array3DInt32				= new Array3DInt32Adapter()			;
+			Array3DInt32N				= new Array3DInt32NAdapter()		;
+			Array3DUInt32				= new Array3DUInt32Adapter()		;
+			Array3DUInt32N				= new Array3DUInt32NAdapter()		;
+			Array3DInt64				= new Array3DInt64Adapter()			;
+			Array3DInt64N				= new Array3DInt64NAdapter()		;
+			Array3DUInt64				= new Array3DUInt64Adapter()		;
+			Array3DUInt64N				= new Array3DUInt64NAdapter()		;
+			Array3DSingle				= new Array3DSingleAdapter()		;
+			Array3DSingleN				= new Array3DSingleNAdapter()		;
+			Array3DDouble				= new Array3DDoubleAdapter()		;
+			Array3DDoubleN				= new Array3DDoubleNAdapter()		;
+			Array3DDecimal				= new Array3DDecimalAdapter()		;
+			Array3DDecimalN				= new Array3DDecimalNAdapter()		;
+			Array3DString				= new Array3DStringAdapter()		;
+			Array3DDateTime				= new Array3DDateTimeAdapter()		;
+			Array3DDateTimeN			= new Array3DDateTimeNAdapter()		;
+			
 			// ４次元
-			Array4DPrimitive_Boolean	= new Array4DPrimitiveAdapter_Boolean()		;
-			Array4DPrimitive_BooleanN	= new Array4DPrimitiveAdapter_BooleanN()	;
-			Array4DPrimitive_Byte		= new Array4DPrimitiveAdapter_Byte()		;
-			Array4DPrimitive_ByteN		= new Array4DPrimitiveAdapter_ByteN()		;
-			Array4DPrimitive_SByte		= new Array4DPrimitiveAdapter_SByte()		;
-			Array4DPrimitive_SByteN		= new Array4DPrimitiveAdapter_SByteN()		;
-			Array4DPrimitive_Char		= new Array4DPrimitiveAdapter_Char()		;
-			Array4DPrimitive_CharN		= new Array4DPrimitiveAdapter_CharN()		;
-			Array4DPrimitive_Int16		= new Array4DPrimitiveAdapter_Int16()		;
-			Array4DPrimitive_Int16N		= new Array4DPrimitiveAdapter_Int16N()		;
-			Array4DPrimitive_UInt16		= new Array4DPrimitiveAdapter_UInt16()		;
-			Array4DPrimitive_UInt16N	= new Array4DPrimitiveAdapter_UInt16N()		;
-			Array4DPrimitive_Int32		= new Array4DPrimitiveAdapter_Int32()		;
-			Array4DPrimitive_Int32N		= new Array4DPrimitiveAdapter_Int32N()		;
-			Array4DPrimitive_UInt32		= new Array4DPrimitiveAdapter_UInt32()		;
-			Array4DPrimitive_UInt32N	= new Array4DPrimitiveAdapter_UInt32N()		;
-			Array4DPrimitive_Int64		= new Array4DPrimitiveAdapter_Int64()		;
-			Array4DPrimitive_Int64N		= new Array4DPrimitiveAdapter_Int64N()		;
-			Array4DPrimitive_UInt64		= new Array4DPrimitiveAdapter_UInt64()		;
-			Array4DPrimitive_UInt64N	= new Array4DPrimitiveAdapter_UInt64N()		;
-			Array4DPrimitive_Single		= new Array4DPrimitiveAdapter_Single()		;
-			Array4DPrimitive_SingleN	= new Array4DPrimitiveAdapter_SingleN()		;
-			Array4DPrimitive_Double		= new Array4DPrimitiveAdapter_Double()		;
-			Array4DPrimitive_DoubleN	= new Array4DPrimitiveAdapter_DoubleN()		;
-			Array4DPrimitive_Decimal	= new Array4DPrimitiveAdapter_Decimal()		;
-			Array4DPrimitive_DecimalN	= new Array4DPrimitiveAdapter_DecimalN()	;
-			Array4DPrimitive_String		= new Array4DPrimitiveAdapter_String()		;
-			Array4DPrimitive_DateTime	= new Array4DPrimitiveAdapter_DateTime()	;
-			Array4DPrimitive_DateTimeN	= new Array4DPrimitiveAdapter_DateTimeN()	;
+			Array4DBoolean				= new Array4DBooleanAdapter()		;
+			Array4DBooleanN				= new Array4DBooleanNAdapter()		;
+			Array4DByte					= new Array4DByteAdapter()			;
+			Array4DByteN				= new Array4DByteNAdapter()			;
+			Array4DSByte				= new Array4DSByteAdapter()			;
+			Array4DSByteN				= new Array4DSByteNAdapter()		;
+			Array4DChar					= new Array4DCharAdapter()			;
+			Array4DCharN				= new Array4DCharNAdapter()			;
+			Array4DInt16				= new Array4DInt16Adapter()			;
+			Array4DInt16N				= new Array4DInt16NAdapter()		;
+			Array4DUInt16				= new Array4DUInt16Adapter()		;
+			Array4DUInt16N				= new Array4DUInt16NAdapter()		;
+			Array4DInt32				= new Array4DInt32Adapter()			;
+			Array4DInt32N				= new Array4DInt32NAdapter()		;
+			Array4DUInt32				= new Array4DUInt32Adapter()		;
+			Array4DUInt32N				= new Array4DUInt32NAdapter()		;
+			Array4DInt64				= new Array4DInt64Adapter()			;
+			Array4DInt64N				= new Array4DInt64NAdapter()		;
+			Array4DUInt64				= new Array4DUInt64Adapter()		;
+			Array4DUInt64N				= new Array4DUInt64NAdapter()		;
+			Array4DSingle				= new Array4DSingleAdapter()		;
+			Array4DSingleN				= new Array4DSingleNAdapter()		;
+			Array4DDouble				= new Array4DDoubleAdapter()		;
+			Array4DDoubleN				= new Array4DDoubleNAdapter()		;
+			Array4DDecimal				= new Array4DDecimalAdapter()		;
+			Array4DDecimalN				= new Array4DDecimalNAdapter()		;
+			Array4DString				= new Array4DStringAdapter()		;
+			Array4DDateTime				= new Array4DDateTimeAdapter()		;
+			Array4DDateTimeN			= new Array4DDateTimeNAdapter()		;
 
 			// リスト型のアダプター生成
 
@@ -307,66 +307,66 @@ public partial class SimpleDataPack
 			dapterCahce.Add( typeof( System.DateTime?[,] ),			Array2DDateTimeN )		;
 
 			// ３次元
-			dapterCahce.Add( typeof( System.Boolean[,,] ),			Array3DPrimitive_Boolean )		;
-			dapterCahce.Add( typeof( System.Boolean?[,,] ),			Array3DPrimitive_BooleanN )		;
-			dapterCahce.Add( typeof( System.Byte[,,] ),				Array3DPrimitive_Byte )			;
-			dapterCahce.Add( typeof( System.Byte?[,,] ),			Array3DPrimitive_ByteN )		;
-			dapterCahce.Add( typeof( System.SByte[,,] ),			Array3DPrimitive_SByte )		;
-			dapterCahce.Add( typeof( System.SByte?[,,] ),			Array3DPrimitive_SByteN )		;
-			dapterCahce.Add( typeof( System.Char[,,] ),				Array3DPrimitive_Char )			;
-			dapterCahce.Add( typeof( System.Char?[,,] ),			Array3DPrimitive_CharN )		;
-			dapterCahce.Add( typeof( System.Int16[,,] ),			Array3DPrimitive_Int16 )		;
-			dapterCahce.Add( typeof( System.Int16?[,,] ),			Array3DPrimitive_Int16N )		;
-			dapterCahce.Add( typeof( System.UInt16[,,] ),			Array3DPrimitive_UInt16 )		;
-			dapterCahce.Add( typeof( System.UInt16?[,,] ),			Array3DPrimitive_UInt16N )		;
-			dapterCahce.Add( typeof( System.Int32[,,] ),			Array3DPrimitive_Int32 )		;
-			dapterCahce.Add( typeof( System.Int32?[,,] ),			Array3DPrimitive_Int32N )		;
-			dapterCahce.Add( typeof( System.UInt32[,,] ),			Array3DPrimitive_UInt32 )		;
-			dapterCahce.Add( typeof( System.UInt32?[,,] ),			Array3DPrimitive_UInt32N )		;
-			dapterCahce.Add( typeof( System.Int64[,,] ),			Array3DPrimitive_Int64 )		;
-			dapterCahce.Add( typeof( System.Int64?[,,] ),			Array3DPrimitive_Int64N )		;
-			dapterCahce.Add( typeof( System.UInt64[,,] ),			Array3DPrimitive_UInt64 )		;
-			dapterCahce.Add( typeof( System.UInt64?[,,] ),			Array3DPrimitive_UInt64N )		;
-			dapterCahce.Add( typeof( System.Single[,,] ),			Array3DPrimitive_Single )		;
-			dapterCahce.Add( typeof( System.Single?[,,] ),			Array3DPrimitive_SingleN )		;
-			dapterCahce.Add( typeof( System.Double[,,] ),			Array3DPrimitive_Double )		;
-			dapterCahce.Add( typeof( System.Double?[,,] ),			Array3DPrimitive_DoubleN )		;
-			dapterCahce.Add( typeof( System.Decimal[,,] ),			Array3DPrimitive_Decimal )		;
-			dapterCahce.Add( typeof( System.Decimal?[,,] ),			Array3DPrimitive_DecimalN )		;
-			dapterCahce.Add( typeof( System.String[,,] ),			Array3DPrimitive_String )		;
-			dapterCahce.Add( typeof( System.DateTime[,,] ),			Array3DPrimitive_DateTime )		;
-			dapterCahce.Add( typeof( System.DateTime?[,,] ),		Array3DPrimitive_DateTimeN )	;
+			dapterCahce.Add( typeof( System.Boolean[,,] ),			Array3DBoolean )		;
+			dapterCahce.Add( typeof( System.Boolean?[,,] ),			Array3DBooleanN )		;
+			dapterCahce.Add( typeof( System.Byte[,,] ),				Array3DByte )			;
+			dapterCahce.Add( typeof( System.Byte?[,,] ),			Array3DByteN )			;
+			dapterCahce.Add( typeof( System.SByte[,,] ),			Array3DSByte )			;
+			dapterCahce.Add( typeof( System.SByte?[,,] ),			Array3DSByteN )			;
+			dapterCahce.Add( typeof( System.Char[,,] ),				Array3DChar )			;
+			dapterCahce.Add( typeof( System.Char?[,,] ),			Array3DCharN )			;
+			dapterCahce.Add( typeof( System.Int16[,,] ),			Array3DInt16 )			;
+			dapterCahce.Add( typeof( System.Int16?[,,] ),			Array3DInt16N )			;
+			dapterCahce.Add( typeof( System.UInt16[,,] ),			Array3DUInt16 )			;
+			dapterCahce.Add( typeof( System.UInt16?[,,] ),			Array3DUInt16N )		;
+			dapterCahce.Add( typeof( System.Int32[,,] ),			Array3DInt32 )			;
+			dapterCahce.Add( typeof( System.Int32?[,,] ),			Array3DInt32N )			;
+			dapterCahce.Add( typeof( System.UInt32[,,] ),			Array3DUInt32 )			;
+			dapterCahce.Add( typeof( System.UInt32?[,,] ),			Array3DUInt32N )		;
+			dapterCahce.Add( typeof( System.Int64[,,] ),			Array3DInt64 )			;
+			dapterCahce.Add( typeof( System.Int64?[,,] ),			Array3DInt64N )			;
+			dapterCahce.Add( typeof( System.UInt64[,,] ),			Array3DUInt64 )			;
+			dapterCahce.Add( typeof( System.UInt64?[,,] ),			Array3DUInt64N )		;
+			dapterCahce.Add( typeof( System.Single[,,] ),			Array3DSingle )			;
+			dapterCahce.Add( typeof( System.Single?[,,] ),			Array3DSingleN )		;
+			dapterCahce.Add( typeof( System.Double[,,] ),			Array3DDouble )			;
+			dapterCahce.Add( typeof( System.Double?[,,] ),			Array3DDoubleN )		;
+			dapterCahce.Add( typeof( System.Decimal[,,] ),			Array3DDecimal )		;
+			dapterCahce.Add( typeof( System.Decimal?[,,] ),			Array3DDecimalN )		;
+			dapterCahce.Add( typeof( System.String[,,] ),			Array3DString )			;
+			dapterCahce.Add( typeof( System.DateTime[,,] ),			Array3DDateTime )		;
+			dapterCahce.Add( typeof( System.DateTime?[,,] ),		Array3DDateTimeN )		;
 
 			// ４次元
-			dapterCahce.Add( typeof( System.Boolean[,,,] ),			Array4DPrimitive_Boolean )		;
-			dapterCahce.Add( typeof( System.Boolean?[,,,] ),		Array4DPrimitive_BooleanN )		;
-			dapterCahce.Add( typeof( System.Byte[,,,] ),			Array4DPrimitive_Byte )			;
-			dapterCahce.Add( typeof( System.Byte?[,,,] ),			Array4DPrimitive_ByteN )		;
-			dapterCahce.Add( typeof( System.SByte[,,,] ),			Array4DPrimitive_SByte )		;
-			dapterCahce.Add( typeof( System.SByte?[,,,] ),			Array4DPrimitive_SByteN )		;
-			dapterCahce.Add( typeof( System.Char[,,,] ),			Array4DPrimitive_Char )			;
-			dapterCahce.Add( typeof( System.Char?[,,,] ),			Array4DPrimitive_CharN )		;
-			dapterCahce.Add( typeof( System.Int16[,,,] ),			Array4DPrimitive_Int16 )		;
-			dapterCahce.Add( typeof( System.Int16?[,,,] ),			Array4DPrimitive_Int16N )		;
-			dapterCahce.Add( typeof( System.UInt16[,,,] ),			Array4DPrimitive_UInt16 )		;
-			dapterCahce.Add( typeof( System.UInt16?[,,,] ),			Array4DPrimitive_UInt16N )		;
-			dapterCahce.Add( typeof( System.Int32[,,,] ),			Array4DPrimitive_Int32 )		;
-			dapterCahce.Add( typeof( System.Int32?[,,,] ),			Array4DPrimitive_Int32N )		;
-			dapterCahce.Add( typeof( System.UInt32[,,,] ),			Array4DPrimitive_UInt32 )		;
-			dapterCahce.Add( typeof( System.UInt32?[,,,] ),			Array4DPrimitive_UInt32N )		;
-			dapterCahce.Add( typeof( System.Int64[,,,] ),			Array4DPrimitive_Int64 )		;
-			dapterCahce.Add( typeof( System.Int64?[,,,] ),			Array4DPrimitive_Int64N )		;
-			dapterCahce.Add( typeof( System.UInt64[,,,] ),			Array4DPrimitive_UInt64 )		;
-			dapterCahce.Add( typeof( System.UInt64?[,,,] ),			Array4DPrimitive_UInt64N )		;
-			dapterCahce.Add( typeof( System.Single[,,,] ),			Array4DPrimitive_Single )		;
-			dapterCahce.Add( typeof( System.Single?[,,,] ),			Array4DPrimitive_SingleN )		;
-			dapterCahce.Add( typeof( System.Double[,,,] ),			Array4DPrimitive_Double )		;
-			dapterCahce.Add( typeof( System.Double?[,,,] ),			Array4DPrimitive_DoubleN )		;
-			dapterCahce.Add( typeof( System.Decimal[,,,] ),			Array4DPrimitive_Decimal )		;
-			dapterCahce.Add( typeof( System.Decimal?[,,,] ),		Array4DPrimitive_DecimalN )		;
-			dapterCahce.Add( typeof( System.String[,,,] ),			Array4DPrimitive_String )		;
-			dapterCahce.Add( typeof( System.DateTime[,,,] ),		Array4DPrimitive_DateTime )		;
-			dapterCahce.Add( typeof( System.DateTime?[,,,] ),		Array4DPrimitive_DateTimeN )	;
+			dapterCahce.Add( typeof( System.Boolean[,,,] ),			Array4DBoolean )		;
+			dapterCahce.Add( typeof( System.Boolean?[,,,] ),		Array4DBooleanN )		;
+			dapterCahce.Add( typeof( System.Byte[,,,] ),			Array4DByte )			;
+			dapterCahce.Add( typeof( System.Byte?[,,,] ),			Array4DByteN )			;
+			dapterCahce.Add( typeof( System.SByte[,,,] ),			Array4DSByte )			;
+			dapterCahce.Add( typeof( System.SByte?[,,,] ),			Array4DSByteN )			;
+			dapterCahce.Add( typeof( System.Char[,,,] ),			Array4DChar )			;
+			dapterCahce.Add( typeof( System.Char?[,,,] ),			Array4DCharN )			;
+			dapterCahce.Add( typeof( System.Int16[,,,] ),			Array4DInt16 )			;
+			dapterCahce.Add( typeof( System.Int16?[,,,] ),			Array4DInt16N )			;
+			dapterCahce.Add( typeof( System.UInt16[,,,] ),			Array4DUInt16 )			;
+			dapterCahce.Add( typeof( System.UInt16?[,,,] ),			Array4DUInt16N )		;
+			dapterCahce.Add( typeof( System.Int32[,,,] ),			Array4DInt32 )			;
+			dapterCahce.Add( typeof( System.Int32?[,,,] ),			Array4DInt32N )			;
+			dapterCahce.Add( typeof( System.UInt32[,,,] ),			Array4DUInt32 )			;
+			dapterCahce.Add( typeof( System.UInt32?[,,,] ),			Array4DUInt32N )		;
+			dapterCahce.Add( typeof( System.Int64[,,,] ),			Array4DInt64 )			;
+			dapterCahce.Add( typeof( System.Int64?[,,,] ),			Array4DInt64N )			;
+			dapterCahce.Add( typeof( System.UInt64[,,,] ),			Array4DUInt64 )			;
+			dapterCahce.Add( typeof( System.UInt64?[,,,] ),			Array4DUInt64N )		;
+			dapterCahce.Add( typeof( System.Single[,,,] ),			Array4DSingle )			;
+			dapterCahce.Add( typeof( System.Single?[,,,] ),			Array4DSingleN )		;
+			dapterCahce.Add( typeof( System.Double[,,,] ),			Array4DDouble )			;
+			dapterCahce.Add( typeof( System.Double?[,,,] ),			Array4DDoubleN )		;
+			dapterCahce.Add( typeof( System.Decimal[,,,] ),			Array4DDecimal )		;
+			dapterCahce.Add( typeof( System.Decimal?[,,,] ),		Array4DDecimalN )		;
+			dapterCahce.Add( typeof( System.String[,,,] ),			Array4DString )			;
+			dapterCahce.Add( typeof( System.DateTime[,,,] ),		Array4DDateTime )		;
+			dapterCahce.Add( typeof( System.DateTime?[,,,] ),		Array4DDateTimeN )		;
 
 
 			// リスト型のアダプター生成
@@ -501,66 +501,66 @@ public partial class SimpleDataPack
 		public static Array2DDateTimeNAdapter				Array2DDateTimeN{ get ; private set ; }
 
 		// ３次元
-		public static Array3DPrimitiveAdapter_Boolean		Array3DPrimitive_Boolean{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_BooleanN		Array3DPrimitive_BooleanN{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_Byte			Array3DPrimitive_Byte{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_ByteN			Array3DPrimitive_ByteN{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_SByte			Array3DPrimitive_SByte{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_SByteN		Array3DPrimitive_SByteN{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_Char			Array3DPrimitive_Char{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_CharN			Array3DPrimitive_CharN{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_Int16			Array3DPrimitive_Int16{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_Int16N		Array3DPrimitive_Int16N{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_UInt16		Array3DPrimitive_UInt16{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_UInt16N		Array3DPrimitive_UInt16N{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_Int32			Array3DPrimitive_Int32{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_Int32N		Array3DPrimitive_Int32N{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_UInt32		Array3DPrimitive_UInt32{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_UInt32N		Array3DPrimitive_UInt32N{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_Int64			Array3DPrimitive_Int64{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_Int64N		Array3DPrimitive_Int64N{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_UInt64		Array3DPrimitive_UInt64{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_UInt64N		Array3DPrimitive_UInt64N{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_Single		Array3DPrimitive_Single{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_SingleN		Array3DPrimitive_SingleN{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_Double		Array3DPrimitive_Double{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_DoubleN		Array3DPrimitive_DoubleN{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_Decimal		Array3DPrimitive_Decimal{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_DecimalN		Array3DPrimitive_DecimalN{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_String		Array3DPrimitive_String{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_DateTime		Array3DPrimitive_DateTime{ get ; private set ; }
-		public static Array3DPrimitiveAdapter_DateTimeN		Array3DPrimitive_DateTimeN{ get ; private set ; }
+		public static Array3DBooleanAdapter					Array3DBoolean{ get ; private set ; }
+		public static Array3DBooleanNAdapter				Array3DBooleanN{ get ; private set ; }
+		public static Array3DByteAdapter					Array3DByte{ get ; private set ; }
+		public static Array3DByteNAdapter					Array3DByteN{ get ; private set ; }
+		public static Array3DSByteAdapter					Array3DSByte{ get ; private set ; }
+		public static Array3DSByteNAdapter					Array3DSByteN{ get ; private set ; }
+		public static Array3DCharAdapter					Array3DChar{ get ; private set ; }
+		public static Array3DCharNAdapter					Array3DCharN{ get ; private set ; }
+		public static Array3DInt16Adapter					Array3DInt16{ get ; private set ; }
+		public static Array3DInt16NAdapter					Array3DInt16N{ get ; private set ; }
+		public static Array3DUInt16Adapter					Array3DUInt16{ get ; private set ; }
+		public static Array3DUInt16NAdapter					Array3DUInt16N{ get ; private set ; }
+		public static Array3DInt32Adapter					Array3DInt32{ get ; private set ; }
+		public static Array3DInt32NAdapter					Array3DInt32N{ get ; private set ; }
+		public static Array3DUInt32Adapter					Array3DUInt32{ get ; private set ; }
+		public static Array3DUInt32NAdapter					Array3DUInt32N{ get ; private set ; }
+		public static Array3DInt64Adapter					Array3DInt64{ get ; private set ; }
+		public static Array3DInt64NAdapter					Array3DInt64N{ get ; private set ; }
+		public static Array3DUInt64Adapter					Array3DUInt64{ get ; private set ; }
+		public static Array3DUInt64NAdapter					Array3DUInt64N{ get ; private set ; }
+		public static Array3DSingleAdapter					Array3DSingle{ get ; private set ; }
+		public static Array3DSingleNAdapter					Array3DSingleN{ get ; private set ; }
+		public static Array3DDoubleAdapter					Array3DDouble{ get ; private set ; }
+		public static Array3DDoubleNAdapter					Array3DDoubleN{ get ; private set ; }
+		public static Array3DDecimalAdapter					Array3DDecimal{ get ; private set ; }
+		public static Array3DDecimalNAdapter				Array3DDecimalN{ get ; private set ; }
+		public static Array3DStringAdapter					Array3DString{ get ; private set ; }
+		public static Array3DDateTimeAdapter				Array3DDateTime{ get ; private set ; }
+		public static Array3DDateTimeNAdapter				Array3DDateTimeN{ get ; private set ; }
 
 		// ４次元
-		public static Array4DPrimitiveAdapter_Boolean		Array4DPrimitive_Boolean{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_BooleanN		Array4DPrimitive_BooleanN{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_Byte			Array4DPrimitive_Byte{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_ByteN			Array4DPrimitive_ByteN{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_SByte			Array4DPrimitive_SByte{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_SByteN		Array4DPrimitive_SByteN{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_Char			Array4DPrimitive_Char{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_CharN			Array4DPrimitive_CharN{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_Int16			Array4DPrimitive_Int16{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_Int16N		Array4DPrimitive_Int16N{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_UInt16		Array4DPrimitive_UInt16{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_UInt16N		Array4DPrimitive_UInt16N{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_Int32			Array4DPrimitive_Int32{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_Int32N		Array4DPrimitive_Int32N{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_UInt32		Array4DPrimitive_UInt32{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_UInt32N		Array4DPrimitive_UInt32N{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_Int64			Array4DPrimitive_Int64{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_Int64N		Array4DPrimitive_Int64N{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_UInt64		Array4DPrimitive_UInt64{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_UInt64N		Array4DPrimitive_UInt64N{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_Single		Array4DPrimitive_Single{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_SingleN		Array4DPrimitive_SingleN{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_Double		Array4DPrimitive_Double{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_DoubleN		Array4DPrimitive_DoubleN{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_Decimal		Array4DPrimitive_Decimal{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_DecimalN		Array4DPrimitive_DecimalN{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_String		Array4DPrimitive_String{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_DateTime		Array4DPrimitive_DateTime{ get ; private set ; }
-		public static Array4DPrimitiveAdapter_DateTimeN		Array4DPrimitive_DateTimeN{ get ; private set ; }
+		public static Array4DBooleanAdapter					Array4DBoolean{ get ; private set ; }
+		public static Array4DBooleanNAdapter				Array4DBooleanN{ get ; private set ; }
+		public static Array4DByteAdapter					Array4DByte{ get ; private set ; }
+		public static Array4DByteNAdapter					Array4DByteN{ get ; private set ; }
+		public static Array4DSByteAdapter					Array4DSByte{ get ; private set ; }
+		public static Array4DSByteNAdapter					Array4DSByteN{ get ; private set ; }
+		public static Array4DCharAdapter					Array4DChar{ get ; private set ; }
+		public static Array4DCharNAdapter					Array4DCharN{ get ; private set ; }
+		public static Array4DInt16Adapter					Array4DInt16{ get ; private set ; }
+		public static Array4DInt16NAdapter					Array4DInt16N{ get ; private set ; }
+		public static Array4DUInt16Adapter					Array4DUInt16{ get ; private set ; }
+		public static Array4DUInt16NAdapter					Array4DUInt16N{ get ; private set ; }
+		public static Array4DInt32Adapter					Array4DInt32{ get ; private set ; }
+		public static Array4DInt32NAdapter					Array4DInt32N{ get ; private set ; }
+		public static Array4DUInt32Adapter					Array4DUInt32{ get ; private set ; }
+		public static Array4DUInt32NAdapter					Array4DUInt32N{ get ; private set ; }
+		public static Array4DInt64Adapter					Array4DInt64{ get ; private set ; }
+		public static Array4DInt64NAdapter					Array4DInt64N{ get ; private set ; }
+		public static Array4DUInt64Adapter					Array4DUInt64{ get ; private set ; }
+		public static Array4DUInt64NAdapter					Array4DUInt64N{ get ; private set ; }
+		public static Array4DSingleAdapter					Array4DSingle{ get ; private set ; }
+		public static Array4DSingleNAdapter					Array4DSingleN{ get ; private set ; }
+		public static Array4DDoubleAdapter					Array4DDouble{ get ; private set ; }
+		public static Array4DDoubleNAdapter					Array4DDoubleN{ get ; private set ; }
+		public static Array4DDecimalAdapter					Array4DDecimal{ get ; private set ; }
+		public static Array4DDecimalNAdapter				Array4DDecimalN{ get ; private set ; }
+		public static Array4DStringAdapter					Array4DString{ get ; private set ; }
+		public static Array4DDateTimeAdapter				Array4DDateTime{ get ; private set ; }
+		public static Array4DDateTimeNAdapter				Array4DDateTimeN{ get ; private set ; }
 
 		// リスト
 

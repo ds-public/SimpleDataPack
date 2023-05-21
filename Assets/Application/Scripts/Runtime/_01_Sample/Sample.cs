@@ -39,7 +39,7 @@ namespace DSW.Screens
 			//--------------------------------------------------------------------------
 			// SimpleDataPack のテスト
 
-			int si, sl = 1 ;
+			int si, sl = 1000 ;
 
 //			var o1 = new T() ;
 //			var o1 = new List<MyData.MySample_W>() ;

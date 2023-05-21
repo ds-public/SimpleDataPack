@@ -175,16 +175,50 @@ public partial class SimpleDataPack
 	/// <param name="adapter"></param>
 	public static void SetExternalAdapter( IExternalAdapter externalAdapter )
 	{
+		// 外部アダプターが有効
 		m_ExternalAdapter = externalAdapter ;
+
+		//-----------------------------------
 
 		// この前に SimpleDataPack のスタティックコンストラクタが実行されているはずである
 
+		// 外部アダプターの初期化
+		ExternalAdapterCache.Clear() ;
+		m_BuiltInAdapter.AddTo( ExternalAdapterCache ) ;
+
+		// 外部アダプターをキャッシュに加える
 		m_ExternalAdapter.AddToExternalAdapterCache() ;
 
 		//-----------------------------------
 
 		ActiveAdapterCache	= ExternalAdapterCache ;
 	}
+
+	/// <summary>
+	/// オブジェクト定義情報のキャッシュを消去する
+	/// </summary>
+	public static void Clear()
+	{
+		// 内部アダプターの初期化
+
+		m_ObjectDefinitionCache.Clear() ;
+
+		InternalAdapterCache.Clear() ;
+		m_BuiltInAdapter.AddTo( InternalAdapterCache ) ;
+
+		//-----------------------------------
+
+		if( ExternalAdapterEnabled == true )
+		{
+			// 外部アダプターの初期化
+			ExternalAdapterCache.Clear() ;
+			m_BuiltInAdapter.AddTo( ExternalAdapterCache ) ;
+
+			// 外部アダプターをキャッシュに加える
+			m_ExternalAdapter.AddToExternalAdapterCache() ;
+		}
+	}
+
 
 	//--------------------------------------------------------------------------------------------
 
@@ -325,30 +359,6 @@ public partial class SimpleDataPack
 	}
 
 	//--------------------------------------------------------------------------------------------
-
-	/// <summary>
-	/// オブジェクト定義情報のキャッシュを消去する
-	/// </summary>
-	public static void Clear()
-	{
-		// 内部アダプターの初期化
-
-		m_ObjectDefinitionCache.Clear() ;
-
-		InternalAdapterCache.Clear() ;
-		m_BuiltInAdapter.AddTo( InternalAdapterCache ) ;
-
-		//-----------------------------------
-
-		// 外部アダプターの初期化
-		ExternalAdapterCache.Clear() ;
-		m_BuiltInAdapter.AddTo( ExternalAdapterCache ) ;
-
-		if( ExternalAdapterEnabled == true )
-		{
-			m_ExternalAdapter.AddToExternalAdapterCache() ;	// 後で ↓ に変える
-		}
-	}
 
 	//-------------------------------------------------------------------------------------------
 	// ユーティリティ
