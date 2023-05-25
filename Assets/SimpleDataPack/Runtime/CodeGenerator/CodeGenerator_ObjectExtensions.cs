@@ -31,18 +31,21 @@ public partial class SimpleDataPack
 
 			foreach( var type in types )
 			{
-				if( typeCategories.ContainsKey( type.Namespace ) == false )
+				if( type.IsInterface == false )
 				{
-					// 新たなネームスペース
-					List<Type> typeCategory = new List<Type>() ;
+					if( typeCategories.ContainsKey( type.Namespace ) == false )
+					{
+						// 新たなネームスペース
+						var typeCategory = new List<Type>() ;
 
-					typeCategories.Add( type.Namespace, typeCategory ) ;
-					typeCategory.Add( type ) ;
-				}
-				else
-				{
-					// 既存のネームスペース
-					typeCategories[ type.Namespace ].Add( type ) ;
+						typeCategories.Add( type.Namespace, typeCategory ) ;
+						typeCategory.Add( type ) ;
+					}
+					else
+					{
+						// 既存のネームスペース
+						typeCategories[ type.Namespace ].Add( type ) ;
+					}
 				}
 			}
 

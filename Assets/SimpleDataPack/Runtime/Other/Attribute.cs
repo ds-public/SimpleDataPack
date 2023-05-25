@@ -7,12 +7,7 @@ using System ;
 /// </summary>
 public class SimpleDataPackObjectAttribute : Attribute
 {
-	public readonly bool KeyAsCode		= false ;
-
-	public SimpleDataPackObjectAttribute( bool keyAsCode = false )
-	{
-		this.KeyAsCode		= keyAsCode ;
-	}
+	public SimpleDataPackObjectAttribute(){}
 }
 
 /// <summary>
@@ -37,6 +32,24 @@ public class SimpleDataPackMemberAttribute : Attribute
 	public SimpleDataPackMemberAttribute( int code, bool isMember = true )
 	{
 		this.IsMember	= isMember ;
+		this.Code		= code ;
+	}
+}
+
+[AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
+public class SimpleDataPackUnionAttribute : Attribute
+{
+	public readonly Type	GroupType ;
+	public readonly	int		Code ;
+
+	public SimpleDataPackUnionAttribute( Type groupType )
+	{
+		this.GroupType	= groupType ;
+	}
+
+	public SimpleDataPackUnionAttribute( int code, Type groupType )
+	{
+		this.GroupType	= groupType ;
 		this.Code		= code ;
 	}
 }

@@ -2,6 +2,7 @@ using System ;
 using System.Collections ;
 using System.Collections.Generic ;
 using System.IO ;
+using System.Linq ;
 using System.Reflection ;
 
 using UnityEngine ;
@@ -49,20 +50,30 @@ public partial class SimpleDataPack
 			return ( null, null ) ;
 		}
 
-		List<Type> types = new List<Type>() ;
+		var types = new List<Type>() ;
 		foreach( var assemblyType in assemblyTypes )
 		{
 #if false
-			$"名前:{assemblyType.Name}" + "\n" +
-			$"名前空間:{assemblyType.Namespace}" + "\n" +
-			$"完全限定名:{assemblyType.FullName}" + "\n" + 
-			$"このメンバを宣言するクラス:{assemblyType.DeclaringType}" + "\n" +
-			$"直接の継承元:{assemblyType.BaseType}" + "\n" +
-			$"属性:{assemblyType.Attributes}"
+			Debug.Log
+			(
+				$"名前:{assemblyType.Name}" + "\n" +
+				$"名前空間:{assemblyType.Namespace}" + "\n" +
+				$"完全限定名:{assemblyType.FullName}" + "\n" + 
+				$"このメンバを宣言するクラス:{assemblyType.DeclaringType}" + "\n" +
+				$"直接の継承元:{assemblyType.BaseType}" + "\n" +
+				$"属性:{assemblyType.Attributes}"
+			) ;
 #endif
 			//	対象となるオブジェクト定義のみを抽出する
-			var _ = assemblyType.GetCustomAttribute<SimpleDataPackObjectAttribute>() ;
-			if( _ != null )
+			var c = assemblyType.GetCustomAttribute<SimpleDataPackObjectAttribute>() ;
+			if( c != null )
+			{
+				// 対象となるオブジェクト定義
+				types.Add( assemblyType ) ;
+			}
+
+			var i = assemblyType.GetCustomAttributes<SimpleDataPackUnionAttribute>() ;
+			if( i != null && i.Count() >  0 )
 			{
 				// 対象となるオブジェクト定義
 				types.Add( assemblyType ) ;
@@ -126,10 +137,10 @@ public partial class SimpleDataPack
 	/// <returns></returns>
 	public static ( string, string ) GenerateCode( string objectName, Type[] types )
 	{
-		CodeGenerator_ObjectDispatcher objectDispatcher = new CodeGenerator_ObjectDispatcher() ;
+		var objectDispatcher = new CodeGenerator_ObjectDispatcher() ;
 		string objectDispatcherCode = objectDispatcher.GenerateCode( objectName, types ) ;
 
-		CodeGenerator_ObjectExtensions objectExtensions = new CodeGenerator_ObjectExtensions() ;
+		var objectExtensions = new CodeGenerator_ObjectExtensions() ;
 		string objectExtensionsCode = objectExtensions.GenerateCode( types ) ;
 
 //		Debug.Log( objectExtensionsCode ) ;

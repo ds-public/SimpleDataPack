@@ -1,3 +1,5 @@
+/*
+
 using System ;
 using System.Collections ;
 using System.Collections.Generic ;
@@ -7,7 +9,7 @@ using UnityEngine ;
 
 using Cysharp.Threading.Tasks ;
 
-//using MessagePack ;
+using MessagePack ;
 
 using uGUIHelper ;
 
@@ -526,15 +528,17 @@ namespace DSW.MyData
 		public byte INT =   0 ;
 
 		[SimpleDataPackMember(2)][Key(2)]
-		public Nullable<Status_W> Special = Status_W.Agility ;
+		public Nullable<Status_B> Special = Status_B.Agility ;
 
 		[SimpleDataPackMember(3)][Key(3)]
 		public byte? Dummy =   0 ;
 
 		[SimpleDataPackMember(4)][Key(4)]
-		public Status_W[]		Dummys = new Status_W[]{ Status_W.Intelligence, Status_W.Mind, Status_W.Agility, Status_W.Vitality } ;
+		public Status_B[]		Dummys = new Status_B[]{ Status_B.Intelligence, Status_B.Mind, Status_B.Agility, Status_B.Vitality } ;
 //		public Status?[]		Dummys = new Status?[]{ null, Status.Mind, Status.Agility, null } ;
 //		public List<Status?>	Dummys = new List<Status?>{ null, Status.Mind, Status.Agility, null } ;
 
 	}
 }
+
+*/

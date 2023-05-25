@@ -44,7 +44,7 @@ public partial class SimpleDataPack
 
 					case ValueTypes.Object :
 						// 少しだけ処理を削減　※ SimpledataPacker.PutObject( {member.Name} ) ; でも結果として同じ処理にはなる
-						if( member.ObjectIsClass == true || member.IsNullable == true )
+						if( member.ObjectIsClass == true || member.IsNullable == true || member.ObjectIsInterface == true )
 						{
 							// class or struct?
 							sb += "\t\t\t" + $"{member.Name} = ( {originTypeName} )SimpleDataPack.GetAnyObject( typeof( {originTypeName} ), reader ) ;\n" ;

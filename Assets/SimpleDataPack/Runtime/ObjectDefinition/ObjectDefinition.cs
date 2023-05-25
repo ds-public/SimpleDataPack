@@ -27,14 +27,19 @@ public partial class SimpleDataPack
 		public Type						ObjectType ;
 
 		/// <summary>
-		/// 並び順にコード値を使用するかどうか
+		/// インターフェースかどうか
 		/// </summary>
-		public bool						KeyAsCode ;
+		public bool						IsInterface = false ;
 
 		/// <summary>
 		/// クラス内のシリアライズ対象のメンバー情報群
 		/// </summary>
 		public MemberDefinition[]		Members ;
+
+		/// <summary>
+		/// インターフェースであった場合の派生オブジェクトタイプ群
+		/// </summary>
+		public Type[]					GroupTypes ;
 
 		//-------------------------------------------------------------------------------------------
 
@@ -91,6 +96,11 @@ public partial class SimpleDataPack
 			/// オブジェクトのタイプコード
 			/// </summary>
 			public TypeCode			ObjectTypeCode ;
+
+			/// <summary>
+			/// オブジェクトがインターフェースかどうか
+			/// </summary>
+			public bool				ObjectIsInterface ;
 
 			//--------------
 
@@ -1159,18 +1169,146 @@ public partial class SimpleDataPack
 			}
 		}
 
+		public class InternalInterfaceAdapter : IAdapter
+		{
+			// class または struct (Nullable Array List Dictionary という事は無い)
+//			private readonly Type				m_ObjectType ;
+			private readonly Type[]				m_GroupTypes ;
+
+			//------------------------------------------------------------------------------------------
+
+			public InternalInterfaceAdapter( ObjectDefinition objectDefinition )
+			{
+//				m_ObjectType		= objectDefinition.ObjectType ;
+				m_GroupTypes		= objectDefinition.GroupTypes ;
+			}
+
+			//----------------------------------------------------------
+
+			/// <summary>
+			/// シリアライズを実行する
+			/// </summary>
+			/// <param name="entity"></param>
+			/// <param name="writer"></param>
+			public void Serialize( System.Object entity, ByteStream writer )
+			{
+				if( entity == null )
+				{
+					writer.PutByte( 0 ) ;
+					return ;
+				}
+
+				//---------------------------------
+
+				Type objectType = entity.GetType() ;
+
+				System.UInt32 index, length = ( System.UInt32 )m_GroupTypes.Length ;
+				for( index  = 0 ; index <  length ; index ++ )
+				{
+					if( objectType == m_GroupTypes[ index ] )
+					{
+						break ;
+					}
+				}
+
+				if( index >= length )
+				{
+					throw new Exception( message:"Unsupported type. " + objectType.Name ) ;
+				}
+
+				writer.PutVUInt33T( index ) ;
+
+				objectType = m_GroupTypes[ index ] ;
+
+				//---------------------------------
+
+				ActiveAdapterCache[ objectType ].Serialize( entity, writer ) ;
+			}
+
+			/// <summary>
+			/// デシリアライズを実行する
+			/// </summary>
+			/// <param name="reader"></param>
+			/// <returns></returns>
+			public System.Object Deserialize( ByteStream reader )
+			{
+				var _ = reader.GetVUInt33() ;
+				if( _ == null )
+				{
+					return default ;
+				}
+
+				System.UInt32 index = ( System.UInt32 )_ ;
+
+				Type objectType = m_GroupTypes[ index ] ;
+
+				//---------------------------------
+
+				return ActiveAdapterCache[ objectType ].Deserialize( reader ) ;
+			}
+		}
+
 		//-------------------------------------------------------------------------------------------
 
 		// アダプターを生成する(Internal用)
 		public void CreateAdapter()
 		{
-			if( ObjectType.IsClass == true )
+			if( IsInterface == false )
 			{
-				// class
+				// class struct
 
-				// スカラ
-				var adapter = ( IAdapter )( new InternalObjectAdapter( this ) ) ;
-//				var adapter = ( IAdapter )Activator.CreateInstance( typeof( InternalObjectAdapter<> ).MakeGenericType( ObjectType ), this ) ;
+				if( ObjectType.IsClass == true )
+				{
+					// class
+
+					// スカラ
+					var adapter = ( IAdapter )( new InternalObjectAdapter( this ) ) ;
+					AddToInternalAdapterCache( ObjectType, adapter ) ;
+
+					// アレイ(１次元)
+					var arrayAdapter = ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( ObjectType ) ) ;
+					AddToInternalAdapterCache( ObjectType.MakeArrayType(), arrayAdapter ) ;
+
+					// リスト
+					var listAdapter = ( IAdapter )Activator.CreateInstance( typeof( ListGenericAdapter<> ).MakeGenericType( ObjectType ) ) ;
+					AddToInternalAdapterCache( typeof( List<> ).MakeGenericType( ObjectType ), listAdapter ) ;
+				}
+				else
+				{
+					// struct
+					var adapter_NotNullable = ( IAdapter )( new InternalObjectAdapter_NotNullable( this ) ) ;
+					AddToInternalAdapterCache( ObjectType, adapter_NotNullable ) ;
+
+					// アレイ(１次元)
+					var arrayAdapter_NotNullable = ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( ObjectType ) ) ;
+					AddToInternalAdapterCache( ObjectType.MakeArrayType(), arrayAdapter_NotNullable ) ;
+
+					// リスト
+					var listAdapter_NotNullable = ( IAdapter )Activator.CreateInstance( typeof( ListGenericAdapter<> ).MakeGenericType( ObjectType ) ) ;
+					AddToInternalAdapterCache( typeof( List<> ).MakeGenericType( ObjectType ), listAdapter_NotNullable ) ;
+
+					//-------------
+					// struct?
+
+					Type nullableObjectType = typeof( Nullable<> ).MakeGenericType( ObjectType ) ;
+
+					var adapter = ( IAdapter )( new InternalObjectAdapter( this ) ) ;
+					AddToInternalAdapterCache( nullableObjectType, adapter ) ;
+
+					// アレイ(１次元)
+					var arrayAdapter = ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( nullableObjectType ) ) ;
+					AddToInternalAdapterCache( nullableObjectType.MakeArrayType(), arrayAdapter ) ;
+
+					// リスト
+					var listAdapter = ( IAdapter )Activator.CreateInstance( typeof( ListGenericAdapter<> ).MakeGenericType( nullableObjectType ) ) ;
+					AddToInternalAdapterCache( typeof( List<> ).MakeGenericType( nullableObjectType ), listAdapter ) ;
+				}
+			}
+			else
+			{
+				// interface
+
+				var adapter = ( IAdapter )( new InternalInterfaceAdapter( this ) ) ;
 				AddToInternalAdapterCache( ObjectType, adapter ) ;
 
 				// アレイ(１次元)
@@ -1180,38 +1318,7 @@ public partial class SimpleDataPack
 				// リスト
 				var listAdapter = ( IAdapter )Activator.CreateInstance( typeof( ListGenericAdapter<> ).MakeGenericType( ObjectType ) ) ;
 				AddToInternalAdapterCache( typeof( List<> ).MakeGenericType( ObjectType ), listAdapter ) ;
-			}
-			else
-			{
-				// struct
-				var adapter_NotNullable = ( IAdapter )( new InternalObjectAdapter_NotNullable( this ) ) ;
-//				var adapter_NotNullable = ( IAdapter )Activator.CreateInstance( typeof( InternalObjectAdapter_NotNullable<> ).MakeGenericType( ObjectType ), this ) ;
-				AddToInternalAdapterCache( ObjectType, adapter_NotNullable ) ;
 
-				// アレイ(１次元)
-				var arrayAdapter_NotNullable = ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( ObjectType ) ) ;
-				AddToInternalAdapterCache( ObjectType.MakeArrayType(), arrayAdapter_NotNullable ) ;
-
-				// リスト
-				var listAdapter_NotNullable = ( IAdapter )Activator.CreateInstance( typeof( ListGenericAdapter<> ).MakeGenericType( ObjectType ) ) ;
-				AddToInternalAdapterCache( typeof( List<> ).MakeGenericType( ObjectType ), listAdapter_NotNullable ) ;
-
-				//-------------
-				// struct?
-
-				Type nullableObjectType = typeof( Nullable<> ).MakeGenericType( ObjectType ) ;
-
-				var adapter = ( IAdapter )( new InternalObjectAdapter( this ) ) ;
-//				var adapter = ( IAdapter )Activator.CreateInstance( typeof( InternalObjectAdapter<> ).MakeGenericType( nullableObjectType ), this ) ;
-				AddToInternalAdapterCache( nullableObjectType, adapter ) ;
-
-				// アレイ(１次元)
-				var arrayAdapter = ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( nullableObjectType ) ) ;
-				AddToInternalAdapterCache( nullableObjectType.MakeArrayType(), arrayAdapter ) ;
-
-				// リスト
-				var listAdapter = ( IAdapter )Activator.CreateInstance( typeof( ListGenericAdapter<> ).MakeGenericType( nullableObjectType ) ) ;
-				AddToInternalAdapterCache( typeof( List<> ).MakeGenericType( nullableObjectType ), listAdapter ) ;
 			}
 		}
 	}

@@ -1,3 +1,6 @@
+//#define MESSAGE_PACK_ENABLED
+//#define MESSAGE_PACK_IL2CPP
+
 using System ;
 using System.Collections ;
 using System.Collections.Generic ;
@@ -7,7 +10,11 @@ using UnityEngine ;
 
 using Cysharp.Threading.Tasks ;
 
+using MessagePack ;
+
 using uGUIHelper ;
+
+using DSW.MyData ;
 
 namespace DSW.Screens
 {
@@ -31,12 +38,45 @@ namespace DSW.Screens
 
 			//----------------------------------------------------------
 
-#if NET_STANDARD_2_1 && ENABLE_MONO
-//			LOG( "<color=#FFFFFF>MONOが有効です</color>" ) ;
+#if ( NET_STANDARD_2_1 || NET_4_6 ) && ENABLE_MONO
+			LOG( "<color=#FFFFFF>★★★MONO(DynamicMethod ILGenerator)が有効です★★★</color>" ) ;
 #endif
+
+		//------------------------------------------------------------------------------------------
+		// MessagePack の設定
+
+#if MESSAGE_PACK_ENABLED
+
+#if ENABLE_IL2CPP || ( !UNITY_EDITOR && ( IOS || IPHONE ) ) || MESSAGE_PACK_IL2CPP
+			// IL2CPP 用コード
+			Debug.Log( "[IL2CPP用の自動生成コードを使用する]" ) ;
+
+			MessagePack.Resolvers.StaticCompositeResolver.Instance.Register
+			(
+				MessagePack.Resolvers.GeneratedResolver.Instance,
+				MessagePack.Unity.UnityResolver.Instance,
+				MessagePack.Unity.Extension.UnityBlitWithPrimitiveArrayResolver.Instance,
+				MessagePack.Resolvers.StandardResolver.Instance
+			) ;
+
+			MessagePackSerializerOptions option = MessagePackSerializerOptions.Standard.WithResolver( MessagePack.Resolvers.StaticCompositeResolver.Instance ) ;
+			MessagePackSerializer.DefaultOptions = option ;
+#else
+			// 汎用コード
+
+			// Private アクセスは常に許可
+			MessagePackSerializer.DefaultOptions = MessagePack.Resolvers.StandardResolverAllowPrivate.Options ;
+#endif
+
+#endif
+
+			//------------------------------------------------------------------------------------------
+
+
+
 			//--------------------------------------------------------------------------
 			// SimpleDataPack のテスト
-
+/*
 			int si, sl = 1000 ;
 
 //			var o1 = new T() ;
@@ -54,6 +94,16 @@ namespace DSW.Screens
 //			await RunDebug<List<MyData.MySample_W>>() ;
 //			await RunDebug<MyData.MySample_W[]>() ;
 			await RunDebug( o0 ) ;
+*/
+
+			//----------------------------------------------------------
+
+			var o1 = new MyInterface_Type2() ;
+//			await RunDebug( ( IMyInterface )o1 ) ;
+			var r = await RunDebug<IMyInterface>( o1 ) ;
+
+			Debug.Log( "デシリアライズ後のタイプ : " + r.GetType().Name ) ;
+
 
 			await Yield() ;
 		}
@@ -61,9 +111,10 @@ namespace DSW.Screens
 		//-------------------------------------------------------------------------------------------
 
 
-		public async UniTask RunDebug<T>( T o1 )// where T : class,new()
+		public async UniTask<T> RunDebug<T>( T o1 )// where T : class,new()
 		{
 			LOG( "<color=#7F7FFF>==================== SimpleDataPack 検証 ====================</color>" ) ;
+			LOG( "<color=#FFDF3F>対象 : " + typeof( T ).Name + "</color>" ) ;
 
 
 			// ビッグエンディアン
@@ -76,11 +127,11 @@ namespace DSW.Screens
 
 			if( SimpleDataPack.ExternalAdapterEnabled == true && SimpleDataPack.ExternalAdapterDisabled == false )
 			{
-				LOG( "<color=#DFFF3F>自動生成コードによる高速処理が有効</color>" ) ;
+				LOG( "<color=#DFFF3F>☆☆☆自動生成コードによる高速処理が有効☆☆☆</color>" ) ;
 			}
 			else
 			{
-				LOG( "<color=#DFDFDF>リフレクションによる通常処理</color>" ) ;
+				LOG( "<color=#DFDFDF>★★★リフレクションによる通常処理が有効★★★</color>" ) ;
 			}
 
 			LOG( "<color=#7FFFDF>優先 : " + priorityType + "</color>" ) ;
@@ -113,27 +164,29 @@ namespace DSW.Screens
 
 			await Yield() ;
 
-/*
+			//----------------------------------
+#if MESSAGE_PACK_ENABLED
 			// MessagePack 
 			t1 = Time.realtimeSinceStartup ;
 			byte[] m_data1 = MessagePackSerializer.Serialize( o1, MessagePackSerializer.DefaultOptions ) ;
-			Debug.Log( "<color=#00FF00>[MessagePack]シリアライズ時間(１回目) = " + ( Time.realtimeSinceStartup - t1 ) + "</color>" ) ;
+
+//			var mo = new DummyData() ;
+//			byte[] m_data1 = MessagePackSerializer.Serialize( mo ) ;
+			LOG( "<color=#00FF00>[MessagePack]シリアライズ時間(１回目) = " + ( Time.realtimeSinceStartup - t1 ) + "</color>" ) ;
 
 			if( m_data1 == null )
 			{
-				Debug.LogWarning( "[MessagePack]シリアライズに失敗しました(１回目)" ) ;
+				LOG( "[MessagePack]シリアライズに失敗しました(１回目)" ) ;
 			}
 			else
 			{
-				Debug.Log( "<color=#00FF7F>★★★[MessagePack]シリアライズに成功しました(１回目) : Size = " + m_data1.Length + "★★★</color>" ) ;
+				LOG( "<color=#00FF7F>★★★[MessagePack]シリアライズに成功しました(１回目) : Size = " + m_data1.Length + "★★★</color>" ) ;
 
 //				StorageAccessor.Save( "Pack.bin", data ) ;
 			}
-*/
+
 			await Yield() ;
-
-
-
+#endif
 			//------------------------------------------------------------------------------------------
 			// 以下、デシリアライズ
 
@@ -158,32 +211,28 @@ namespace DSW.Screens
 			}
 
 			await Yield() ;
-/*
+
+			//----------------------------------
+#if MESSAGE_PACK_ENABLED
 			// MessagePack
 			t1 = Time.realtimeSinceStartup ;
 			var md1 = MessagePackSerializer.Deserialize<T>( m_data1, MessagePackSerializer.DefaultOptions ) ;
-			Debug.Log( "<color=#00FFFF>[MessagePack]デシリアライズ時間(１回目) = " + ( Time.realtimeSinceStartup - t1 ) + "</color>" ) ;
+			LOG( "<color=#00FFFF>[MessagePack]デシリアライズ時間(１回目) = " + ( Time.realtimeSinceStartup - t1 ) + "</color>" ) ;
 
 			if( md1 == null )
 			{
-				Debug.Log( "<color=#FF7F00>[MessagePack]デシリアライズに失敗しました(１回目)</color>" ) ;
+				LOG( "<color=#FF7F00>[MessagePack]デシリアライズに失敗しました(１回目)</color>" ) ;
 			}
 			else
 			{
-				Debug.Log( "<color=#00FFFF>[MessagePack]★★★デシリアライズに成功しました(１回目)★★★</color>" ) ;
+				LOG( "<color=#00FFFF>[MessagePack]★★★デシリアライズに成功しました(１回目)★★★</color>" ) ;
 			}
-*/
+
 			await Yield() ;
-
-
-
-
-
-
-
+#endif
 			//------------------------------------------------------------------------------------------
 			// Json のシリアライズ
-
+/*
 			float tjs = Time.realtimeSinceStartup ;
 			byte[] json_t = SimpleDataPack.Serialize( o1, true, true, SimpleDataPack.PriorityTypes.Speed ) ;
 			if( json_t != null && json_t.Length >  0 )
@@ -193,11 +242,11 @@ namespace DSW.Screens
 			}
 
 			await Yield() ;
-
+*/
 
 			//------------------------------------------------------------------------------------------
 			// JSON のデシリアライズ
-
+/*
 			float tjd = Time.realtimeSinceStartup ;
 			var json_o = SimpleDataPack.Deserialize<T>( json_t, true ) ;
 			if( json_o != null )
@@ -246,6 +295,8 @@ namespace DSW.Screens
 			{
 				LOG( "<color=#FF7F00>Json のデシリアライズに失敗しました</color>" ) ;
 			}
+*/
+			return sd1 ;
 		}
 
 		//===================================================================================================================
@@ -274,3 +325,29 @@ namespace DSW.Screens
 		}
 	}
 }
+
+//---------------------------------------------------------------------------------------------
+
+#if !MESSAGE_PACK_ENABLED
+
+//---------------------------------------------------------------------------------------------
+// MessagePack のためのダミー記述
+
+namespace MessagePack
+{
+	public class MessagePackObjectAttribute : Attribute
+	{
+		public MessagePackObjectAttribute( bool keyAsPropertyName = false )
+		{
+		}
+	}
+
+	public class KeyAttribute : Attribute
+	{
+		public KeyAttribute( int index )
+		{
+		}
+	}
+}
+
+#endif

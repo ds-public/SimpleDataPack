@@ -66,6 +66,7 @@ public partial class SimpleDataPack
 
 		public void						PutVUInt32( System.UInt32 value, MemoryStream ms ) ;
 		public void						PutVUInt33( System.UInt32? value, MemoryStream ms ) ;
+		public void						PutVUInt33T( System.UInt32 value, MemoryStream ms ) ;
 
 		//-----------------------------------------------------------
 
@@ -655,6 +656,56 @@ public partial class SimpleDataPack
 							value >>= 7 ;
 
 							ms.WriteByte( ( byte )value ) ;				// +4(5(4+1))
+						}
+					}
+				}
+			}
+		}
+
+		public void PutVUInt33T( System.UInt32 value32, MemoryStream ms )	// Max 5 byte ( 33 bit )
+		{
+			//----------------------------------
+			// ６４ビット値はキャストが無いとビットが消えてしまう
+
+			System.UInt64 value = ( System.UInt64 )( ( ( System.UInt64 )value32 << 1 ) | 1 ) ;
+
+			if( value <  128 )
+			{
+				ms.WriteByte( ( byte )value ) ;
+			}
+			else
+			{
+				ms.WriteByte( ( byte )( value | 0x80 ) ) ;				// +0(7)
+				value >>= 7 ;
+
+				if( value <  128 )
+				{
+					ms.WriteByte( ( byte )value ) ;
+				}
+				else
+				{
+					ms.WriteByte( ( byte )( value | 0x80 ) ) ;			// +1(7)
+					value >>= 7 ;
+
+					if( value <  128 )
+					{
+						ms.WriteByte( ( byte )value ) ;
+					}
+					else
+					{
+						ms.WriteByte( ( byte )( value | 0x80 ) ) ;		// +2(7)
+						value >>= 7 ;
+
+						if( value <  128 )
+						{
+							ms.WriteByte( ( byte )value ) ;
+						}
+						else
+						{
+							ms.WriteByte( ( byte )( value | 0x80 ) ) ;	// +3(7)
+							value >>= 7 ;
+
+							ms.WriteByte( ( byte )value ) ;				// +4(4+1)
 						}
 					}
 				}

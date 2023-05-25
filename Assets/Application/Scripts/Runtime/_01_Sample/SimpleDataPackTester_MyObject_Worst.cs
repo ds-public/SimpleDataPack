@@ -7,7 +7,7 @@ using UnityEngine ;
 
 using Cysharp.Threading.Tasks ;
 
-//using MessagePack ;
+using MessagePack ;
 
 using uGUIHelper ;
 
@@ -19,7 +19,7 @@ namespace DSW.MyData
 	//--------------------------------------------------------------------------------------------
 	// 手動生成
 
-	public enum Status_W : byte
+	public enum Status_W //: byte
 	{
 		Strength		= 251,
 		Intelligence	= 252,
@@ -28,57 +28,28 @@ namespace DSW.MyData
 		Vitality		= 255,
 	}
 
-
-	[SimpleDataPackObject(keyAsCode:true)][MessagePackObject][Serializable]
-	public partial struct MyStruct_W
+	[MessagePackObject]
+	public class MyObject_W_Array
 	{
-		// コンストラクタ
-		public MyStruct_W( byte a_param )
-		{
-			A_Param = a_param ;
-			B_Param = DateTime.Now ;
-			C_Param = "あいうえお" ;
-		}
+		[Key(0)]
+		public MyObject_W[]		Records ;
+	}
 
-
-
-		[SimpleDataPackMember(0)][Key(0)]
-		public byte A_Param ;
-
-		[SimpleDataPackMember(1)][Key(1)]
-		public DateTime B_Param ;
-
-		[SimpleDataPackMember(2)][Key(2)]
-		public string C_Param ;
-
-/*
-		[SimpleDataPackMember(0)][Key(0)]
-		public byte A_Param{ get ; private set ; }
-
-		[SimpleDataPackMember(1)][Key(1)]
-		public DateTime B_Param{ get ; private set ; }
-
-		[SimpleDataPackMember(2)][Key(2)]
-		public string C_Param{ get ; private set ; }
-*/
-		//-----------------------------------
-
-		public void Modify_1()
-		{
-			A_Param = 111 ;
-			B_Param = DateTime.Now ;
-			C_Param = "うんちょ" ;
-		}
+	[MessagePackObject]
+	public class MyObject_W_List
+	{
+		[Key(0)]
+		public List<MyObject_W>	Records ;
 	}
 
 
 
-	[SimpleDataPackObject(keyAsCode:true)][MessagePackObject(keyAsPropertyName:false)][Serializable]
+	[SimpleDataPackObject][MessagePackObject(keyAsPropertyName:false)][Serializable]
 	public partial class MyObject_W
 	{
 		// コンストラクタ
-		public MyObject_W()
-		{
+//		public MyObject_W()
+//		{
 /*			int i, l = P000.Length ;
 			for( i  = 0 ; i <  l ; i ++ )
 			{
@@ -102,7 +73,7 @@ namespace DSW.MyData
 			{
 				P116.Add( 0xFFFFFFFF ) ;
 			}*/
-		}
+//		}
 
 
 
@@ -119,8 +90,7 @@ namespace DSW.MyData
 		//-----------------------------------------------------------
 
 		[SimpleDataPackMember(0)][Key(0)][SerializeField]
-		public bool P0 = false ;
-//		public bool P0{ get ; private set ; } = false ;
+		public bool P0{ get ; private set ; } = false ;
 
 		[SimpleDataPackMember(1)][Key(1)][SerializeField]
 		public byte P1 = 255 ; 
@@ -182,6 +152,7 @@ namespace DSW.MyData
 
 
 
+
 //		[SimpleDataPackMember(15)][Key(15)][SerializeField]
 //		protected MySampleSub_W P15 = new MySampleSub_W() ;
 
@@ -192,50 +163,50 @@ namespace DSW.MyData
 		//-----------------------------------------------------------
 
 		[SimpleDataPackMember(17)][Key(17)][SerializeField]
-		protected bool? P17 = true ; 
+		public bool? P17 = true ; 
 
 		[SimpleDataPackMember(18)][Key(18)][SerializeField]
-		protected byte? P18 = 255 ; 
+		public byte? P18 = 255 ; 
 
 		[SimpleDataPackMember(19)][Key(19)][SerializeField]
-		protected sbyte? P19 = -128 ; 
+		public sbyte? P19 = -128 ; 
 
 		[SimpleDataPackMember(20)][Key(20)][SerializeField]
-		protected char? P20 = '0' ; 
+		public char? P20 = '0' ; 
 
 		[SimpleDataPackMember(21)][Key(21)][SerializeField]
-		protected short? P21 = -32768 ; 
+		public short? P21 = -32768 ; 
 
 		[SimpleDataPackMember(22)][Key(22)][SerializeField]
-		protected ushort? P22 = 65535 ; 
+		public ushort? P22 = 65535 ; 
 
 		[SimpleDataPackMember(23)][Key(23)][SerializeField]
-		protected int? P23 = -1000000000 ; 
+		public int? P23 = -1000000000 ; 
 
 		[SimpleDataPackMember(24)][Key(24)][SerializeField]
-		protected uint? P24 = 1000000000 ; 
+		public uint? P24 = 1000000000 ; 
 
 		[SimpleDataPackMember(25)][Key(25)][SerializeField]
-		protected long? P25 = -1000000000000000000 ; 
+		public long? P25 = -1000000000000000000 ; 
 
 		[SimpleDataPackMember(26)][Key(26)][SerializeField]
-		protected ulong? P26 = 10000000000000000000 ; 
+		public ulong? P26 = 10000000000000000000 ; 
 
 
 		[SimpleDataPackMember(27)][Key(27)][SerializeField]
 		public float? P27 = 12345.68f ;					// 丸め誤差に注意
 
 		[SimpleDataPackMember(28)][Key(28)][SerializeField]
-		protected double? P28 = 123456789012.123 ;		// 丸め誤差に注意
+		public double? P28 = 123456789012.123 ;		// 丸め誤差に注意
 
 		[SimpleDataPackMember(29)][Key(29)][SerializeField]
-		protected decimal? P29 = 123456789012.12345M ; 
+		public decimal? P29 = 123456789012.12345M ; 
 
 		[SimpleDataPackMember(30)][Key(30)][SerializeField]
 		public string? P30 = "あいうえおかきくけこさしすせそ" ;
 
 		[SimpleDataPackMember(31)][Key(31)][SerializeField]
-		protected DateTime? P31 = DateTime.Now ;
+		public DateTime? P31 = DateTime.Now ;
 
 
 //		[SimpleDataPackMember(32)][Key(32)][SerializeField]
@@ -264,19 +235,19 @@ namespace DSW.MyData
 		public short[] P38 = { -32768, -32768 } ; 
 
 		[SimpleDataPackMember(39)][Key(39)][SerializeField]
-		protected ushort[] P39 = { 65535, 65535 } ; 
+		public ushort[] P39 = { 65535, 65535 } ; 
 
 		[SimpleDataPackMember(40)][Key(40)][SerializeField]
-		protected int[] P40 = { -1000000000, -1000000001 } ; 
+		public int[] P40 = { -1000000000, -1000000001 } ; 
 
 		[SimpleDataPackMember(41)][Key(41)][SerializeField]
-		protected uint[] P41 = { 1000000000, 1000000001 } ; 
+		public uint[] P41 = { 1000000000, 1000000001 } ; 
 
 		[SimpleDataPackMember(42)][Key(42)][SerializeField]
-		protected long[] P42 = { -1000000000000000000, -1000000000000000001 } ; 
+		public long[] P42 = { -1000000000000000000, -1000000000000000001 } ; 
 
 		[SimpleDataPackMember(43)][Key(43)][SerializeField]
-		protected ulong[] P43 = { 10000000000000000000, 10000000000000000001 } ; 
+		public ulong[] P43 = { 10000000000000000000, 10000000000000000001 } ; 
 
 
 		[SimpleDataPackMember(44)][Key(44)][SerializeField]
@@ -285,9 +256,9 @@ namespace DSW.MyData
 		[SimpleDataPackMember(45)][Key(45)][SerializeField]
 		public double[] P45 = { 123456789012.123, 123456789012.123 } ;		// 丸め誤差に注意
 
-		[SimpleDataPackMember(46)][Key(46)][SerializeField]
-		public decimal[] P46 = { 123456789012.12345M, 123456789012.12345M } ; 
-
+		// MessagePack は対応していない
+//		[SimpleDataPackMember(46)][Key(46)][SerializeField]
+//		public decimal[] P46 = { 123456789012.12345M, 123456789012.12345M } ; 
 
 		[SimpleDataPackMember(47)][Key(47)][SerializeField]
 		public string[] P47 = { "あいうえおかきくけこさしすせそ", "たちつてのなにぬねのはひふへほ", null, "" } ;
@@ -321,36 +292,36 @@ namespace DSW.MyData
 		public short?[] P55 = { -32768, null } ; 
 
 		[SimpleDataPackMember(56)][Key(56)][SerializeField]
-		protected ushort?[] P56 = { 65535, null } ; 
+		public ushort?[] P56 = { 65535, null } ; 
 
 		[SimpleDataPackMember(57)][Key(57)][SerializeField]
-		protected int?[] P57 = { null, -1000000001 } ; 
+		public int?[] P57 = { null, -1000000001 } ; 
 
 		[SimpleDataPackMember(58)][Key(58)][SerializeField]
-		protected uint?[] P58 = { null, 1000000001 } ; 
+		public uint?[] P58 = { null, 1000000001 } ; 
 
 		[SimpleDataPackMember(59)][Key(59)][SerializeField]
-		protected long?[] P59 = { -1000000000000000000, null } ; 
+		public long?[] P59 = { -1000000000000000000, null } ; 
 
 		[SimpleDataPackMember(60)][Key(60)][SerializeField]
-		protected ulong?[] P60 = { null, 10000000000000000001 } ; 
+		public ulong?[] P60 = { null, 10000000000000000001 } ; 
 
 
 		[SimpleDataPackMember(61)][Key(61)][SerializeField]
 		public float?[] P61 = { null, 12345.68f } ;					// 丸め誤差に注意
 
 		[SimpleDataPackMember(62)][Key(62)][SerializeField]
-		protected double?[] P62 = { 123456789012.123, null } ;		// 丸め誤差に注意
+		public double?[] P62 = { 123456789012.123, null } ;		// 丸め誤差に注意
 
-		[SimpleDataPackMember(63)][Key(63)][SerializeField]
-		protected decimal?[] P63 = { null, 123456789012.12345M } ; 
+//		[SimpleDataPackMember(63)][Key(63)][SerializeField]
+//		public decimal?[] P63 = { null, 123456789012.12345M } ; 
 
 
 		[SimpleDataPackMember(64)][Key(64)][SerializeField]
 		public string?[] P64 = { null, "たちつてのなにぬねのはひふへほ" } ;
 
 		[SimpleDataPackMember(65)][Key(65)][SerializeField]
-		protected DateTime?[] P65 = { null, DateTime.Now } ;
+		public DateTime?[] P65 = { null, DateTime.Now } ;
 
 
 //		[SimpleDataPackMember(66)][Key(66)][SerializeField]
@@ -401,8 +372,8 @@ namespace DSW.MyData
 		[SimpleDataPackMember(79)][Key(79)][SerializeField]
 		protected List<double> P79 = new List<double>{ 123456789012.123, 123456789012.123 } ;		// 丸め誤差に注意
 
-		[SimpleDataPackMember(80)][Key(80)][SerializeField]
-		protected List<decimal> P80 = new List<decimal>{ 123456789012.12345M, 123456789012.12345M } ; 
+//		[SimpleDataPackMember(80)][Key(80)][SerializeField]
+//		protected List<decimal> P80 = new List<decimal>{ 123456789012.12345M, 123456789012.12345M } ; 
 
 
 		[SimpleDataPackMember(81)][Key(81)][SerializeField]
@@ -457,8 +428,8 @@ namespace DSW.MyData
 		[SimpleDataPackMember(96)][Key(96)][SerializeField]
 		protected List<double?> P96 = new List<double?>{ 123456789012.123, null } ;		// 丸め誤差に注意
 
-		[SimpleDataPackMember(97)][Key(97)][SerializeField]
-		protected List<decimal?> P97 = new List<decimal?>{ null, 123456789012.12345M } ; 
+//		[SimpleDataPackMember(97)][Key(97)][SerializeField]
+//		protected List<decimal?> P97 = new List<decimal?>{ null, 123456789012.12345M } ; 
 
 
 		[SimpleDataPackMember(98)][Key(98)][SerializeField]
@@ -583,30 +554,12 @@ namespace DSW.MyData
 
 //		[SimpleDataPackMember(110)][Key(110)][SerializeField]
 //		protected IgnoreMySample P110 = new IgnoreMySample() ;
-
-		//-------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-		public void Modify_1()
-		{
-//			P5 = 12345 ;
-//			P114[1][1,2] = 250 ;
-		}
-
-		public void Modify_2()
-		{
-		}
-
 	}
 
+	//-------------------------------------------------------------------------------------------	}
 
-	[SimpleDataPackObject(keyAsCode:true)][MessagePackObject(keyAsPropertyName:false)][Serializable]
+
+	[SimpleDataPackObject][MessagePackObject(keyAsPropertyName:false)][Serializable]
 	public partial class MySampleSub_W
 	{
 		[SimpleDataPackMember(0)][Key(0)]
@@ -633,5 +586,74 @@ namespace DSW.MyData
 		public int a ;
 		public int b ;
 		public int c ;
+	}
+
+	//--------------------------------------------------------------------------------------------------------------------
+
+	[SimpleDataPackObject][MessagePackObject][Serializable]
+	public partial struct MyStruct_W
+	{
+		// コンストラクタ
+		public MyStruct_W( byte a_param )
+		{
+			A_Param = a_param ;
+			B_Param = DateTime.Now ;
+			C_Param = "あいうえお" ;
+		}
+
+
+
+		[SimpleDataPackMember(0)][Key(0)]
+		public byte A_Param ;
+
+		[SimpleDataPackMember(1)][Key(1)]
+		public DateTime B_Param ;
+
+		[SimpleDataPackMember(2)][Key(2)]
+		public string C_Param ;
+
+#if false
+		[SimpleDataPackMember(0)][Key(0)]
+		public byte A_Param{ get ; private set ; }
+
+		[SimpleDataPackMember(1)][Key(1)]
+		public DateTime B_Param{ get ; private set ; }
+
+		[SimpleDataPackMember(2)][Key(2)]
+		public string C_Param{ get ; private set ; }
+#endif
+		//-----------------------------------
+
+		public void Modify_1()
+		{
+			A_Param = 111 ;
+			B_Param = DateTime.Now ;
+			C_Param = "うんちょ" ;
+		}
+	}
+
+	//--------------------------------------------------------------------------------------------------------------------
+
+	[SimpleDataPackUnion( typeof( MyInterface_Type0 ) )]
+	[SimpleDataPackUnion( typeof( MyInterface_Type1 ) )]
+	[SimpleDataPackUnion( typeof( MyInterface_Type2 ) )]
+	public interface IMyInterface{}
+
+	[SimpleDataPackObject]
+	public partial class MyInterface_Type0 : IMyInterface
+	{
+		public int TypeCode = 0 ;
+	}
+
+	[SimpleDataPackObject]
+	public partial class MyInterface_Type1 : IMyInterface
+	{
+		public int TypeCode = 1 ;
+	}
+
+	[SimpleDataPackObject]
+	public partial class MyInterface_Type2 : IMyInterface
+	{
+		public int TypeCode = 2 ;
 	}
 }

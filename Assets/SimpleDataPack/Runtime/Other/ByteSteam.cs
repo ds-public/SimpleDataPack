@@ -235,6 +235,7 @@ public partial class SimpleDataPack
 
 		public void						PutVUInt32( System.UInt32 value )										=> m_BC.PutVUInt32( value, m_MS ) ;
 		public void						PutVUInt33( System.UInt32? value )										=> m_BC.PutVUInt33( value, m_MS ) ;
+		public void						PutVUInt33T( System.UInt32 value )										=> m_BC.PutVUInt33T( value, m_MS ) ;
 
 		//-----------------------------------------------------------
 

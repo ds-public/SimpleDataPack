@@ -96,19 +96,14 @@ public partial class SimpleDataPack
 
 			foreach( var type in types )
 			{
-				// 後で Nullable フラグは除去する
+				string fullName = type.FullName.Replace( ".", "_" ) ;
 
-				//---------------------------------------------------------
-				// シリアライズ
-
-				string methodName = type.FullName.Replace( ".", "_" ) ;
-
-				if( type.IsClass == true )
+				if( type.IsClass == true || type.IsInterface == true )
 				{
 					// class
 
 					// スカラ
-					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName} ), new ObjectAdapter_{methodName}() ) ;\n" ;
+					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName} ), new ObjectAdapter_{fullName}() ) ;\n" ;
 
 					// アレイ
 					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName}[] ), new SimpleDataPack.Array1DGenericAdapter<{type.FullName}>() ) ;\n" ;
@@ -121,7 +116,7 @@ public partial class SimpleDataPack
 					// struct
 
 					// スカラ
-					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName} ), new ObjectAdapter_{methodName}() ) ;\n" ;
+					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName} ), new ObjectAdapter_{fullName}() ) ;\n" ;
 
 					// アレイ
 					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName}[] ), new SimpleDataPack.Array1DGenericAdapter<{type.FullName}>() ) ;\n" ;
@@ -132,7 +127,7 @@ public partial class SimpleDataPack
 					// struct?
 
 					// スカラ
-					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName}? ), new ObjectAdapter_{methodName}_Nullable() ) ;\n" ;
+					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName}? ), new ObjectAdapter_{fullName}_Nullable() ) ;\n" ;
 
 					// アレイ
 					sb += "\t\t" + $"SimpleDataPack.AddToExternalAdapterCache( typeof( {type.FullName}?[] ), new SimpleDataPack.Array1DGenericAdapter<{type.FullName}?>() ) ;\n" ;
@@ -161,27 +156,34 @@ public partial class SimpleDataPack
 				//---------------------------------------------------------
 				// シリアライズ
 
-				if( type.IsClass == true )
+				if( type.IsInterface == false )
 				{
-					// class
-					PutAdapter( type, true, string.Empty, ref sb ) ;
+					if( type.IsClass == true )
+					{
+						// class
+						PutAdapter( type, true, string.Empty, ref sb ) ;
+					}
+					else
+					{
+						// struct
+						PutAdapter( type, false, string.Empty, ref sb ) ;
+
+						// struct?
+						PutAdapter( type, true, "_Nullable", ref sb ) ;
+					}
 				}
 				else
 				{
-					// struct
-					PutAdapter( type, false, string.Empty, ref sb ) ;
-
-					// struct?
-					PutAdapter( type, true, "_Nullable", ref sb ) ;
+					PutInterfaceAdapter( type, ref sb ) ;
 				}
 			}
 		}
 
 		private void PutAdapter( Type type, bool isNullable, string signature, ref ExStringBuilder sb )
 		{
-			string methodName = type.FullName.Replace( ".", "_" ) ;
+			string fullName = type.FullName.Replace( ".", "_" ) ;
 
-			sb += "\t" + $"class ObjectAdapter_{methodName}{signature} : SimpleDataPack.IAdapter\n" ;
+			sb += "\t" + $"class ObjectAdapter_{fullName}{signature} : SimpleDataPack.IAdapter\n" ;
 			sb += "\t" + "{" + "\n" ;
 
 			//--------------
@@ -217,6 +219,90 @@ public partial class SimpleDataPack
 
 			sb += "\t\t\t" + $"var entity = new {type.FullName}() ;\n" ;
 			sb += "\t\t\t" + "entity.Deserialize__SimpleDataPack( reader ) ;\n" ;
+			sb += "\t\t\t" + "return entity ;\n" ;
+			sb += "\t\t" + "}\n" ;
+
+			//--------------
+
+			sb += "\t" + "}\n" ;
+		}
+
+		private void PutInterfaceAdapter( Type type, ref ExStringBuilder sb )
+		{
+			var objectDefinition = m_ObjectDefinitionCache.CreateInterface( type ) ;
+			var groupTypes = objectDefinition.GroupTypes ;
+
+			int i, l = groupTypes.Length ;
+
+			//----------------------------------
+
+			string fullName = type.FullName.Replace( ".", "_" ) ;
+
+			sb += "\t" + $"class ObjectAdapter_{fullName} : SimpleDataPack.IAdapter\n" ;
+			sb += "\t" + "{" + "\n" ;
+
+			//--------------
+
+			// Serialize
+			sb += "\t\t" + "public void Serialize( System.Object entity, SimpleDataPack.ByteStream writer )\n" ;
+			sb += "\t\t" + "{\n" ;
+
+			sb += "\t\t\t" + "if( entity == null )\n" ;
+			sb += "\t\t\t" + "{\n" ;
+			sb += "\t\t\t\t" + "writer.PutByte( 0 ) ;\n" ;
+			sb += "\t\t\t\t" + "return ;\n" ;
+			sb += "\t\t\t" + "}\n" ;
+
+			sb += "\t\t\t" + "var _ = entity.GetType() ;\n" ;
+
+			for( i  = 0 ; i <  l ; i ++ )
+			{
+				var groupType = groupTypes[ i ] ;
+				sb += "\t\t\t" + $"if( _ == typeof( {groupType.FullName} ) )" ;
+				sb += "{ " ;
+				sb += $" writer.PutVUInt33T( {i} ) ; " ;
+				if( groupType.IsClass == true || ( groupType.IsGenericType == true && groupType.GetGenericTypeDefinition() == typeof( Nullable<> ) ) )
+				{
+					sb += "writer.PutByte( 1 ) ; " ;
+				}
+				sb += $"( ( {groupType.FullName} )entity ).Serialize__SimpleDataPack( writer ) ; " ;
+				sb += "}\n" ;
+			}
+
+			sb += "\t\t" + "}\n" ;
+
+			// Deserialize
+			sb += "\t\t" + "public System.Object Deserialize( SimpleDataPack.ByteStream reader )\n" ;
+			sb += "\t\t" + "{\n" ;
+
+			sb += "\t\t\t" + "var _ = reader.GetVUInt33() ;\n" ;
+			sb += "\t\t\t" + "if( _ == null )\n" ;
+			sb += "\t\t\t" + "{\n" ;
+			sb += "\t\t\t\t" + "return null ;\n" ;
+			sb += "\t\t\t" + "}\n" ;
+			sb += "\t\t\t" + "var i = ( System.UInt32 )_ ;\n" ;
+
+			sb += "\t\t\t" + "System.Object entity = null ;\n" ;
+
+			sb += "\t\t\t" + "switch( i )\n" ;
+			sb += "\t\t\t" + "{\n" ;
+			for( i  = 0 ; i <  l ; i ++ )
+			{
+				var groupType = groupTypes[ i ] ;
+				sb += "\t\t\t\t" + $"case {i} : " ;
+
+				if( groupType.IsClass == true || ( groupType.IsGenericType == true && groupType.GetGenericTypeDefinition() == typeof( Nullable<> ) ) )
+				{
+					sb += "reader.GetByte() ; " ;
+				}
+
+				sb += "{ " ;
+
+				sb += $"var o = new {groupType.FullName}() ; o.Deserialize__SimpleDataPack( reader ) ; entity = o ; " ;
+				sb += "} break ;\n" ;
+			}
+			sb += "\t\t\t" + "}\n" ;
+
 			sb += "\t\t\t" + "return entity ;\n" ;
 			sb += "\t\t" + "}\n" ;
 

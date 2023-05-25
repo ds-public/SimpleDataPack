@@ -193,11 +193,19 @@ public class SimpleDataPack_UnityEditor : EditorWindow
 	/// <param name="outputPath"></param>
 	public static void GenerateCode( string outputPath, string objectName = "SimpleDataPackAdapter" )
 	{
+		List<Type> types = new List<Type>() ;
+
 		// 指定したアトリビュートが付いている型を取得
-		var types =	TypeCache.GetTypesWithAttribute<SimpleDataPackObjectAttribute>() ;
-		if( types.Count == 0 )
+		var c_types = TypeCache.GetTypesWithAttribute<SimpleDataPackObjectAttribute>() ;
+		if( c_types.Count >  0 )
 		{
-			return ;
+			types.AddRange( c_types.ToArray() ) ;
+		}
+
+		var i_types = TypeCache.GetTypesWithAttribute<SimpleDataPackUnionAttribute>() ;
+		if( i_types.Count >  0 )
+		{
+			types.AddRange( i_types.ToArray() ) ;
 		}
 
 #if false

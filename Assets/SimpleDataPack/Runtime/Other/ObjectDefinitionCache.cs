@@ -82,6 +82,12 @@ public partial class SimpleDataPack
 			// または既に当ログ済みでも null になる
 			if( objectDefinition != null )
 			{
+#if UNITY_EDITOR
+				if( m_ObjectDefinitions.ContainsKey( objectDefinition.ObjectType ) == true )
+				{
+					Debug.Log( "既に登録済みのタイプです : " + objectDefinition.ObjectType.Name ) ;
+				}
+#endif
 				// 新しいオブジェクト定義を追加する
 				m_ObjectDefinitions.Add( objectDefinition.ObjectType, objectDefinition ) ;
 
@@ -94,22 +100,34 @@ public partial class SimpleDataPack
 
 				// メンバーの中にオブジェクトがあれば追加する
 
-				foreach( var member in objectDefinition.Members )
+				if( objectDefinition.IsInterface == false )
 				{
-					// メンバーアクセサーを生成する(ランタイム実行時でないとダイナミックメソッド生成でエラーになってしまうので注意)
-					member.MakeAccessor( objectDefinition.ObjectType ) ;
-
-					// プリミティブ以外のメンバーでオブジェクトを持つものがあればオブジェクト定義情報を登録する
-					switch( member.ValueType )
+					// class struct
+					foreach( var member in objectDefinition.Members )
 					{
-						case ValueTypes.Array :
-						case ValueTypes.List :
-						case ValueTypes.Dictionary :
-						case ValueTypes.Object :
+						// メンバーアクセサーを生成する(ランタイム実行時でないとダイナミックメソッド生成でエラーになってしまうので注意)
+						member.MakeAccessor( objectDefinition.ObjectType ) ;
 
-							// 再帰的に辿って追加する(プリミティブは無視する)
-							Add( member.Type, false ) ;
-						break ;
+						// プリミティブ以外のメンバーでオブジェクトを持つものがあればオブジェクト定義情報を登録する
+						switch( member.ValueType )
+						{
+							case ValueTypes.Array :
+							case ValueTypes.List :
+							case ValueTypes.Dictionary :
+							case ValueTypes.Object :
+
+								// 再帰的に辿って追加する(プリミティブは無視する)
+								Add( member.Type, false ) ;
+							break ;
+						}
+					}
+				}
+				else
+				{
+					// interface
+					foreach( var groupType in objectDefinition.GroupTypes )
+					{
+						Add( groupType, false ) ;
 					}
 				}
 			}
@@ -131,6 +149,8 @@ public partial class SimpleDataPack
 			if( type.IsArray == true )
 			{
 				// アレイ型
+
+				// 入れ子なので要素の登録状況を確認する必要がある
 				return CheckAndCreate( type.GetElementType(), disallowPrimitives ) ;
 			}
 			else
@@ -144,6 +164,7 @@ public partial class SimpleDataPack
 					var types = type.GenericTypeArguments ;
 					if( types != null && types.Length == 1 )
 					{
+						// 入れ子なので要素の登録状況を確認する必要がある
 						return CheckAndCreate( types[ 0 ], disallowPrimitives ) ;
 					}
 					else
@@ -173,6 +194,7 @@ public partial class SimpleDataPack
 						throw new Exception( message:"Generic is not allowed for key type." + keyType.Name ) ;
 					}
 
+					// 入れ子なので要素の登録状況を確認する必要がある
 					return CheckAndCreate( valueType, disallowPrimitives ) ;
 				}
 				else
@@ -210,6 +232,8 @@ public partial class SimpleDataPack
 						return null ;
 					}
 
+					//--------------------------------------------------------
+
 					// アトリビュートの設定の確認を行う
 					if
 					(
@@ -224,6 +248,25 @@ public partial class SimpleDataPack
 					{
 						throw new Exception( message:"Missing attribute description. : " + type.Name ) ;
 					}
+				}
+				else
+				if( type.IsInterface == true )
+				{
+					// 既に登録済みか確認する
+					if( m_ObjectDefinitions.ContainsKey( type ) == true )
+					{
+						// 既に登録済み
+						return null ;
+					}
+
+					// Interface なので Union 処理を行う
+					var unions = type.GetCustomAttributes<SimpleDataPackUnionAttribute>() ;
+					if( unions == null || unions.Count() == 0 )
+					{
+						throw new Exception( message:"No union attributes despite being an interface. : " + type.Name ) ;
+					}
+
+					return CreateInterface( type, unions.ToList() ) ;
 				}
 				else
 				{
@@ -244,22 +287,12 @@ public partial class SimpleDataPack
 		// クラス定義を生成する(このメソッドが呼び出される時点で対象のオブジェクト型である事は確定している)
 		public ObjectDefinition Create( Type objectType )
 		{
-			bool keyAsCode = false ;
-
-			// Serializable も対応しているので SimpleDataPackObject の記述が無い場合がある
-			var customAttribute = objectType.GetCustomAttribute<SimpleDataPackObjectAttribute>() ;
-			if( customAttribute != null )
-			{
-				keyAsCode = customAttribute.KeyAsCode ;
-			}
-
 			//----------------------------------------------------------
 
 			// 新しいオブジェクト定義を生成する
 			var objectDefinition = new ObjectDefinition()
 			{
 				ObjectType	= objectType,
-				KeyAsCode	= keyAsCode
 			} ;
 
 			//----------------------------------------------------------
@@ -305,43 +338,35 @@ public partial class SimpleDataPack
 
 					//------------
 
-					if( keyAsCode == false )
-					{
-						// メンバー並び順にコード値を使用しない
+					// メンバー並び順にコード値を使用しない
 #if UNITY
-						// Unity 環境の場合は SerializeField にも対応する
-						isSerializeField	= ( field.GetCustomAttribute<SerializeField>() != null ) ;
+					// Unity 環境の場合は SerializeField にも対応する
+					isSerializeField	= ( field.GetCustomAttribute<SerializeField>() != null ) ;
 #endif
+					//------------
+
+					isNonSerialized	= ( field.GetCustomAttribute<System.NonSerializedAttribute>() != null ) ;
+
 						//------------
 
-						isNonSerialized	= ( field.GetCustomAttribute<System.NonSerializedAttribute>() != null ) ;
-
-						//------------
-
-						if
+					if
+					(
 						(
-							(
 #if UNITY
-								isSerializeField == true										||
+							isSerializeField == true										||
 #endif
-								( memberAttribute != null && memberAttribute.IsMember == true ) ||
-								( memberAttribute == null && field.IsPublic			  == true )
-							) &&
-							isNonSerialized == false 
-						)
-						{
-							// 有効なメンバー
-							type = field.FieldType ;
-						}
-					}
-					else
+							( memberAttribute != null && memberAttribute.IsMember == true ) ||
+							( memberAttribute == null && field.IsPublic			  == true )
+						) &&
+						isNonSerialized == false 
+					)
 					{
-						// メンバー並び順にコード値を使用する => SimpleDataPackMember(code) 必須
+						// 有効なメンバー
+						type = field.FieldType ;
+
 						if( memberAttribute != null && memberAttribute.IsMember == true )
 						{
-							// 有効なメンバー
 							code = ( System.UInt16 )memberAttribute.Code ;
-							type = field.FieldType ;
 						}
 					}
 				}
@@ -375,42 +400,30 @@ public partial class SimpleDataPack
 
 					//------------
 
-					if( keyAsCode == false )
-					{
-						// メンバー並び順にコード値を使用しない
-
 #if UNITY
-						// Unity 環境の場合は SerializeField にも対応する
-						isSerializeField	= ( property.GetCustomAttribute<SerializeField>() != null ) ;
+					// Unity 環境の場合は SerializeField にも対応する
+					isSerializeField	= ( property.GetCustomAttribute<SerializeField>() != null ) ;
 #endif
-						//------------
+					//------------
 
-						// アトリビュートの記述が有るなら対象メンバーとするには Getter と Setter の存在が必要
-						// アトリビュートの指定が無いなら対象メンバーとするには Public の Getter と Setter の存在が必要
-						if
-						(
+					// アトリビュートの記述が有るなら対象メンバーとするには Getter と Setter の存在が必要
+					// アトリビュートの指定が無いなら対象メンバーとするには Public の Getter と Setter の存在が必要
+					if
+					(
 #if UNITY
-							// Unity 環境の場合は SerializeField があれば Getter と Setter が有れば良い(public で無くても構わない)
-							( isSerializeField == true                                    && isRemainGetter == true && isRemainSetter == true ) ||
+						// Unity 環境の場合は SerializeField があれば Getter と Setter が有れば良い(public で無くても構わない)
+						( isSerializeField == true                                    && isRemainGetter == true && isRemainSetter == true ) ||
 #endif
-							( memberAttribute != null && memberAttribute.IsMember == true && isRemainGetter == true && isRemainSetter == true ) ||
-							( memberAttribute == null &&                                     isPublicGetter == true && isRemainSetter == true )
-						)
-						{
-							// 有効なメンバー
-							type = property.PropertyType ;
-						}
-					}
-					else
+						( memberAttribute != null && memberAttribute.IsMember == true && isRemainGetter == true && isRemainSetter == true ) ||
+						( memberAttribute == null &&                                     isPublicGetter == true && isRemainSetter == true )
+					)
 					{
-						// メンバー並び順にコード値を使用する
+						// 有効なメンバー
+						type = property.PropertyType ;
 
-						// アトリビュートの記述が必須且つ対象メンバーとするには Getter と Setter の存在が必要
-						if( memberAttribute != null && memberAttribute.IsMember == true && isRemainGetter == true && isRemainSetter == true )
+						if( memberAttribute != null && memberAttribute.IsMember == true )
 						{
-							// 有効なメンバー
 							code = ( System.UInt16 )memberAttribute.Code ;
-							type = property.PropertyType ;
 						}
 					}
 				}
@@ -449,13 +462,16 @@ public partial class SimpleDataPack
 					//--------------------------------
 
 					// Nullable であった場合はその内部のタイプ
-					member.ObjectType		= type ;
+					member.ObjectType			= type ;
 
 					// IsClsss
-					member.ObjectIsClass	= type.IsClass ;
+					member.ObjectIsClass		= type.IsClass ;
 
 					// ObjectTypeCode
-					member.ObjectTypeCode	= Type.GetTypeCode( type ) ;
+					member.ObjectTypeCode		= Type.GetTypeCode( type ) ;
+
+					// IsInterface
+					member.ObjectIsInterface	= type.IsInterface ;
 
 					//------------
 					
@@ -556,22 +572,41 @@ public partial class SimpleDataPack
 			if( members.Count >= 2 )
 			{
 				// ソートが必要
-				if( keyAsCode == false )
-				{
-					// 識別名でソート
-					objectDefinition.Members = members.OrderBy( _ => _.Name ).ToArray() ;
-				}
-				else
-				{
-					// コードでソート(コード値が同じ場合は名前でソート)
-					objectDefinition.Members = members.OrderBy( _ => _.Code ).ThenBy( _ => _.Name ).ToArray() ;
-				}
+				objectDefinition.Members = members.OrderBy( _ => _.Code ).ThenBy( _ => _.Name ).ToArray() ;
 			}
 			else
 			{
 				objectDefinition.Members = members.ToArray() ;
 			}
 
+			return objectDefinition ;
+		}
+
+		// クラス定義を生成する(このメソッドが呼び出される時点で対象のオブジェクト型である事は確定している) ※コード生成用
+		public ObjectDefinition CreateInterface( Type objectType )
+		{
+			// Interface なので Union 処理を行う
+			var unions = objectType.GetCustomAttributes<SimpleDataPackUnionAttribute>() ;
+			if( unions == null || unions.Count() == 0 )
+			{
+				throw new Exception( message:"No union attributes despite being an interface. : " + objectType.Name ) ;
+			}
+
+			return CreateInterface( objectType, unions.ToList() ) ;
+		}
+
+		// クラス定義を生成する(このメソッドが呼び出される時点で対象のオブジェクト型である事は確定している)
+		public ObjectDefinition CreateInterface( Type objectType, List<SimpleDataPackUnionAttribute> unions )
+		{
+			// 新しいオブジェクト定義を生成する
+			var objectDefinition = new ObjectDefinition()
+			{
+				ObjectType	= objectType,
+				IsInterface	= true
+			} ;
+
+			objectDefinition.GroupTypes = unions.OrderBy( _ => _.Code ).ThenBy( _ => _.GroupType.FullName ).Select( _ => _.GroupType ).ToArray() ;
+			
 			return objectDefinition ;
 		}
 	}
