@@ -445,6 +445,19 @@ namespace DSW.MyData
 		[SimpleDataPackMember(101)][Key(101)][SerializeField]
 		public List<Status_W?> P101 = new List<Status_W?>{ Status_W.Strength, Status_W.Intelligence, null } ;
 
+
+		[SimpleDataPackMember(102)][Key(102)][SerializeField]
+		public IMyInterface P102 = new MyInterface_Type0() ;
+
+		[SimpleDataPackMember(103)][Key(103)][SerializeField]
+		public IMyInterface P103 = new MyInterface_Type1() ;
+
+		[SimpleDataPackMember(104)][Key(103)][SerializeField]
+		public IMyInterface[] P104 = { new MyInterface_Type0(), new MyInterface_Type1() } ;
+
+		[SimpleDataPackMember(105)][Key(105)][SerializeField]
+		public List<IMyInterface> P105 = new List<IMyInterface>(){ new MyInterface_Type0(), new MyInterface_Type1() } ;
+
 		//-----------------------------------------------------------
 		// Struct 系
 /*

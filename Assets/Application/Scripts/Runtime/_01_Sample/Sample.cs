@@ -76,7 +76,7 @@ namespace DSW.Screens
 
 			//--------------------------------------------------------------------------
 			// SimpleDataPack のテスト
-/*
+
 			int si, sl = 1000 ;
 
 //			var o1 = new T() ;
@@ -93,17 +93,40 @@ namespace DSW.Screens
 
 //			await RunDebug<List<MyData.MySample_W>>() ;
 //			await RunDebug<MyData.MySample_W[]>() ;
-			await RunDebug( o0 ) ;
-*/
+			var r = await RunDebug( o0 ) ;
+
+			Debug.Log( "P102 : " + r[ sl - 1 ].P102.GetType().Name ) ;
+			Debug.Log( "P103 : " + r[ sl - 1 ].P103.GetType().Name ) ;
+			Debug.Log( "P104 : " + r[ sl - 1 ].P104[ 0 ].GetType().Name ) ;
+			Debug.Log( "P105 : " + r[ sl - 1 ].P105[ 1 ].GetType().Name ) ;
+
 
 			//----------------------------------------------------------
+/*
+			List<IMyInterface> o1 = new List<IMyInterface>() ;
 
-			var o1 = new MyInterface_Type2() ;
+			int si, sl = 100 ;
+			for( si  = 0 ; si <  sl ; si ++ )
+			{
+				int st = si % 2 ;
+				switch( st )
+				{
+					case 0: o1.Add( new MyInterface_Type0() ) ; break ;
+					case 1: o1.Add( new MyInterface_Type1() ) ; break ;
+				}
+			}
+
+
+			Debug.Log( "[S]Count : " + o1.Count ) ;
+
+//			var o1 = new MyInterface_Type2() ;
 //			await RunDebug( ( IMyInterface )o1 ) ;
-			var r = await RunDebug<IMyInterface>( o1 ) ;
+			var r = await RunDebug( o1 ) ;
 
-			Debug.Log( "デシリアライズ後のタイプ : " + r.GetType().Name ) ;
-
+			Debug.Log( "[D]Count : " + r.Count ) ;
+			Debug.Log( "T0 : " + r[ sl - 2 ].GetType().Name ) ;
+			Debug.Log( "T1 : " + r[ sl - 1 ].GetType().Name ) ;
+*/
 
 			await Yield() ;
 		}
