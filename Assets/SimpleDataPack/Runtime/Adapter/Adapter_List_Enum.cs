@@ -719,9 +719,10 @@ public partial class SimpleDataPack
 	/// List<Enum> アダプター
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class ListSEnumAdapter<T> : IAdapter where T : IList, new()
+	public class ListEnumReflectionAdapter : IAdapter
 	{
-		private readonly Type enumType ;
+		private readonly Type	listType ;
+		private readonly Type	enumType ;
 
 		private readonly Action<IList,int,ByteStream>	SetValue ;
 		private readonly Action<IList,int,ByteStream>	GetValue ;
@@ -729,8 +730,9 @@ public partial class SimpleDataPack
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		public ListSEnumAdapter( Type elememtType )
+		public ListEnumReflectionAdapter( Type objectType, Type elememtType )
 		{
+			listType			= objectType ;
 			enumType			= elememtType ;
 			var enumTypeCode	= Type.GetTypeCode( enumType ) ;
 
@@ -933,13 +935,13 @@ public partial class SimpleDataPack
 
 			int length = ( int )_ ;
 
+			var elements = ( IList )Activator.CreateInstance( listType ) ;
+
 			if( length == 0 )
 			{
 				// 空リスト
-				return new T() ;
+				return elements ;
 			}
-
-			var elements = new T() ;
 
 			//----------------------------------
 
@@ -953,9 +955,10 @@ public partial class SimpleDataPack
 	/// List<Enum?> アダプター
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class ListSEnumNAdapter<T> : IAdapter where T : IList, new()
+	public class ListEnumNReflectionAdapter : IAdapter
 	{
-		private readonly Type enumType ;
+		private readonly Type							listType ;
+		private readonly Type							enumType ;
 
 		private readonly Action<IList,int,ByteStream>	SetValue ;
 		private readonly Action<IList,int,ByteStream>	GetValue ;
@@ -963,9 +966,10 @@ public partial class SimpleDataPack
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		public ListSEnumNAdapter( Type elementType )
+		public ListEnumNReflectionAdapter( Type objectType, Type elementType )
 		{
-			enumType			= elementType ;
+			listType			= objectType ;
+			enumType			= Nullable.GetUnderlyingType( elementType ) ;
 			var enumTypeCode	= Type.GetTypeCode( enumType ) ;
 
 			switch( enumTypeCode )
@@ -1183,13 +1187,13 @@ public partial class SimpleDataPack
 
 			int length = ( int )_ ;
 
+			var elements = ( IList )Activator.CreateInstance( listType ) ;
+
 			if( length == 0 )
 			{
 				// 空リスト
-				return new T() ;
+				return elements ;
 			}
-
-			var elements = new T() ;
 
 			//----------------------------------
 

@@ -108,7 +108,7 @@ public partial class SimpleDataPack
 						} ;
 #else
 						// IL2CPP
-						adapter = ( IAdapter )( new Array1DsEnumNAdapter( elementType ) ) ;
+						adapter = ( IAdapter )( new Array1DEnumNReflectionAdapter( elementType ) ) ;
 #endif
 					}
 					else
@@ -132,14 +132,46 @@ public partial class SimpleDataPack
 						// 登録済みでなければ例外となる
 						if( ActiveAdapterCache.ContainsKey( elementType ) == true )
 						{
-							adapter = rank switch
+							// Struct の場合、IL2CPP ビルドで処理を変える必要がある
+							if( elementType.IsClass == true || elementType.IsInterface == true )
 							{
-								1 => ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( elementType ) ),
-								2 => ( IAdapter )Activator.CreateInstance( typeof( Array2DGenericAdapter<> ).MakeGenericType( elementType ) ),
-								3 => ( IAdapter )Activator.CreateInstance( typeof( Array3DGenericAdapter<> ).MakeGenericType( elementType ) ),
-								4 => ( IAdapter )Activator.CreateInstance( typeof( Array4DGenericAdapter<> ).MakeGenericType( elementType ) ),
-								_ => ( IAdapter )Activator.CreateInstance( typeof( ArrayNDGenericAdapter<> ).MakeGenericType( elementType ), rank ),
-							} ;
+								// class interface
+								adapter = rank switch
+								{
+									1 => ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( elementType ) ),
+									2 => ( IAdapter )Activator.CreateInstance( typeof( Array2DGenericAdapter<> ).MakeGenericType( elementType ) ),
+									3 => ( IAdapter )Activator.CreateInstance( typeof( Array3DGenericAdapter<> ).MakeGenericType( elementType ) ),
+									4 => ( IAdapter )Activator.CreateInstance( typeof( Array4DGenericAdapter<> ).MakeGenericType( elementType ) ),
+									_ => ( IAdapter )Activator.CreateInstance( typeof( ArrayNDGenericAdapter<> ).MakeGenericType( elementType ), rank ),
+								} ;
+							}
+							else
+							{
+								// struct
+#if UNITY_EDITOR || ENABLE_MONO
+								// Mono
+								adapter = rank switch
+								{
+									1 => ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( elementType ) ),
+									2 => ( IAdapter )Activator.CreateInstance( typeof( Array2DGenericAdapter<> ).MakeGenericType( elementType ) ),
+									3 => ( IAdapter )Activator.CreateInstance( typeof( Array3DGenericAdapter<> ).MakeGenericType( elementType ) ),
+									4 => ( IAdapter )Activator.CreateInstance( typeof( Array4DGenericAdapter<> ).MakeGenericType( elementType ) ),
+									_ => ( IAdapter )Activator.CreateInstance( typeof( ArrayNDGenericAdapter<> ).MakeGenericType( elementType ), rank ),
+								} ;
+#else
+								adapter = rank switch
+								{
+									1 => ( IAdapter )( new Array1DGenericReflectionAdapter( objectType, elementType ) ),
+
+									// 以下は後で修正する
+									2 => ( IAdapter )Activator.CreateInstance( typeof( Array2DGenericAdapter<> ).MakeGenericType( elementType ) ),
+									3 => ( IAdapter )Activator.CreateInstance( typeof( Array3DGenericAdapter<> ).MakeGenericType( elementType ) ),
+									4 => ( IAdapter )Activator.CreateInstance( typeof( Array4DGenericAdapter<> ).MakeGenericType( elementType ) ),
+									_ => ( IAdapter )Activator.CreateInstance( typeof( ArrayNDGenericAdapter<> ).MakeGenericType( elementType ), rank ),
+								} ;
+#endif
+
+							}
 						}
 						else
 						{
@@ -170,7 +202,7 @@ public partial class SimpleDataPack
 				} ;
 #else
 				// IL2CPP
-				adapter = ( IAdapter )( new Array1DsEnumAdapter( elementType ) ) ;
+				adapter = ( IAdapter )( new Array1DEnumReflectionAdapter( elementType ) ) ;
 #endif
 			}
 			else
@@ -201,6 +233,7 @@ public partial class SimpleDataPack
 				// 登録済みでなければ例外となる
 				if( ActiveAdapterCache.ContainsKey( elementType ) == true )
 				{
+					// Struct の場合、IL2CPP ビルドで処理を変える必要がある
 					adapter = rank switch
 					{
 						1 => ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( elementType ) ),

@@ -717,7 +717,7 @@ public partial class SimpleDataPack
 	/// Enum[] アダプター
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class Array1DsEnumAdapter : IAdapter
+	public class Array1DEnumReflectionAdapter : IAdapter
 	{
 		private readonly Type	enumType ;
 
@@ -727,7 +727,7 @@ public partial class SimpleDataPack
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		public Array1DsEnumAdapter( Type elementType )
+		public Array1DEnumReflectionAdapter( Type elementType )
 		{
 			enumType			= elementType ;
 			var enumTypeCode	= Type.GetTypeCode( enumType ) ;
@@ -949,7 +949,7 @@ public partial class SimpleDataPack
 	/// Enum?[] アダプター
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class Array1DsEnumNAdapter : IAdapter
+	public class Array1DEnumNReflectionAdapter : IAdapter
 	{
 		private readonly Type	nullableEnumType ;
 		private readonly Type	enumType ;
@@ -960,7 +960,7 @@ public partial class SimpleDataPack
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		public Array1DsEnumNAdapter( Type elementType )
+		public Array1DEnumNReflectionAdapter( Type elementType )
 		{
 			nullableEnumType	= elementType ;
 			enumType			= Nullable.GetUnderlyingType( nullableEnumType ) ;
@@ -1159,7 +1159,7 @@ public partial class SimpleDataPack
 			// ランクは 1 限定
 			writer.PutByte( 1 ) ;
 
-			Array elements = entity as Array ;
+			var elements = entity as Array ;
 
 			int length_0 = elements.Length ;
 

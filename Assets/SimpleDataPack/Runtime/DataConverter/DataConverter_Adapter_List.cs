@@ -80,7 +80,7 @@ public partial class SimpleDataPack
 						// Mono
 						adapter = ( IAdapter )Activator.CreateInstance( typeof( ListEnumNAdapter<> ).MakeGenericType( elementType ) ) ;
 #else
-						adapter = ( IAdapter )Activator.CreateInstance( typeof( ListSEnumNAdapter<> ).MakeGenericType( objectType ), innerElementType ) ;
+						adapter = ( IAdapter )( new ListEnumNReflectionAdapter( objectType, elementType ) ) ;
 #endif
 					}
 					else
@@ -104,6 +104,7 @@ public partial class SimpleDataPack
 						// 登録済みでなければ例外となる
 						if( ActiveAdapterCache.ContainsKey( elementType ) == true )
 						{
+							// Struct の場合、IL2CPP ビルドで処理を変える必要がある
 							adapter = ( IAdapter )Activator.CreateInstance( typeof( ListGenericAdapter<> ).MakeGenericType( elementType ) ) ;
 						}
 						else
@@ -128,7 +129,7 @@ public partial class SimpleDataPack
 				adapter = ( IAdapter )Activator.CreateInstance( typeof( ListEnumAdapter<> ).MakeGenericType( elementType ) ) ;
 #else
 				// IL2CPP
-				adapter = ( IAdapter )Activator.CreateInstance( typeof( ListSEnumAdapter<> ).MakeGenericType( objectType ), elementType ) ;
+				adapter = ( IAdapter )( new ListEnumReflectionAdapter( objectType, elementType ) ) ;
 #endif
 			}
 			else
@@ -152,6 +153,7 @@ public partial class SimpleDataPack
 				// 登録済みでなければ例外となる
 				if( ActiveAdapterCache.ContainsKey( elementType ) == true )
 				{
+					// Struct の場合、IL2CPP ビルドで処理を変える必要がある
 					adapter = ( IAdapter )Activator.CreateInstance( typeof( ListGenericAdapter<> ).MakeGenericType( elementType ) ) ;
 				}
 				else

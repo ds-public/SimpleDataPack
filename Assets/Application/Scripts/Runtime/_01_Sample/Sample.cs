@@ -81,26 +81,25 @@ namespace DSW.Screens
 
 //			var o1 = new T() ;
 //			var o1 = new List<MyData.MySample_W>() ;
-			var o0 = new MyData.MyObject_W[ sl ]  ;
-//			var o0 = new MyData.MyStruct_W[ sl ]  ;
+//			var o0 = new MyData.MyObject_W[ sl ]  ;
+			var o0 = new MyData.MyStruct_W[ sl ]  ;
 
 			for( si  = 0 ; si <  sl ; si ++ )
 			{
 //				o1.Add( new MyData.MySample_W() ) ;
-				o0[ si ] = new MyData.MyObject_W() ;
-//				o0[ si ] = new MyData.MyStruct_W() ;
+//				o0[ si ] = new MyData.MyObject_W() ;
+				o0[ si ] = new MyData.MyStruct_W() ;
 			}
 
 //			await RunDebug<List<MyData.MySample_W>>() ;
 //			await RunDebug<MyData.MySample_W[]>() ;
 			var r = await RunDebug( o0 ) ;
-
-			Debug.Log( "P102 : " + r[ sl - 1 ].P102.GetType().Name ) ;
-			Debug.Log( "P103 : " + r[ sl - 1 ].P103.GetType().Name ) ;
-			Debug.Log( "P104 : " + r[ sl - 1 ].P104[ 0 ].GetType().Name ) ;
-			Debug.Log( "P105 : " + r[ sl - 1 ].P105[ 1 ].GetType().Name ) ;
-
-
+/*
+			LOG( "P120 : " + r[ sl - 1 ].P120.GetType().Name ) ;
+			LOG( "P121 : " + r[ sl - 1 ].P121.GetType().Name ) ;
+			LOG( "P122 : " + r[ sl - 1 ].P122[ 0 ].GetType().Name ) ;
+			LOG( "P123 : " + r[ sl - 1 ].P123[ 1 ].GetType().Name ) ;
+*/
 			//----------------------------------------------------------
 /*
 			List<IMyInterface> o1 = new List<IMyInterface>() ;
@@ -144,7 +143,7 @@ namespace DSW.Screens
 //			SimpleDataPack.IsBigEndian = true ;
 
 			// 高速展開用アダプターの使用を制限する
-//			SimpleDataPack.ExternalAdapterDisabled = true ;
+			SimpleDataPack.ExternalAdapterDisabled = true ;
 
 			SimpleDataPack.PriorityTypes priorityType = SimpleDataPack.PriorityTypes.Speed ;
 
@@ -368,6 +367,14 @@ namespace MessagePack
 	public class KeyAttribute : Attribute
 	{
 		public KeyAttribute( int index )
+		{
+		}
+	}
+
+	[AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
+	public class UnionAttribute : Attribute
+	{
+		public UnionAttribute( int index, Type type )
 		{
 		}
 	}

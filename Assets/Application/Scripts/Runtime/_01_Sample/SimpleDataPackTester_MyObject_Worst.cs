@@ -445,25 +445,12 @@ namespace DSW.MyData
 		[SimpleDataPackMember(101)][Key(101)][SerializeField]
 		public List<Status_W?> P101 = new List<Status_W?>{ Status_W.Strength, Status_W.Intelligence, null } ;
 
-
-		[SimpleDataPackMember(102)][Key(102)][SerializeField]
-		public IMyInterface P102 = new MyInterface_Type0() ;
-
-		[SimpleDataPackMember(103)][Key(103)][SerializeField]
-		public IMyInterface P103 = new MyInterface_Type1() ;
-
-		[SimpleDataPackMember(104)][Key(103)][SerializeField]
-		public IMyInterface[] P104 = { new MyInterface_Type0(), new MyInterface_Type1() } ;
-
-		[SimpleDataPackMember(105)][Key(105)][SerializeField]
-		public List<IMyInterface> P105 = new List<IMyInterface>(){ new MyInterface_Type0(), new MyInterface_Type1() } ;
-
 		//-----------------------------------------------------------
 		// Struct 系
-/*
+
 		[SimpleDataPackMember(102)][Key(102)][SerializeField]
 		public MyStruct_W P102 = new MyStruct_W( 255 ) ;
-
+/*
 		[SimpleDataPackMember(103)][Key(103)][SerializeField]
 		public MyStruct_W? P103 = new MyStruct_W( 255 ) ;
 
@@ -481,10 +468,10 @@ namespace DSW.MyData
 
 		[SimpleDataPackMember(107)][Key(107)][SerializeField]
 		public List<MyStruct_W?> P107 = new List<MyStruct_W?>{ new MyStruct_W( 255 ), null } ;
-*/		
+		
 		//-----------------------------------------------------------
 		// 非対応クラス系
-/*
+
 		[SimpleDataPackMember(108)][Key(108)][SerializeField]
 		public List<List<byte>> P108 = new List<List<byte>>{ new List<byte>(){ 255, 255, 255 }, null } ;
 
@@ -553,6 +540,20 @@ namespace DSW.MyData
 				{  9, 10, 11 }
 			}
 		} ;
+
+		//-----------------------------------------------------------
+
+		[SimpleDataPackMember(120)][Key(120)][SerializeField]
+		public IMyInterface P120 = new MyInterface_Type2() ;
+
+		[SimpleDataPackMember(121)][Key(121)][SerializeField]
+		public IMyInterface P121 = new MyInterface_Type3() ;
+
+		[SimpleDataPackMember(122)][Key(122)][SerializeField]
+		public IMyInterface[] P122 = { new MyInterface_Type2(), new MyInterface_Type3() } ;
+
+		[SimpleDataPackMember(123)][Key(123)][SerializeField]
+		public List<IMyInterface> P123 = new List<IMyInterface>(){ new MyInterface_Type2(), new MyInterface_Type3() } ;
 */
 		//-----------------------------------
 		// 極端に大きなアレイとリスト
@@ -647,26 +648,38 @@ namespace DSW.MyData
 
 	//--------------------------------------------------------------------------------------------------------------------
 
-	[SimpleDataPackUnion( typeof( MyInterface_Type0 ) )]
-	[SimpleDataPackUnion( typeof( MyInterface_Type1 ) )]
-	[SimpleDataPackUnion( typeof( MyInterface_Type2 ) )]
+	[SimpleDataPackUnion( typeof( MyInterface_Type0 ) )][Union( 0, typeof( MyInterface_Type0 ) )]
+	[SimpleDataPackUnion( typeof( MyInterface_Type1 ) )][Union( 1, typeof( MyInterface_Type1 ) )]
+	[SimpleDataPackUnion( typeof( MyInterface_Type2 ) )][Union( 2, typeof( MyInterface_Type2 ) )]
+	[SimpleDataPackUnion( typeof( MyInterface_Type3 ) )][Union( 3, typeof( MyInterface_Type3 ) )]
 	public interface IMyInterface{}
 
-	[SimpleDataPackObject]
+	[SimpleDataPackObject][MessagePackObject(keyAsPropertyName:false)][Serializable]
 	public partial class MyInterface_Type0 : IMyInterface
 	{
+		[SimpleDataPackMember(0)][Key(0)]
 		public int TypeCode = 0 ;
 	}
 
-	[SimpleDataPackObject]
+	[SimpleDataPackObject][MessagePackObject(keyAsPropertyName:false)][Serializable]
 	public partial class MyInterface_Type1 : IMyInterface
 	{
+		[SimpleDataPackMember(0)][Key(0)]
 		public int TypeCode = 1 ;
 	}
 
-	[SimpleDataPackObject]
+	[SimpleDataPackObject][MessagePackObject(keyAsPropertyName:false)][Serializable]
 	public partial class MyInterface_Type2 : IMyInterface
 	{
+		[SimpleDataPackMember(0)][Key(0)]
 		public int TypeCode = 2 ;
 	}
+
+	[SimpleDataPackObject][MessagePackObject(keyAsPropertyName:false)][Serializable]
+	public partial struct MyInterface_Type3 : IMyInterface
+	{
+		[SimpleDataPackMember(0)][Key(0)]
+		public int TypeCode ;
+	}
+
 }

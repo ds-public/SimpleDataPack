@@ -216,6 +216,107 @@ public partial class SimpleDataPack
 
 			return elements ;
 		}
+	}
 
+	//============================================================================================
+	// IL2CPP ビルド時のリフレクション版用
+
+	/// <summary>
+	/// T が確定値のリストアダプター(T はスカラの class struct? struct 限定) ※T にアレイは不可
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	public class ListGenericReflectionAdapter : IAdapter
+	{
+		private readonly Type	m_ObjectType ;
+		private readonly Type	m_ElementType ;
+
+		/// <summary>
+		/// コンストラクタ
+		/// </summary>
+		/// <param name="elementType"></param>
+		public ListGenericReflectionAdapter( Type objectType, Type elementType )
+		{
+			m_ObjectType	= objectType ;
+			m_ElementType	= elementType ;
+		}
+
+		/// <summary>
+		/// シリアライズを実行する
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="entity"></param>
+		/// <param name="writer"></param>
+		public void Serialize( System.Object entity, ByteStream writer )
+		{
+			if( entity == null )
+			{
+				// null 且つ length = 0
+				writer.PutByte( 0 ) ;
+				return ;
+			}
+
+			IList elements = entity as IList ;
+
+			int length = elements.Count ;
+
+			if( length == 0 )
+			{
+				// 空リスト
+				writer.PutByte( 0 ) ;	// null ではない
+				return ;
+			}
+
+			// 要素数を格納
+			writer.PutVUInt33( ( System.UInt32? )length ) ;
+
+			//----------------------------------
+
+			// 高速化のためにデリゲート取得
+			Action<System.Object,ByteStream> serialize = ( ( IAdapter )ActiveAdapterCache[ m_ElementType ] ).Serialize ;
+
+			// T のアダプターが登録済みなら直接デリゲートを呼ぶ(２倍以上高速)
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				serialize( elements[ index ], writer ) ;
+			}
+		}
+
+		/// <summary>
+		/// デシリアライズを実行する
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <returns></returns>
+		public System.Object Deserialize( ByteStream reader )
+		{
+			System.UInt32? _ = reader.GetVUInt33() ;
+			if( _ == null )
+			{
+				return null ;
+			}
+
+			int length = ( int )_ ;
+
+			var elements = ( IList )Activator.CreateInstance( m_ObjectType ) ;
+
+			if( length == 0 )
+			{
+				// 空リスト
+				return elements ;
+			}
+
+			//----------------------------------
+
+			// 高速化のためにデリゲート取得
+			Func<ByteStream,System.Object> deserialize = ( ( IAdapter )ActiveAdapterCache[ m_ElementType ] ).Deserialize ;
+
+			// T のアダプターが登録済みなら直接デリゲートを呼ぶ(２倍以上高速)
+			for( int index  = 0 ; index <  length ; index ++ )
+			{
+				elements.Add( deserialize( reader ) ) ;
+			}
+
+			return elements ;
+		}
 	}
 }

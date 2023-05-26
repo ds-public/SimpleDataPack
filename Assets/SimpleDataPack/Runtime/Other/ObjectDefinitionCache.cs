@@ -10,6 +10,8 @@ using System.Reflection ;
 
 using UnityEngine ;
 
+using uGUIHelper ;
+
 public partial class SimpleDataPack
 {
 	// リフレクションのバインドフラグ
@@ -82,19 +84,17 @@ public partial class SimpleDataPack
 			// または既に当ログ済みでも null になる
 			if( objectDefinition != null )
 			{
-#if UNITY_EDITOR
-				if( m_ObjectDefinitions.ContainsKey( objectDefinition.ObjectType ) == true )
-				{
-					Debug.Log( "既に登録済みのタイプです : " + objectDefinition.ObjectType.Name ) ;
-				}
-#endif
 				// 新しいオブジェクト定義を追加する
 				m_ObjectDefinitions.Add( objectDefinition.ObjectType, objectDefinition ) ;
 
 				//----------------------------------------------------------
 
+				DebugScreen.Out( "アダプター生成開始" ) ;
+
 				// アダプターを生成する
 				objectDefinition.CreateAdapter() ;
+
+				DebugScreen.Out( "アダプター生成終了" ) ;
 
 				//----------------------------------------------------------
 
@@ -241,6 +241,9 @@ public partial class SimpleDataPack
 						type.GetCustomAttribute<System.SerializableAttribute>()		!= null
 					)
 					{
+						DebugScreen.Out( "オブジェクト型の解析に入る : " + type.Name ) ;
+
+
 						// 有効なオブジェクトの型
 						return Create( type ) ;
 					}
@@ -319,6 +322,8 @@ public partial class SimpleDataPack
 
 			MethodInfo getter ;
 			MethodInfo setter ;
+
+			DebugScreen.Out( "メンバー解析開始 : " + memberInfos.Length ) ;
 
 			// メンバーごとに処理を行う
 			foreach( MemberInfo memberInfo in memberInfos )
@@ -521,6 +526,11 @@ public partial class SimpleDataPack
 								type != typeof( System.Decimal ) &&	// 除外
 								type != typeof( System.DateTime )	// 除外
 							)
+							||
+							(
+								// Interface
+								type.IsInterface == true
+							)
 						)
 						{
 							// class または struct ※メンバーが存在する
@@ -560,6 +570,8 @@ public partial class SimpleDataPack
 					}
 				}
 			}
+
+			DebugScreen.Out( "メンバー解析終了 : " + members.Count ) ;
 
 			//----------------------------------------------------------
 

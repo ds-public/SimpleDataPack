@@ -186,6 +186,11 @@ public partial class SimpleDataPack
 						elementType != typeof( System.Decimal ) &&	// 除外
 						elementType != typeof( System.DateTime )	// 除外
 					)
+					||
+					(
+						// Interface
+						elementType.IsInterface == true
+					)
 				)
 				{
 					// 要素がオブジェクト(class struct? struct ※メンバーが存在するもの)
@@ -305,6 +310,11 @@ public partial class SimpleDataPack
 						elementType.IsEnum == false &&
 						elementType != typeof( System.Decimal ) &&	// 除外
 						elementType != typeof( System.DateTime )	// 除外
+					)
+					||
+					(
+						// Interface
+						elementType.IsInterface == true
 					)
 				)
 				{

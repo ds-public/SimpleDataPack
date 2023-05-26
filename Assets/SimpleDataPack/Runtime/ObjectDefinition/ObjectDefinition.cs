@@ -1279,14 +1279,22 @@ public partial class SimpleDataPack
 					var adapter_NotNullable = ( IAdapter )( new InternalObjectAdapter_NotNullable( this ) ) ;
 					AddToInternalAdapterCache( ObjectType, adapter_NotNullable ) ;
 
-					// アレイ(１次元)
+#if UNITY_EDITOR || ENABLE_MONO
+					// Mono
 					var arrayAdapter_NotNullable = ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( ObjectType ) ) ;
 					AddToInternalAdapterCache( ObjectType.MakeArrayType(), arrayAdapter_NotNullable ) ;
 
 					// リスト
 					var listAdapter_NotNullable = ( IAdapter )Activator.CreateInstance( typeof( ListGenericAdapter<> ).MakeGenericType( ObjectType ) ) ;
 					AddToInternalAdapterCache( typeof( List<> ).MakeGenericType( ObjectType ), listAdapter_NotNullable ) ;
+#else
+					// IL2CPP
+					var arrayAdapter_NotNullable = ( IAdapter )( new Array1DGenericReflectionAdapter( ObjectType.MakeArrayType(), ObjectType ) ) ;
+					AddToInternalAdapterCache( ObjectType.MakeArrayType(), arrayAdapter_NotNullable ) ;
 
+					var listAdapter_NotNullable = ( IAdapter )( new ListGenericReflectionAdapter( typeof( List<> ).MakeGenericType( ObjectType ), ObjectType ) ) ;
+					AddToInternalAdapterCache( typeof( List<> ).MakeGenericType( ObjectType ), listAdapter_NotNullable ) ;
+#endif
 					//-------------
 					// struct?
 
@@ -1295,13 +1303,21 @@ public partial class SimpleDataPack
 					var adapter = ( IAdapter )( new InternalObjectAdapter( this ) ) ;
 					AddToInternalAdapterCache( nullableObjectType, adapter ) ;
 
-					// アレイ(１次元)
+#if UNITY_EDITOR || ENABLE_MONO
+					// Mono
 					var arrayAdapter = ( IAdapter )Activator.CreateInstance( typeof( Array1DGenericAdapter<> ).MakeGenericType( nullableObjectType ) ) ;
 					AddToInternalAdapterCache( nullableObjectType.MakeArrayType(), arrayAdapter ) ;
 
-					// リスト
 					var listAdapter = ( IAdapter )Activator.CreateInstance( typeof( ListGenericAdapter<> ).MakeGenericType( nullableObjectType ) ) ;
 					AddToInternalAdapterCache( typeof( List<> ).MakeGenericType( nullableObjectType ), listAdapter ) ;
+#else
+					// IL2CPP
+					var arrayAdapter = ( IAdapter )( new Array1DGenericReflectionAdapter(  nullableObjectType.MakeArrayType(), nullableObjectType ) ) ;
+					AddToInternalAdapterCache( nullableObjectType.MakeArrayType(), arrayAdapter ) ;
+
+					var listAdapter = ( IAdapter )( new ListGenericReflectionAdapter( typeof( List<> ).MakeGenericType( nullableObjectType ), ObjectType ) ) ;
+					AddToInternalAdapterCache( typeof( List<> ).MakeGenericType( nullableObjectType ), listAdapter ) ;
+#endif
 				}
 			}
 			else
