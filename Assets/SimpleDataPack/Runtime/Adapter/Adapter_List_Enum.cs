@@ -713,15 +713,15 @@ public partial class SimpleDataPack
 	}
 
 	//============================================================================================
-	// 自動生成コードを使用しない IL2CPP 用
+	// IL2CPP ビルドでリフレクションを使用するケース
 
 	/// <summary>
 	/// List<Enum> アダプター
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class ListEnumReflectionAdapter : IAdapter
+	public class ListEnumVersatileAdapter : IAdapter
 	{
-		private readonly Type	listType ;
+		private readonly Type	m_ObjectType ;
 		private readonly Type	enumType ;
 
 		private readonly Action<IList,int,ByteStream>	SetValue ;
@@ -730,9 +730,9 @@ public partial class SimpleDataPack
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		public ListEnumReflectionAdapter( Type objectType, Type elememtType )
+		public ListEnumVersatileAdapter( Type objectType, Type elememtType )
 		{
-			listType			= objectType ;
+			m_ObjectType		= objectType ;
 			enumType			= elememtType ;
 			var enumTypeCode	= Type.GetTypeCode( enumType ) ;
 
@@ -900,7 +900,7 @@ public partial class SimpleDataPack
 				return ;
 			}
 
-			IList elements = entity as IList ;
+			var elements = entity as IList ;
 
 			int length = elements.Count ;
 
@@ -935,7 +935,7 @@ public partial class SimpleDataPack
 
 			int length = ( int )_ ;
 
-			var elements = ( IList )Activator.CreateInstance( listType ) ;
+			var elements = ( IList )Activator.CreateInstance( m_ObjectType ) ;
 
 			if( length == 0 )
 			{
@@ -955,9 +955,10 @@ public partial class SimpleDataPack
 	/// List<Enum?> アダプター
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class ListEnumNReflectionAdapter : IAdapter
+	public class ListEnumNVersatileAdapter : IAdapter
 	{
-		private readonly Type							listType ;
+		private readonly Type							m_ObjectType ;
+		private readonly Type							nullableEnumType ;
 		private readonly Type							enumType ;
 
 		private readonly Action<IList,int,ByteStream>	SetValue ;
@@ -966,10 +967,12 @@ public partial class SimpleDataPack
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		public ListEnumNReflectionAdapter( Type objectType, Type elementType )
+		public ListEnumNVersatileAdapter( Type objectType, Type elementType )
 		{
-			listType			= objectType ;
-			enumType			= Nullable.GetUnderlyingType( elementType ) ;
+			m_ObjectType		= objectType ;
+
+			nullableEnumType	= elementType ;
+			enumType			= Nullable.GetUnderlyingType( nullableEnumType ) ;
 			var enumTypeCode	= Type.GetTypeCode( enumType ) ;
 
 			switch( enumTypeCode )
@@ -1152,7 +1155,7 @@ public partial class SimpleDataPack
 				return ;
 			}
 
-			IList elements = entity as IList ;
+			var elements = entity as IList ;
 
 			int length = elements.Count ;
 
@@ -1187,7 +1190,7 @@ public partial class SimpleDataPack
 
 			int length = ( int )_ ;
 
-			var elements = ( IList )Activator.CreateInstance( listType ) ;
+			var elements = ( IList )Activator.CreateInstance( m_ObjectType ) ;
 
 			if( length == 0 )
 			{
@@ -1202,5 +1205,4 @@ public partial class SimpleDataPack
 			return elements ;
 		}
 	}
-
 }

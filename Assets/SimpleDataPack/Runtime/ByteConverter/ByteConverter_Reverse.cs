@@ -35,6 +35,10 @@ public partial class SimpleDataPack
 				ms.WriteByte( ( System.Boolean )value == false ? ( byte )2 : ( byte )3 ) ;
 			}
 		}
+		public void PutBooleanT( System.Boolean value, MemoryStream ms )
+		{
+			ms.WriteByte( value == false ? ( byte )2 : ( byte )3 ) ;
+		}
 
 		//---------------
 
@@ -106,6 +110,13 @@ public partial class SimpleDataPack
 				m_Work[ 1 ] = ( System.Byte )( v >> 8 ) ;
 				ms.Write( m_Work, 0, 3 ) ;
 			}
+		}
+		public void PutCharT( System.Char value, MemoryStream ms )
+		{
+			m_Work[ 0 ] = 1 ;
+			m_Work[ 2 ] = ( System.Byte )( value      ) ;
+			m_Work[ 1 ] = ( System.Byte )( value >> 8 ) ;
+			ms.Write( m_Work, 0, 3 ) ;
 		}
 
 		//---------------
@@ -360,10 +371,17 @@ public partial class SimpleDataPack
 			else
 			{
 				ms.WriteByte( 1 ) ;
-				byte[] b = BitConverter.GetBytes( value.Value ) ;
+				byte[] b = BitConverter.GetBytes( ( System.Single )value ) ;
 				m_Work[ 0 ] = b[ 3 ] ; m_Work[ 1 ] = b[ 2 ] ; m_Work[ 2 ] = b[ 1 ] ; m_Work[ 3 ] = b[ 0 ] ; 
 				ms.Write( m_Work, 0, 4 ) ;
 			}
+		}
+		public void PutSingleT( System.Single value, MemoryStream ms )
+		{
+			ms.WriteByte( 1 ) ;
+			byte[] b = BitConverter.GetBytes( value ) ;
+			m_Work[ 0 ] = b[ 3 ] ; m_Work[ 1 ] = b[ 2 ] ; m_Work[ 2 ] = b[ 1 ] ; m_Work[ 3 ] = b[ 0 ] ; 
+			ms.Write( m_Work, 0, 4 ) ;
 		}
 
 		//---------------
@@ -383,10 +401,17 @@ public partial class SimpleDataPack
 			else
 			{
 				ms.WriteByte( 1 ) ;
-				byte[] b = BitConverter.GetBytes( value.Value ) ;
+				byte[] b = BitConverter.GetBytes( ( System.Double )value ) ;
 				m_Work[ 0 ] = b[ 7 ] ; m_Work[ 1 ] = b[ 6 ] ; m_Work[ 2 ] = b[ 5 ] ; m_Work[ 3 ] = b[ 4 ] ; m_Work[ 4 ] = b[ 3 ] ; m_Work[ 5 ] = b[ 2 ] ; m_Work[ 6 ] = b[ 1 ] ; m_Work[ 7 ] = b[ 0 ] ;
 				ms.Write( m_Work, 0, 8 ) ;
 			}
+		}
+		public void PutDoubleT( System.Double value, MemoryStream ms )
+		{
+			ms.WriteByte( 1 ) ;
+			byte[] b = BitConverter.GetBytes( value ) ;
+			m_Work[ 0 ] = b[ 7 ] ; m_Work[ 1 ] = b[ 6 ] ; m_Work[ 2 ] = b[ 5 ] ; m_Work[ 3 ] = b[ 4 ] ; m_Work[ 4 ] = b[ 3 ] ; m_Work[ 5 ] = b[ 2 ] ; m_Work[ 6 ] = b[ 1 ] ; m_Work[ 7 ] = b[ 0 ] ;
+			ms.Write( m_Work, 0, 8 ) ;
 		}
 
 		//---------------
@@ -405,10 +430,16 @@ public partial class SimpleDataPack
 			}
 			else
 			{
-				byte[] b = Encoding.UTF8.GetBytes( value.Value.ToString() ) ;
+				byte[] b = Encoding.UTF8.GetBytes( ( ( System.Decimal )value ).ToString() ) ;
 				ms.WriteByte( ( System.Byte )b.Length ) ;
 				ms.Write( b, 0, b.Length ) ;
 			}
+		}
+		public void PutDecimalT( System.Decimal value, MemoryStream ms )
+		{
+			byte[] b = Encoding.UTF8.GetBytes( value.ToString() ) ;
+			ms.WriteByte( ( System.Byte )b.Length ) ;
+			ms.Write( b, 0, b.Length ) ;
 		}
 
 		//---------------
@@ -450,8 +481,13 @@ public partial class SimpleDataPack
 			else
 			{
 				ms.WriteByte( 1 ) ;
-				PutInt64( ( System.Int64 )( value.Value.Ticks ), ms ) ;
+				PutInt64( ( System.Int64 )( ( ( System.DateTime )value ).Ticks ), ms ) ;
 			}
+		}
+		public void PutDateTimeT( System.DateTime value, MemoryStream ms )
+		{
+			ms.WriteByte( 1 ) ;
+			PutInt64( ( System.Int64 )( value.Ticks ), ms ) ;
 		}
 
 		//-----------------------------------------------------------

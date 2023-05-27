@@ -18,9 +18,11 @@ public partial class SimpleDataPack
 			{
 				PutSingle_Dispatcher	= PutSingle_Inner ;
 				PutSingleN_Dispatcher	= PutSingleN_Inner ;
+				PutSingleT_Dispatcher	= PutSingleT_Inner ;
 
 				PutDouble_Dispatcher	= PutDouble_Inner ;
 				PutDoubleN_Dispatcher	= PutDoubleN_Inner ;
+				PutDoubleT_Dispatcher	= PutDoubleT_Inner ;
 
 				//---
 
@@ -34,9 +36,11 @@ public partial class SimpleDataPack
 			{
 				PutSingle_Dispatcher	= PutSingle_Inner_Reverse ;
 				PutSingleN_Dispatcher	= PutSingleN_Inner_Reverse ;
+				PutSingleT_Dispatcher	= PutSingleT_Inner_Reverse ;
 
 				PutDouble_Dispatcher	= PutDouble_Inner_Reverse ;
 				PutDoubleN_Dispatcher	= PutDoubleN_Inner_Reverse ;
+				PutDoubleT_Dispatcher	= PutDoubleT_Inner_Reverse ;
 
 				//---
 
@@ -50,9 +54,11 @@ public partial class SimpleDataPack
 
 		private Action<System.Single,MemoryStream>			PutSingle_Dispatcher ;
 		private Action<System.Single?,MemoryStream>			PutSingleN_Dispatcher ;
+		private Action<System.Single,MemoryStream>			PutSingleT_Dispatcher ;
 
 		private Action<System.Double,MemoryStream>			PutDouble_Dispatcher ;
 		private Action<System.Double?,MemoryStream>			PutDoubleN_Dispatcher ;
+		private Action<System.Double,MemoryStream>			PutDoubleT_Dispatcher ;
 
 		private Func<ByteStream,System.Single>				GetSingle_Dispatcher ;
 		private Func<ByteStream,System.Single?>				GetSingleN_Dispatcher ;
@@ -76,6 +82,10 @@ public partial class SimpleDataPack
 			{
 				ms.WriteByte( ( System.Boolean )value == false ? ( byte )2 : ( byte )3 ) ;
 			}
+		}
+		public void PutBooleanT( System.Boolean value, MemoryStream ms )
+		{
+			ms.WriteByte( value == false ? ( byte )2 : ( byte )3 ) ;
 		}
 
 		//---------------
@@ -107,6 +117,9 @@ public partial class SimpleDataPack
 
 		public void PutCharN( System.Char? value, MemoryStream ms )
 			=> PutVUInt17( ( System.UInt16? )( ( System.Char? )value ), ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
+
+		public void PutCharT( System.Char value, MemoryStream ms )
+			=> PutVUInt17T( ( System.UInt16 )value, ms ) ;	// 1 + 7 + 1 + 7 + 1 + 2 = 19 bit
 
 		//---------------
 
@@ -182,6 +195,9 @@ public partial class SimpleDataPack
 		public void PutSingleN( System.Single? value, MemoryStream ms )
 			=> PutSingleN_Dispatcher( value, ms ) ;
 
+		public void PutSingleT( System.Single value, MemoryStream ms )
+			=> PutSingleT_Dispatcher( value, ms ) ;
+
 		//-----
 
 		private void PutSingle_Inner( System.Single value, MemoryStream ms )
@@ -197,8 +213,13 @@ public partial class SimpleDataPack
 			else
 			{
 				ms.WriteByte( 1 ) ;
-				ms.Write( BitConverter.GetBytes( value.Value ), 0, 4 ) ;
+				ms.Write( BitConverter.GetBytes( ( System.Single )value ), 0, 4 ) ;
 			}
+		}
+		private void PutSingleT_Inner( System.Single value, MemoryStream ms )
+		{
+			ms.WriteByte( 1 ) ;
+			ms.Write( BitConverter.GetBytes( value ), 0, 4 ) ;
 		}
 
 		//-----
@@ -223,6 +244,13 @@ public partial class SimpleDataPack
 				ms.Write( m_Work, 0, 4 ) ;
 			}
 		}
+		private void PutSingleT_Inner_Reverse( System.Single value, MemoryStream ms )
+		{
+			ms.WriteByte( 1 ) ;
+			byte[] b = BitConverter.GetBytes( value ) ;
+			m_Work[ 0 ] = b[ 3 ] ; m_Work[ 1 ] = b[ 2 ] ; m_Work[ 2 ] = b[ 1 ] ; m_Work[ 3 ] = b[ 0 ] ;
+			ms.Write( m_Work, 0, 4 ) ;
+		}
 
 		//---------------
 
@@ -231,6 +259,9 @@ public partial class SimpleDataPack
 
 		public void PutDoubleN( System.Double? value, MemoryStream ms )
 			=> PutDoubleN_Dispatcher( value, ms ) ;
+
+		public void PutDoubleT( System.Double value, MemoryStream ms )
+			=> PutDoubleT_Dispatcher( value, ms ) ;
 
 		//-----
 
@@ -247,8 +278,13 @@ public partial class SimpleDataPack
 			else
 			{
 				ms.WriteByte( 1 ) ;
-				ms.Write( BitConverter.GetBytes( value.Value ), 0, 8 ) ;
+				ms.Write( BitConverter.GetBytes( ( System.Double )value ), 0, 8 ) ;
 			}
+		}
+		private void PutDoubleT_Inner( System.Double value, MemoryStream ms )
+		{
+			ms.WriteByte( 1 ) ;
+			ms.Write( BitConverter.GetBytes( value ), 0, 8 ) ;
 		}
 
 		//-----
@@ -273,6 +309,13 @@ public partial class SimpleDataPack
 				ms.Write( m_Work, 0, 8 ) ;
 			}
 		}
+		private void PutDoubleT_Inner_Reverse( System.Double value, MemoryStream ms )
+		{
+			ms.WriteByte( 1 ) ;
+			byte[] b = BitConverter.GetBytes( ( System.Double ) value ) ;
+			m_Work[ 0 ] = b[ 7 ] ; m_Work[ 1 ] = b[ 6 ] ; m_Work[ 2 ] = b[ 5 ] ; m_Work[ 3 ] = b[ 4 ] ; m_Work[ 4 ] = b[ 3 ] ; m_Work[ 5 ] = b[ 2 ] ; m_Work[ 6 ] = b[ 1 ] ; m_Work[ 7 ] = b[ 0 ] ;
+			ms.Write( m_Work, 0, 8 ) ;
+		}
 
 		//---------------
 
@@ -290,10 +333,16 @@ public partial class SimpleDataPack
 			}
 			else
 			{
-				byte[] b = Encoding.UTF8.GetBytes( value.Value.ToString() ) ;
+				byte[] b = Encoding.UTF8.GetBytes( ( ( System.Decimal )value ).ToString() ) ;
 				ms.WriteByte( ( System.Byte )b.Length ) ;
 				ms.Write( b, 0, b.Length ) ;
 			}
+		}
+		public void PutDecimalT( System.Decimal value, MemoryStream ms )
+		{
+			byte[] b = Encoding.UTF8.GetBytes( value.ToString() ) ;
+			ms.WriteByte( ( System.Byte )b.Length ) ;
+			ms.Write( b, 0, b.Length ) ;
 		}
 
 		//---------------
@@ -335,8 +384,13 @@ public partial class SimpleDataPack
 			else
 			{
 				ms.WriteByte( 1 ) ;
-				PutInt64( ( System.Int64 )value.Value.Ticks, ms ) ;
+				PutInt64( ( System.Int64 )( ( ( System.DateTime )value ).Ticks ), ms ) ;
 			}
+		}
+		public void PutDateTimeT( System.DateTime value, MemoryStream ms )
+		{
+			ms.WriteByte( 1 ) ;
+			PutInt64( ( System.Int64 )value.Ticks, ms ) ;
 		}
 
 		//-----------------------------------------------------------

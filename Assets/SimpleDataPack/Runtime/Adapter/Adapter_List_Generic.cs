@@ -27,7 +27,7 @@ public partial class SimpleDataPack
 				return ;
 			}
 
-			List<T> elements = entity as List<T> ;
+			var elements = entity as List<T> ;
 
 			int length = elements.Count ;
 
@@ -219,13 +219,13 @@ public partial class SimpleDataPack
 	}
 
 	//============================================================================================
-	// IL2CPP ビルド時のリフレクション版用
+	// IL2CPP ビルドでリフレクションを使用するケース
 
 	/// <summary>
 	/// T が確定値のリストアダプター(T はスカラの class struct? struct 限定) ※T にアレイは不可
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class ListGenericReflectionAdapter : IAdapter
+	public class ListGenericVersatileAdapter : IAdapter
 	{
 		private readonly Type	m_ObjectType ;
 		private readonly Type	m_ElementType ;
@@ -234,7 +234,7 @@ public partial class SimpleDataPack
 		/// コンストラクタ
 		/// </summary>
 		/// <param name="elementType"></param>
-		public ListGenericReflectionAdapter( Type objectType, Type elementType )
+		public ListGenericVersatileAdapter( Type objectType, Type elementType )
 		{
 			m_ObjectType	= objectType ;
 			m_ElementType	= elementType ;
@@ -255,7 +255,7 @@ public partial class SimpleDataPack
 				return ;
 			}
 
-			IList elements = entity as IList ;
+			var elements = entity as IList ;
 
 			int length = elements.Count ;
 
@@ -319,4 +319,7 @@ public partial class SimpleDataPack
 			return elements ;
 		}
 	}
+
+
+
 }

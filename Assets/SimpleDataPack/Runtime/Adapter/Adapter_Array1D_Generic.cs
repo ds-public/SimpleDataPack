@@ -241,13 +241,13 @@ public partial class SimpleDataPack
 	}
 
 	//============================================================================================
-	// IL2CPP ビルド時のリフレクション版用
+	// IL2CPP ビルドでリフレクションを使用するケース
 
 	/// <summary>
 	/// T が確定値のアレイアダプター(T はスカラの class struct? struct 限定) ※T にアレイは不可
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class Array1DGenericReflectionAdapter : IAdapter
+	public class Array1DGenericVersatileAdapter : IAdapter
 	{
 		private readonly Type	m_ObjectType ;
 		private readonly Type	m_ElementType ;
@@ -256,7 +256,7 @@ public partial class SimpleDataPack
 		/// コンストラクタ
 		/// </summary>
 		/// <param name="elementType"></param>
-		public Array1DGenericReflectionAdapter( Type objectType, Type elementType )
+		public Array1DGenericVersatileAdapter( Type objectType, Type elementType )
 		{
 			m_ObjectType	= objectType ;
 			m_ElementType	= elementType ;

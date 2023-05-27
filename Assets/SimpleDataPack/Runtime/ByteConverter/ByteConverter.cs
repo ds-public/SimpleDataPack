@@ -14,6 +14,7 @@ public partial class SimpleDataPack
 
 		public void						PutBoolean( System.Boolean value, MemoryStream ms ) ;
 		public void						PutBooleanN( System.Boolean? value, MemoryStream ms ) ;
+		public void						PutBooleanT( System.Boolean value, MemoryStream ms ) ;
 
 		public void						PutByte( System.Byte value, MemoryStream ms ) ;
 		public void						PutByteN( System.Byte? value, MemoryStream ms ) ;
@@ -25,6 +26,7 @@ public partial class SimpleDataPack
 
 		public void						PutChar( System.Char value, MemoryStream ms ) ;
 		public void						PutCharN( System.Char? value, MemoryStream ms ) ;
+		public void						PutCharT( System.Char value, MemoryStream ms ) ;
 
 		public void						PutInt16( System.Int16 value, MemoryStream ms ) ;
 		public void						PutInt16N( System.Int16? value, MemoryStream ms ) ;
@@ -52,17 +54,23 @@ public partial class SimpleDataPack
 
 		public void						PutSingle( System.Single value, MemoryStream ms ) ;
 		public void						PutSingleN( System.Single? value, MemoryStream ms ) ;
+		public void						PutSingleT( System.Single value, MemoryStream ms ) ;
 
 		public void						PutDouble( System.Double value, MemoryStream ms ) ;
 		public void						PutDoubleN( System.Double? value, MemoryStream ms ) ;
+		public void						PutDoubleT( System.Double value, MemoryStream ms ) ;
 
 		public void						PutDecimal( System.Decimal value, MemoryStream ms ) ;
 		public void						PutDecimalN( System.Decimal? value, MemoryStream ms ) ;
+		public void						PutDecimalT( System.Decimal value, MemoryStream ms ) ;
 
 		public void						PutString( System.String value, MemoryStream ms ) ;
 
 		public void						PutDateTime( System.DateTime value, MemoryStream ms ) ;
 		public void						PutDateTimeN( System.DateTime? value, MemoryStream ms ) ;
+		public void						PutDateTimeT( System.DateTime value, MemoryStream ms ) ;
+
+		//---------------
 
 		public void						PutVUInt32( System.UInt32 value, MemoryStream ms ) ;
 		public void						PutVUInt33( System.UInt32? value, MemoryStream ms ) ;
@@ -114,6 +122,8 @@ public partial class SimpleDataPack
 		public System.DateTime			GetDateTime( ByteStream ms ) ;
 		public System.DateTime?			GetDateTimeN( ByteStream ms ) ;
 
+		//---------------
+
 		public System.UInt32			GetVUInt32( ByteStream ms ) ;
 		public System.UInt32?			GetVUInt33( ByteStream ms ) ;
 	}
@@ -146,6 +156,10 @@ public partial class SimpleDataPack
 			{
 				ms.WriteByte( ( System.Boolean )value == false ? ( byte )2 : ( byte )3 ) ;
 			}
+		}
+		public void PutBooleanT( System.Boolean value, MemoryStream ms )
+		{
+			ms.WriteByte( value == false ? ( byte )2 : ( byte )3 ) ;
 		}
 
 		//---------------
@@ -218,6 +232,13 @@ public partial class SimpleDataPack
 				m_Work[ 2 ] = ( System.Byte )( v >> 8 ) ;
 				ms.Write( m_Work, 0, 3 ) ;
 			}
+		}
+		public void PutCharT( System.Char value, MemoryStream ms )
+		{
+			m_Work[ 0 ] = 1 ;
+			m_Work[ 1 ] = ( System.Byte )( value      ) ;
+			m_Work[ 2 ] = ( System.Byte )( value >> 8 ) ;
+			ms.Write( m_Work, 0, 3 ) ;
 		}
 
 		//---------------
@@ -470,8 +491,13 @@ public partial class SimpleDataPack
 			else
 			{
 				ms.WriteByte( 1 ) ;
-				ms.Write( BitConverter.GetBytes( value.Value ), 0, 4 ) ;
+				ms.Write( BitConverter.GetBytes( ( System.Single )value ), 0, 4 ) ;
 			}
+		}
+		public void PutSingleT( System.Single value, MemoryStream ms )
+		{
+			ms.WriteByte( 1 ) ;
+			ms.Write( BitConverter.GetBytes( value ), 0, 4 ) ;
 		}
 
 		//---------------
@@ -489,8 +515,13 @@ public partial class SimpleDataPack
 			else
 			{
 				ms.WriteByte( 1 ) ;
-				ms.Write( BitConverter.GetBytes( value.Value ), 0, 8 ) ;
+				ms.Write( BitConverter.GetBytes( ( System.Double )value ), 0, 8 ) ;
 			}
+		}
+		public void PutDoubleT( System.Double value, MemoryStream ms )
+		{
+			ms.WriteByte( 1 ) ;
+			ms.Write( BitConverter.GetBytes( value ), 0, 8 ) ;
 		}
 
 		//---------------
@@ -509,10 +540,16 @@ public partial class SimpleDataPack
 			}
 			else
 			{
-				byte[] b = Encoding.UTF8.GetBytes( value.Value.ToString() ) ;
+				byte[] b = Encoding.UTF8.GetBytes( ( ( System.Decimal )value ).ToString() ) ;
 				ms.WriteByte( ( System.Byte )b.Length ) ;
 				ms.Write( b, 0, b.Length ) ;
 			}
+		}
+		public void PutDecimalT( System.Decimal value, MemoryStream ms )
+		{
+			byte[] b = Encoding.UTF8.GetBytes( value.ToString() ) ;
+			ms.WriteByte( ( System.Byte )b.Length ) ;
+			ms.Write( b, 0, b.Length ) ;
 		}
 
 		//---------------
@@ -554,8 +591,13 @@ public partial class SimpleDataPack
 			else
 			{
 				ms.WriteByte( 1 ) ;
-				PutInt64( ( System.Int64 )( value.Value.Ticks ), ms ) ;
+				PutInt64( ( System.Int64 )( ( ( System.DateTime )value ).Ticks ), ms ) ;
 			}
+		}
+		public void PutDateTimeT( System.DateTime value, MemoryStream ms )
+		{
+			ms.WriteByte( 1 ) ;
+			PutInt64( ( System.Int64 )( value.Ticks ), ms ) ;
 		}
 
 		//-----------------------------------------------------------

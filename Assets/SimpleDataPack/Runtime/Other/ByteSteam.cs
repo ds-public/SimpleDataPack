@@ -181,6 +181,7 @@ public partial class SimpleDataPack
 
 		public void						PutBoolean( System.Boolean value )										=> m_BC.PutBoolean( value, m_MS ) ;
 		public void						PutBooleanN( System.Boolean? value )									=> m_BC.PutBooleanN( value, m_MS ) ;
+		public void						PutBooleanT( System.Boolean value )										=> m_BC.PutBooleanT( value, m_MS ) ;
 
 		public void						PutByte( System.Byte value )											=> m_BC.PutByte( value, m_MS ) ;
 		public void						PutByteN( System.Byte? value )											=> m_BC.PutByteN( value, m_MS ) ;
@@ -192,6 +193,7 @@ public partial class SimpleDataPack
 
 		public void						PutChar( System.Char value )											=> m_BC.PutChar( value, m_MS ) ;
 		public void						PutCharN( System.Char? value )											=> m_BC.PutCharN( value, m_MS ) ;
+		public void						PutCharT( System.Char value )											=> m_BC.PutCharT( value, m_MS ) ;
 
 		public void						PutInt16( System.Int16 value )											=> m_BC.PutInt16( value, m_MS ) ;
 		public void						PutInt16N( System.Int16? value )										=> m_BC.PutInt16N( value, m_MS ) ;
@@ -219,17 +221,21 @@ public partial class SimpleDataPack
 
 		public void						PutSingle( System.Single value )										=> m_BC.PutSingle( value, m_MS ) ;
 		public void						PutSingleN( System.Single? value )										=> m_BC.PutSingleN( value, m_MS ) ;
+		public void						PutSingleT( System.Single value )										=> m_BC.PutSingleT( value, m_MS ) ;
 
 		public void						PutDouble( System.Double value )										=> m_BC.PutDouble( value, m_MS ) ;
 		public void						PutDoubleN( System.Double? value )										=> m_BC.PutDoubleN( value, m_MS ) ;
+		public void						PutDoubleT( System.Double value )										=> m_BC.PutDoubleT( value, m_MS ) ;
 
 		public void						PutDecimal( System.Decimal value )										=> m_BC.PutDecimal( value, m_MS ) ;
 		public void						PutDecimalN( System.Decimal? value )									=> m_BC.PutDecimalN( value, m_MS ) ;
+		public void						PutDecimalT( System.Decimal value )										=> m_BC.PutDecimalT( value, m_MS ) ;
 
 		public void						PutString( System.String value )										=> m_BC.PutString( value, m_MS ) ;
 
 		public void						PutDateTime( System.DateTime value )									=> m_BC.PutDateTime( value, m_MS ) ;
 		public void						PutDateTimeN( System.DateTime? value )									=> m_BC.PutDateTimeN( value, m_MS ) ;
+		public void						PutDateTimeT( System.DateTime value )									=> m_BC.PutDateTimeT( value, m_MS ) ;
 
 		//---------------
 
