@@ -47,7 +47,7 @@ namespace DSW.Screens
 
 #if MESSAGE_PACK_ENABLED
 
-#if ENABLE_IL2CPP || ( !UNITY_EDITOR && ( IOS || IPHONE ) ) || MESSAGE_PACK_IL2CPP
+#if MESSAGE_PACK_IL2CPP
 			// IL2CPP 用コード
 			Debug.Log( "[IL2CPP用の自動生成コードを使用する]" ) ;
 
@@ -163,7 +163,7 @@ namespace DSW.Screens
 //			SimpleDataPack.IsBigEndian = true ;
 
 			// 高速展開用アダプターの使用を制限する
-			SimpleDataPack.ExternalAdapterDisabled = true ;
+//			SimpleDataPack.ExternalAdapterDisabled = true ;
 
 			SimpleDataPack.PriorityTypes priorityType = SimpleDataPack.PriorityTypes.Speed ;
 
