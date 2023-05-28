@@ -81,14 +81,14 @@ namespace DSW.Screens
 
 //			var o1 = new T() ;
 //			var o1 = new List<MyData.MySample_W>() ;
-//			var o0 = new MyData.MyObject_W[ sl ]  ;
-			var o0 = new MyData.MyStruct_W[ sl ]  ;
+			var o0 = new MyData.MyObject_W[ sl ]  ;
+//			var o0 = new MyData.MyStruct_W[ sl ]  ;
 
 			for( si  = 0 ; si <  sl ; si ++ )
 			{
 //				o1.Add( new MyData.MySample_W() ) ;
-//				o0[ si ] = new MyData.MyObject_W() ;
-				o0[ si ] = new MyData.MyStruct_W() ;
+				o0[ si ] = new MyData.MyObject_W() ;
+//				o0[ si ] = new MyData.MyStruct_W() ;
 			}
 
 //			await RunDebug<List<MyData.MySample_W>>() ;
@@ -136,8 +136,28 @@ namespace DSW.Screens
 		public async UniTask<T> RunDebug<T>( T o1 )// where T : class,new()
 		{
 			LOG( "<color=#7F7FFF>==================== SimpleDataPack 検証 ====================</color>" ) ;
-			LOG( "<color=#FFDF3F>対象 : " + typeof( T ).Name + "</color>" ) ;
 
+			Type objectType = typeof( T ) ;
+			LOG( "<color=#FFDF3F>対象 : " + objectType.Name + "</color>" ) ;
+			if( objectType.IsArray == true )
+			{
+				Array ato = ( Array )( ( System.Object )o1 ) ;
+				LOG( "<color=#FFDF3F>Array 型 : 件数 = " + ato.Length + "</color>" ) ;
+			}
+			else
+			if( objectType.IsGenericType == true && objectType.GetGenericTypeDefinition() == typeof( List<> ) )
+			{
+				IList lto = ( IList )( ( System.Object )o1 ) ;
+				LOG( "<color=#FFDF3F>List 型 : 件数 = " + lto.Count + "</color>" ) ;
+			}
+			else
+			if( objectType.IsGenericType == true && objectType.GetGenericTypeDefinition() == typeof( Dictionary<,> ) )
+			{
+				IDictionary dto = ( IDictionary )( ( System.Object )o1 ) ;
+				LOG( "<color=#FFDF3F>Dictionary 型 : 件数 = " + dto.Count + "</color>" ) ;
+			}
+
+			//----------------------------------
 
 			// ビッグエンディアン
 //			SimpleDataPack.IsBigEndian = true ;

@@ -376,8 +376,10 @@ public partial class SimpleDataPack
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		public DictionaryGenericVersatileAdapter( Type keyType, Type valueType )
+		public DictionaryGenericVersatileAdapter( Type objectType, Type keyType, Type valueType )
 		{
+			m_ObjectType	= objectType ;
+
 			//----------------------------------
 			// Key
 

@@ -89,12 +89,12 @@ public partial class SimpleDataPack
 
 				//----------------------------------------------------------
 
-				DebugScreen.Out( "アダプター生成開始" ) ;
+//				DebugScreen.Out( "アダプター生成開始" ) ;
 
 				// アダプターを生成する
 				objectDefinition.CreateAdapter() ;
 
-				DebugScreen.Out( "アダプター生成終了" ) ;
+//				DebugScreen.Out( "アダプター生成終了" ) ;
 
 				//----------------------------------------------------------
 
@@ -241,8 +241,7 @@ public partial class SimpleDataPack
 						type.GetCustomAttribute<System.SerializableAttribute>()		!= null
 					)
 					{
-						DebugScreen.Out( "オブジェクト型の解析に入る : " + type.Name ) ;
-
+//						DebugScreen.Out( "オブジェクト型の解析に入る : " + type.Name ) ;
 
 						// 有効なオブジェクトの型
 						return Create( type ) ;
@@ -323,7 +322,7 @@ public partial class SimpleDataPack
 			MethodInfo getter ;
 			MethodInfo setter ;
 
-			DebugScreen.Out( "メンバー解析開始 : " + memberInfos.Length ) ;
+//			DebugScreen.Out( "メンバー解析開始 : " + memberInfos.Length ) ;
 
 			// メンバーごとに処理を行う
 			foreach( MemberInfo memberInfo in memberInfos )
@@ -508,70 +507,48 @@ public partial class SimpleDataPack
 						}
 					}
 					else
+					if( type.IsEnum == true )
 					{
-						if
-						(
-							(
-								// class
-								type.IsClass == true  &&
-								type != typeof( System.String )		// 除外
-							)
-							||
-							(
-								// struct
-								type.IsClass == false &&
-								type.IsValueType == true &&
-								type.IsPrimitive == false &&
-								type.IsEnum == false &&
-								type != typeof( System.Decimal ) &&	// 除外
-								type != typeof( System.DateTime )	// 除外
-							)
-							||
-							(
-								// Interface
-								type.IsInterface == true
-							)
-						)
+						// Enum
+						member.ValueType = ValueTypes.Enum ;
+					}
+					else
+					if
+					(
+						( type.IsClass == false && type.IsInterface == false && type.IsValueType == true && type.IsPrimitive == true ) ||	// Primitive
+						type == typeof( System.String ) ||
+						type == typeof( System.Decimal ) || type == typeof( System.DateTime )
+					)
+					{
+						// Primitive
+						switch( member.ObjectTypeCode )
 						{
-							// class または struct ※メンバーが存在する
-							member.ValueType = ValueTypes.Object ;
+							case TypeCode.Boolean	: member.ValueType = ValueTypes.Boolean		; break ;
+							case TypeCode.Byte		: member.ValueType = ValueTypes.Byte		; break ;
+							case TypeCode.SByte		: member.ValueType = ValueTypes.SByte		; break ;
+							case TypeCode.Char		: member.ValueType = ValueTypes.Char		; break ;
+							case TypeCode.Int16		: member.ValueType = ValueTypes.Int16		; break ;
+							case TypeCode.UInt16	: member.ValueType = ValueTypes.UInt16		; break ;
+							case TypeCode.Int32		: member.ValueType = ValueTypes.Int32		; break ;
+							case TypeCode.UInt32	: member.ValueType = ValueTypes.UInt32		; break ;
+							case TypeCode.Int64		: member.ValueType = ValueTypes.Int64		; break ;
+							case TypeCode.UInt64	: member.ValueType = ValueTypes.UInt64		; break ;
+							case TypeCode.Single	: member.ValueType = ValueTypes.Single		; break ;
+							case TypeCode.Double	: member.ValueType = ValueTypes.Double		; break ;
+							case TypeCode.Decimal	: member.ValueType = ValueTypes.Decimal		; break ;	// struct
+							case TypeCode.String	: member.ValueType = ValueTypes.String		; break ;	// class
+							case TypeCode.DateTime	: member.ValueType = ValueTypes.DateTime	; break ;	// struct
 						}
-						else
-						{
-							// プリミティブ
-
-							if( type.IsEnum == true )
-							{
-								// Enum
-								member.ValueType = ValueTypes.Enum ;
-							}
-							else
-							{
-								switch( member.ObjectTypeCode )
-								{
-									case TypeCode.Boolean	: member.ValueType = ValueTypes.Boolean		; break ;
-									case TypeCode.Byte		: member.ValueType = ValueTypes.Byte		; break ;
-									case TypeCode.SByte		: member.ValueType = ValueTypes.SByte		; break ;
-									case TypeCode.Char		: member.ValueType = ValueTypes.Char		; break ;
-									case TypeCode.Int16		: member.ValueType = ValueTypes.Int16		; break ;
-									case TypeCode.UInt16	: member.ValueType = ValueTypes.UInt16		; break ;
-									case TypeCode.Int32		: member.ValueType = ValueTypes.Int32		; break ;
-									case TypeCode.UInt32	: member.ValueType = ValueTypes.UInt32		; break ;
-									case TypeCode.Int64		: member.ValueType = ValueTypes.Int64		; break ;
-									case TypeCode.UInt64	: member.ValueType = ValueTypes.UInt64		; break ;
-									case TypeCode.Single	: member.ValueType = ValueTypes.Single		; break ;
-									case TypeCode.Double	: member.ValueType = ValueTypes.Double		; break ;
-									case TypeCode.Decimal	: member.ValueType = ValueTypes.Decimal		; break ;	// struct
-									case TypeCode.String	: member.ValueType = ValueTypes.String		; break ;	// class
-									case TypeCode.DateTime	: member.ValueType = ValueTypes.DateTime	; break ;	// struct
-								}
-							}
-						}
+					}
+					else
+					{
+						// class interface struct
+						member.ValueType = ValueTypes.Object ;
 					}
 				}
 			}
 
-			DebugScreen.Out( "メンバー解析終了 : " + members.Count ) ;
+//			DebugScreen.Out( "メンバー解析終了 : " + members.Count ) ;
 
 			//----------------------------------------------------------
 

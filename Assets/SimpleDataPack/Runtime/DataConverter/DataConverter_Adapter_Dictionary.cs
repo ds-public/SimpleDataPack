@@ -105,7 +105,7 @@ public partial class SimpleDataPack
 
 			//----------------------------------------------------------
 
-			adapter = ( IAdapter )( new DictionaryGenericVersatileAdapter( keyType, valueType ) ) ;
+			adapter = ( IAdapter )( new DictionaryGenericVersatileAdapter( objectType, keyType, valueType ) ) ;
 
 			return adapter ;
 		}

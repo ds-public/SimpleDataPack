@@ -447,10 +447,10 @@ namespace DSW.MyData
 
 		//-----------------------------------------------------------
 		// Struct 系
-
+/*
 		[SimpleDataPackMember(102)][Key(102)][SerializeField]
 		public MyStruct_W P102 = new MyStruct_W( 255 ) ;
-/*
+
 		[SimpleDataPackMember(103)][Key(103)][SerializeField]
 		public MyStruct_W? P103 = new MyStruct_W( 255 ) ;
 
@@ -555,6 +555,7 @@ namespace DSW.MyData
 		[SimpleDataPackMember(123)][Key(123)][SerializeField]
 		public List<IMyInterface> P123 = new List<IMyInterface>(){ new MyInterface_Type2(), new MyInterface_Type3() } ;
 */
+
 		//-----------------------------------
 		// 極端に大きなアレイとリスト
 /*
