@@ -1045,7 +1045,7 @@ public partial class SimpleDataPack
 				=> m_DataConverter.GetAdapter( Type ).Serialize( GetValue( entity ), writer ) ;
 
 			private void Deserialize_AnyObject( System.Object entity, ByteStream reader )
-				=> m_DataConverter.GetAdapter( Type ).Deserialize( reader ) ;
+				=> SetValue( entity, m_DataConverter.GetAdapter( Type ).Deserialize( reader ) ) ;
 		}
 
 		//-----------------------------------------------------------
@@ -1090,6 +1090,7 @@ public partial class SimpleDataPack
 
 				foreach( var member in m_Members )
 				{
+//					Debug.Log( "シリアライズ対象メンバー : " + member.Name + " Type = " + member.Type.Name ) ;
 //					DebugScreen.Out( "メンバー開始:" + member.Name ) ;
 					member.Serialize( entity, writer ) ;
 //					DebugScreen.Out( "メンバー終了:" + member.Name ) ;
